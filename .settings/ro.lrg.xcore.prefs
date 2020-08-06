@@ -1,0 +1,2 @@
+bindings=MInvocation,java.lang.Object,ro.lrg.xcore.metametamodel.XEntity;MCompilationUnit,java.lang.Object,ro.lrg.xcore.metametamodel.XEntity;MProject,java.lang.Object,ro.lrg.xcore.metametamodel.XEntity;
+eclipse.preferences.version=1
