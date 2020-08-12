@@ -14,7 +14,7 @@ import ro.lrg.xcore.metametamodel.RelationBuilder;
 import utilities.UtilityClass;
 
 @RelationBuilder
-public class OptionalInitializedToNullBuilder implements IRelationBuilder<MVariableDeclarationFragment, MCompilationUnit>{
+public class OptionalInitializedToNullGroup implements IRelationBuilder<MVariableDeclarationFragment, MCompilationUnit>{
 
 	@Override
 	public Group<MVariableDeclarationFragment> buildGroup(MCompilationUnit arg0) {

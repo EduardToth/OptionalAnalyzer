@@ -2,8 +2,8 @@ package optionalanalizer.metamodel.impl;
 
 import optionalanalizer.metamodel.entity.*;
 import compilationUnits.properties.ToString;
-import compilationUnits.groups.OptionalIsPresentInvocationBuilder;
-import compilationUnits.groups.OptionalInitializedToNullBuilder;
+import compilationUnits.groups.OptionalIsPresentInvocationGroup;
+import compilationUnits.groups.OptionalInitializedToNullGroup;
 import compilationUnits.groups.Rule3AntipatternGroup;
 import compilationUnits.groups.OptionalAssignmentToNullGroup;
 import compilationUnits.actions.ShowInEditor;
@@ -13,8 +13,8 @@ public class MCompilationUnitImpl implements MCompilationUnit {
 	private java.lang.Object underlyingObj_;
 
 	private static final ToString ToString_INSTANCE = new ToString();
-	private static final OptionalIsPresentInvocationBuilder OptionalIsPresentInvocationBuilder_INSTANCE = new OptionalIsPresentInvocationBuilder();
-	private static final OptionalInitializedToNullBuilder OptionalInitializedToNullBuilder_INSTANCE = new OptionalInitializedToNullBuilder();
+	private static final OptionalIsPresentInvocationGroup OptionalIsPresentInvocationBuilder_INSTANCE = new OptionalIsPresentInvocationGroup();
+	private static final OptionalInitializedToNullGroup OptionalInitializedToNullBuilder_INSTANCE = new OptionalInitializedToNullGroup();
 	private static final Rule3AntipatternGroup Rule3AntipatternGroup_INSTANCE = new Rule3AntipatternGroup();
 	private static final OptionalAssignmentToNullGroup OptionalAssignmentToNullGroup_INSTANCE = new OptionalAssignmentToNullGroup();
 	private static final ShowInEditor ShowInEditor_INSTANCE = new ShowInEditor();

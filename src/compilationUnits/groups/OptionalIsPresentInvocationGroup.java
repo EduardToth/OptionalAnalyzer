@@ -18,7 +18,7 @@ import ro.lrg.xcore.metametamodel.RelationBuilder;
 import utilities.UtilityClass;
 
 @RelationBuilder
-public class OptionalIsPresentInvocationBuilder implements IRelationBuilder<MInvocation, MCompilationUnit>{
+public class OptionalIsPresentInvocationGroup implements IRelationBuilder<MInvocation, MCompilationUnit>{
 
 	@Override
 	public Group<MInvocation> buildGroup(MCompilationUnit arg0) {

@@ -24,8 +24,8 @@ public class Rule3AntipatternGroup implements IRelationBuilder<MIfStatement, MCo
 	@Override
 	public Group<MIfStatement> buildGroup(MCompilationUnit arg0) {
 		Group<MIfStatement> group = new Group<>();
-		OptionalIsPresentInvocationBuilder isPresentInvocationBuilder = 
-				new OptionalIsPresentInvocationBuilder();
+		OptionalIsPresentInvocationGroup isPresentInvocationBuilder = 
+				new OptionalIsPresentInvocationGroup();
 		Group<MInvocation> isPresentGroup = isPresentInvocationBuilder.buildGroup(arg0);
 
 		collectAntipatterns(group, isPresentGroup);
