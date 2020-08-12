@@ -1,4 +1,4 @@
-package antipatternFinders.isPresentInvocationFinder;
+package methodInvocations.properties;
 
 import org.eclipse.jdt.core.dom.MethodInvocation;
 
@@ -8,7 +8,7 @@ import ro.lrg.xcore.metametamodel.PropertyComputer;
 
 
 @PropertyComputer
-public class InvocationInfoGetter  implements IPropertyComputer<String, MInvocation>{
+public class InvocationToOptionalsPresent  implements IPropertyComputer<String, MInvocation>{
 
 	@Override
 	public String compute(MInvocation arg0) {

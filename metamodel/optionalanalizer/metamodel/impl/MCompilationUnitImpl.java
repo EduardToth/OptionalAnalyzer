@@ -1,13 +1,23 @@
 package optionalanalizer.metamodel.impl;
 
 import optionalanalizer.metamodel.entity.*;
-import antipatternFinders.isPresentInvocationFinder.OptionalIsPresentInvocationBuilder;
+import compilationUnits.properties.ToString;
+import compilationUnits.groups.OptionalIsPresentInvocationBuilder;
+import compilationUnits.groups.OptionalInitializedToNullBuilder;
+import compilationUnits.groups.Rule3AntipatternGroup;
+import compilationUnits.groups.OptionalAssignmentToNullGroup;
+import compilationUnits.actions.ShowInEditor;
 
 public class MCompilationUnitImpl implements MCompilationUnit {
 
 	private java.lang.Object underlyingObj_;
 
+	private static final ToString ToString_INSTANCE = new ToString();
 	private static final OptionalIsPresentInvocationBuilder OptionalIsPresentInvocationBuilder_INSTANCE = new OptionalIsPresentInvocationBuilder();
+	private static final OptionalInitializedToNullBuilder OptionalInitializedToNullBuilder_INSTANCE = new OptionalInitializedToNullBuilder();
+	private static final Rule3AntipatternGroup Rule3AntipatternGroup_INSTANCE = new Rule3AntipatternGroup();
+	private static final OptionalAssignmentToNullGroup OptionalAssignmentToNullGroup_INSTANCE = new OptionalAssignmentToNullGroup();
+	private static final ShowInEditor ShowInEditor_INSTANCE = new ShowInEditor();
 
 	public MCompilationUnitImpl(java.lang.Object underlyingObj) {
 		underlyingObj_ = underlyingObj;
@@ -19,9 +29,39 @@ public class MCompilationUnitImpl implements MCompilationUnit {
 	}
 
 	@Override
+	@ro.lrg.xcore.metametamodel.ThisIsAProperty
+	public java.lang.String toString() {
+		return ToString_INSTANCE.compute(this);
+	}
+
+	@Override
 	@ro.lrg.xcore.metametamodel.ThisIsARelationBuilder
 	public ro.lrg.xcore.metametamodel.Group<MInvocation> optionalIsPresentInvocationBuilder() {
 		return OptionalIsPresentInvocationBuilder_INSTANCE.buildGroup(this);
+	}
+
+	@Override
+	@ro.lrg.xcore.metametamodel.ThisIsARelationBuilder
+	public ro.lrg.xcore.metametamodel.Group<MVariableDeclarationFragment> optionalInitializedToNullBuilder() {
+		return OptionalInitializedToNullBuilder_INSTANCE.buildGroup(this);
+	}
+
+	@Override
+	@ro.lrg.xcore.metametamodel.ThisIsARelationBuilder
+	public ro.lrg.xcore.metametamodel.Group<MIfStatement> rule3AntipatternGroup() {
+		return Rule3AntipatternGroup_INSTANCE.buildGroup(this);
+	}
+
+	@Override
+	@ro.lrg.xcore.metametamodel.ThisIsARelationBuilder
+	public ro.lrg.xcore.metametamodel.Group<MAssignment> optionalAssignmentToNullGroup() {
+		return OptionalAssignmentToNullGroup_INSTANCE.buildGroup(this);
+	}
+
+	@Override
+	@ro.lrg.xcore.metametamodel.ThisIsAnAction
+	public java.lang.String showInEditor() {
+		return ShowInEditor_INSTANCE.performAction(this, ro.lrg.xcore.metametamodel.HListEmpty.getInstance());
 	}
 
 	public boolean equals(Object obj) {

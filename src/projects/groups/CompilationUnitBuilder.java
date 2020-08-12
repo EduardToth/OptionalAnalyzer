@@ -1,7 +1,8 @@
-package antipatternFinders.isPresentInvocationFinder;
+package projects.groups;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.jdt.core.ICompilationUnit;
+import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.JavaModelException;
@@ -13,22 +14,30 @@ import ro.lrg.xcore.metametamodel.Group;
 import ro.lrg.xcore.metametamodel.IRelationBuilder;
 import ro.lrg.xcore.metametamodel.RelationBuilder;
 
+/*
+ * 
+ * 1. Un pachet groups, properties, actions...
+ * 2. Ca si denumire: CompilationUnitGroup
+ */
 @RelationBuilder
 public class CompilationUnitBuilder implements IRelationBuilder<MCompilationUnit, MProject>{
 
-	private Group<MCompilationUnit> compilationUnits = new Group<>();
+	
 
 	@Override
 	public Group<MCompilationUnit> buildGroup(MProject arg0) {
 
 
-		IProject iProject = (IProject)arg0.getUnderlyingObject();
+		IJavaProject iProject = (IJavaProject)arg0.getUnderlyingObject();
 
+		Group<MCompilationUnit> compilationUnits = new Group<>();
+		
 		try {
-			IPackageFragment[] packages = JavaCore.create(iProject).getPackageFragments();
+		
+			IPackageFragment[] packages = JavaCore.create(iProject.getProject()).getPackageFragments();
 
 			for(IPackageFragment iPackage : packages) {
-				getIntoPackage( iPackage );
+				getIntoPackage(compilationUnits, iPackage);
 			}
 
 		} catch (JavaModelException e) {
@@ -37,7 +46,7 @@ public class CompilationUnitBuilder implements IRelationBuilder<MCompilationUnit
 		return compilationUnits;
 	}
 
-	public void getIntoPackage(IPackageFragment iPackage) {
+	public void getIntoPackage(Group<MCompilationUnit> compilationUnits, IPackageFragment iPackage) {
 		try {
 			ICompilationUnit[] units = iPackage.getCompilationUnits();
 

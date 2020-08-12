@@ -1,13 +1,17 @@
 package optionalanalizer.metamodel.impl;
 
 import optionalanalizer.metamodel.entity.*;
-import antipatternFinders.isPresentInvocationFinder.InvocationInfoGetter;
+import methodInvocations.properties.InvocationToOptionalsPresent;
+import methodInvocations.properties.ToString;
+import methodInvocations.actions.OptionalIsPresentLocatorInEditor;
 
 public class MInvocationImpl implements MInvocation {
 
 	private java.lang.Object underlyingObj_;
 
-	private static final InvocationInfoGetter InvocationInfoGetter_INSTANCE = new InvocationInfoGetter();
+	private static final InvocationToOptionalsPresent InvocationToOptionalsPresent_INSTANCE = new InvocationToOptionalsPresent();
+	private static final ToString ToString_INSTANCE = new ToString();
+	private static final OptionalIsPresentLocatorInEditor OptionalIsPresentLocatorInEditor_INSTANCE = new OptionalIsPresentLocatorInEditor();
 
 	public MInvocationImpl(java.lang.Object underlyingObj) {
 		underlyingObj_ = underlyingObj;
@@ -20,8 +24,20 @@ public class MInvocationImpl implements MInvocation {
 
 	@Override
 	@ro.lrg.xcore.metametamodel.ThisIsAProperty
-	public java.lang.String invocationInfoGetter() {
-		return InvocationInfoGetter_INSTANCE.compute(this);
+	public java.lang.String invocationToOptionalsPresent() {
+		return InvocationToOptionalsPresent_INSTANCE.compute(this);
+	}
+
+	@Override
+	@ro.lrg.xcore.metametamodel.ThisIsAProperty
+	public java.lang.String toString() {
+		return ToString_INSTANCE.compute(this);
+	}
+
+	@Override
+	@ro.lrg.xcore.metametamodel.ThisIsAnAction
+	public void optionalIsPresentLocatorInEditor() {
+		 OptionalIsPresentLocatorInEditor_INSTANCE.performAction(this, ro.lrg.xcore.metametamodel.HListEmpty.getInstance());
 	}
 
 	public boolean equals(Object obj) {
