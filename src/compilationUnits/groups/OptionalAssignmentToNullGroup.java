@@ -6,6 +6,7 @@ import org.eclipse.jdt.core.dom.ASTParser;
 import org.eclipse.jdt.core.dom.ASTVisitor;
 import org.eclipse.jdt.core.dom.Assignment;
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jdt.core.dom.VariableDeclarationFragment;
 
 import optionalanalizer.metamodel.entity.MAssignment;
 import optionalanalizer.metamodel.entity.MCompilationUnit;
@@ -35,8 +36,22 @@ public class OptionalAssignmentToNullGroup implements IRelationBuilder<MAssignme
 				}
 				return super.visit( assignment );
 			}
-		});
 
+			@Override
+			public boolean visit(VariableDeclarationFragment declaration) {
+
+
+				String typeName = declaration.resolveBinding().getType().getQualifiedName();
+				if(declaration.getInitializer() != null) {
+
+					if(UtilityClass.isInvocatorOfOptionalType(typeName)
+							&& declaration.getInitializer().toString().equals("null")) {
+						group.add(Factory.getInstance().createMAssignment(declaration));
+					}
+				}
+				return super.visit(declaration);
+			}
+		});
 		return group;
 	}
 
@@ -51,9 +66,6 @@ public class OptionalAssignmentToNullGroup implements IRelationBuilder<MAssignme
 				resolveTypeBinding().getQualifiedName())
 				&& value == null;
 	}
-
-
-
 }
 
 

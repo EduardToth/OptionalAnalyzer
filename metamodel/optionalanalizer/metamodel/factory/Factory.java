@@ -21,14 +21,6 @@ public class Factory {
         }
         return (MInvocation)instance;
     }
-   public MVariableDeclarationFragment createMVariableDeclarationFragment(java.lang.Object obj) {
-       XEntity instance = lruCache_.get(obj);
-        if (null == instance) {
-           instance = new MVariableDeclarationFragmentImpl(obj);
-           lruCache_.put(obj, instance);
-        }
-        return (MVariableDeclarationFragment)instance;
-    }
    public MIfStatement createMIfStatement(java.lang.Object obj) {
        XEntity instance = lruCache_.get(obj);
         if (null == instance) {

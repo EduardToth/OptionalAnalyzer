@@ -3,7 +3,6 @@ package optionalanalizer.metamodel.impl;
 import optionalanalizer.metamodel.entity.*;
 import compilationUnits.properties.ToString;
 import compilationUnits.groups.OptionalIsPresentInvocationGroup;
-import compilationUnits.groups.OptionalInitializedToNullGroup;
 import compilationUnits.groups.Rule3AntipatternGroup;
 import compilationUnits.groups.OptionalAssignmentToNullGroup;
 import compilationUnits.actions.ShowInEditor;
@@ -13,8 +12,7 @@ public class MCompilationUnitImpl implements MCompilationUnit {
 	private java.lang.Object underlyingObj_;
 
 	private static final ToString ToString_INSTANCE = new ToString();
-	private static final OptionalIsPresentInvocationGroup OptionalIsPresentInvocationBuilder_INSTANCE = new OptionalIsPresentInvocationGroup();
-	private static final OptionalInitializedToNullGroup OptionalInitializedToNullBuilder_INSTANCE = new OptionalInitializedToNullGroup();
+	private static final OptionalIsPresentInvocationGroup OptionalIsPresentInvocationGroup_INSTANCE = new OptionalIsPresentInvocationGroup();
 	private static final Rule3AntipatternGroup Rule3AntipatternGroup_INSTANCE = new Rule3AntipatternGroup();
 	private static final OptionalAssignmentToNullGroup OptionalAssignmentToNullGroup_INSTANCE = new OptionalAssignmentToNullGroup();
 	private static final ShowInEditor ShowInEditor_INSTANCE = new ShowInEditor();
@@ -36,14 +34,8 @@ public class MCompilationUnitImpl implements MCompilationUnit {
 
 	@Override
 	@ro.lrg.xcore.metametamodel.ThisIsARelationBuilder
-	public ro.lrg.xcore.metametamodel.Group<MInvocation> optionalIsPresentInvocationBuilder() {
-		return OptionalIsPresentInvocationBuilder_INSTANCE.buildGroup(this);
-	}
-
-	@Override
-	@ro.lrg.xcore.metametamodel.ThisIsARelationBuilder
-	public ro.lrg.xcore.metametamodel.Group<MVariableDeclarationFragment> optionalInitializedToNullBuilder() {
-		return OptionalInitializedToNullBuilder_INSTANCE.buildGroup(this);
+	public ro.lrg.xcore.metametamodel.Group<MInvocation> optionalIsPresentInvocationGroup() {
+		return OptionalIsPresentInvocationGroup_INSTANCE.buildGroup(this);
 	}
 
 	@Override

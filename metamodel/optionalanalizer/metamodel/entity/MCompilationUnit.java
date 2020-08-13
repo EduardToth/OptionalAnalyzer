@@ -6,10 +6,7 @@ public interface MCompilationUnit extends ro.lrg.xcore.metametamodel.XEntity {
 	public java.lang.String toString();
 
 	@ro.lrg.xcore.metametamodel.ThisIsARelationBuilder
-	public ro.lrg.xcore.metametamodel.Group<MInvocation> optionalIsPresentInvocationBuilder();
-
-	@ro.lrg.xcore.metametamodel.ThisIsARelationBuilder
-	public ro.lrg.xcore.metametamodel.Group<MVariableDeclarationFragment> optionalInitializedToNullBuilder();
+	public ro.lrg.xcore.metametamodel.Group<MInvocation> optionalIsPresentInvocationGroup();
 
 	@ro.lrg.xcore.metametamodel.ThisIsARelationBuilder
 	public ro.lrg.xcore.metametamodel.Group<MIfStatement> rule3AntipatternGroup();
