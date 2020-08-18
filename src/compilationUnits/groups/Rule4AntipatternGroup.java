@@ -1,6 +1,5 @@
 package compilationUnits.groups;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.Optional;
 
 import org.eclipse.jdt.core.dom.IfStatement;
@@ -19,7 +18,7 @@ import utilities.Unit;
 import utilities.UtilityClass;
 
 @RelationBuilder
-public class Rule3AntipatternGroup implements IRelationBuilder<MIfStatement, MCompilationUnit>{
+public class Rule4AntipatternGroup implements IRelationBuilder<MIfStatement, MCompilationUnit>{
 
 	@Override
 	public Group<MIfStatement> buildGroup(MCompilationUnit arg0) {
@@ -41,7 +40,7 @@ public class Rule3AntipatternGroup implements IRelationBuilder<MIfStatement, MCo
 		.peek(inv -> setInvocatorName(inv, invocatorName))
 		.filter(this::isParentIfStatement)
 		.map(inv -> (IfStatement)inv.getParent())
-		.filter(ifStatement -> isRule3sAntipattern(ifStatement, invocatorName.getValue0()))
+		.filter(ifStatement -> isRule4sAntipattern(ifStatement, invocatorName.getValue0()))
 		.map(this::convertToMIfStatement)
 		.forEach(mIfStatement -> mIfStatementGroup.add(mIfStatement));
 
@@ -66,11 +65,11 @@ public class Rule3AntipatternGroup implements IRelationBuilder<MIfStatement, MCo
 	}
 
 
-	private boolean isRule3sAntipattern(IfStatement ifStatement, Optional<String> invocatorName) {
+	private boolean isRule4sAntipattern(IfStatement ifStatement, Optional<String> invocatorName) {
 		AntipatternFinderInIfStatements finder = new AntipatternFinderInIfStatements();
 		if(invocatorName.isPresent()) {
 			Antipattern foundAntipattern = finder.lookForAntipatternInIfStatement(ifStatement, invocatorName.get());
-			return foundAntipattern  == Antipattern.RULE_3_ANTIPATTERN;
+			return foundAntipattern  == Antipattern.RULE4_ANTIPATTERN;
 		} else {
 			return false;
 		}

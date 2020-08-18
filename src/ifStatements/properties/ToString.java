@@ -11,7 +11,7 @@ public class ToString  implements IPropertyComputer<String, MIfStatement>{
 
 	@Override
 	public String compute(MIfStatement arg0) {
-		return ((IfStatement)arg0.getUnderlyingObject()).toString();
+		return ((IfStatement)arg0.getUnderlyingObject()).getExpression().toString();
 	}
 
 }
