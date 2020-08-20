@@ -19,11 +19,11 @@ import ro.lrg.xcore.metametamodel.RelationBuilder;
 import utilities.UtilityClass;
 
 @RelationBuilder
-public class Rule2AntipatternGroup  implements IRelationBuilder<MInvocation, MCompilationUnit>{
+public class Rule2AntipatternBuilder  implements IRelationBuilder<MInvocation, MCompilationUnit>{
 
 	@Override
 	public Group<MInvocation> buildGroup(MCompilationUnit arg0) {
-		OptionalInvocationsGroup optionalInvocationsGroup = new OptionalInvocationsGroup();
+		OptionalInvocationsBuilder optionalInvocationsGroup = new OptionalInvocationsBuilder();
 		Group<MInvocation> group = optionalInvocationsGroup.buildGroup(arg0, "get");
 		Group<MInvocation> mInvocationGroup = new Group<MInvocation>();
 

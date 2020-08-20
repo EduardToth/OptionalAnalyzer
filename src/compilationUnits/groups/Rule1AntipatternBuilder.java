@@ -17,7 +17,7 @@ import ro.lrg.xcore.metametamodel.RelationBuilder;
 import utilities.UtilityClass;
 
 @RelationBuilder
-public class OptionalAssignmentToNullGroup implements IRelationBuilder<MAssignment, MCompilationUnit>{
+public class Rule1AntipatternBuilder implements IRelationBuilder<MAssignment, MCompilationUnit>{
 
 	@Override
 	public Group<MAssignment> buildGroup(MCompilationUnit arg0) {

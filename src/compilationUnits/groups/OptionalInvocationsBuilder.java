@@ -17,7 +17,7 @@ import utilities.Unit;
 import utilities.UtilityClass;
 
 @RelationBuilder
-public class OptionalInvocationsGroup implements IRelationBuilder<MInvocation, MCompilationUnit>{
+public class OptionalInvocationsBuilder implements IRelationBuilder<MInvocation, MCompilationUnit>{
 
 	final private Unit<String> invokedMethodName = new Unit<>("isPresent");
 
@@ -46,7 +46,7 @@ public class OptionalInvocationsGroup implements IRelationBuilder<MInvocation, M
 				return invocation.getExpression() != null &&
 						UtilityClass.isInvocatorOfOptionalType(invocation.getExpression()
 								.resolveTypeBinding().getQualifiedName())
-						&& invokedMethodName.equals(OptionalInvocationsGroup.this.invokedMethodName.getValue0());
+						&& invokedMethodName.equals(OptionalInvocationsBuilder.this.invokedMethodName.getValue0());
 			}
 		});
 

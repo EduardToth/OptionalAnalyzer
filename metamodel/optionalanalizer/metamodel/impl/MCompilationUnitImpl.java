@@ -2,10 +2,13 @@ package optionalanalizer.metamodel.impl;
 
 import optionalanalizer.metamodel.entity.*;
 import compilationUnits.properties.ToString;
-import compilationUnits.groups.OptionalInvocationsGroup;
-import compilationUnits.groups.Rule2AntipatternGroup;
-import compilationUnits.groups.Rule3AntipatternGroup;
-import compilationUnits.groups.OptionalAssignmentToNullGroup;
+import compilationUnits.groups.OptionalInvocationsBuilder;
+import compilationUnits.groups.Rule3_4_5_6AntipatternBuilders.Rule3AntipatternBuilder;
+import compilationUnits.groups.Rule3_4_5_6AntipatternBuilders.Rule5AntipatternBuilder;
+import compilationUnits.groups.Rule3_4_5_6AntipatternBuilders.Rule6AntipatternBuilder;
+import compilationUnits.groups.Rule3_4_5_6AntipatternBuilders.Rule4AntipatternBuilder;
+import compilationUnits.groups.Rule2AntipatternBuilder;
+import compilationUnits.groups.Rule1AntipatternBuilder;
 import compilationUnits.actions.ShowInEditor;
 
 public class MCompilationUnitImpl implements MCompilationUnit {
@@ -13,10 +16,13 @@ public class MCompilationUnitImpl implements MCompilationUnit {
 	private java.lang.Object underlyingObj_;
 
 	private static final ToString ToString_INSTANCE = new ToString();
-	private static final OptionalInvocationsGroup OptionalInvocationsGroup_INSTANCE = new OptionalInvocationsGroup();
-	private static final Rule2AntipatternGroup Rule2AntipatternGroup_INSTANCE = new Rule2AntipatternGroup();
-	private static final Rule3AntipatternGroup Rule3AntipatternGroup_INSTANCE = new Rule3AntipatternGroup();
-	private static final OptionalAssignmentToNullGroup OptionalAssignmentToNullGroup_INSTANCE = new OptionalAssignmentToNullGroup();
+	private static final OptionalInvocationsBuilder OptionalInvocationsBuilder_INSTANCE = new OptionalInvocationsBuilder();
+	private static final Rule3AntipatternBuilder Rule3AntipatternBuilder_INSTANCE = new Rule3AntipatternBuilder();
+	private static final Rule5AntipatternBuilder Rule5AntipatternBuilder_INSTANCE = new Rule5AntipatternBuilder();
+	private static final Rule6AntipatternBuilder Rule6AntipatternBuilder_INSTANCE = new Rule6AntipatternBuilder();
+	private static final Rule4AntipatternBuilder Rule4AntipatternBuilder_INSTANCE = new Rule4AntipatternBuilder();
+	private static final Rule2AntipatternBuilder Rule2AntipatternBuilder_INSTANCE = new Rule2AntipatternBuilder();
+	private static final Rule1AntipatternBuilder Rule1AntipatternBuilder_INSTANCE = new Rule1AntipatternBuilder();
 	private static final ShowInEditor ShowInEditor_INSTANCE = new ShowInEditor();
 
 	public MCompilationUnitImpl(java.lang.Object underlyingObj) {
@@ -36,26 +42,44 @@ public class MCompilationUnitImpl implements MCompilationUnit {
 
 	@Override
 	@ro.lrg.xcore.metametamodel.ThisIsARelationBuilder
-	public ro.lrg.xcore.metametamodel.Group<MInvocation> optionalInvocationsGroup() {
-		return OptionalInvocationsGroup_INSTANCE.buildGroup(this);
+	public ro.lrg.xcore.metametamodel.Group<MInvocation> optionalInvocationsBuilder() {
+		return OptionalInvocationsBuilder_INSTANCE.buildGroup(this);
 	}
 
 	@Override
 	@ro.lrg.xcore.metametamodel.ThisIsARelationBuilder
-	public ro.lrg.xcore.metametamodel.Group<MInvocation> rule2AntipatternGroup() {
-		return Rule2AntipatternGroup_INSTANCE.buildGroup(this);
+	public ro.lrg.xcore.metametamodel.Group<MIfStatement> rule3AntipatternBuilder() {
+		return Rule3AntipatternBuilder_INSTANCE.buildGroup(this);
 	}
 
 	@Override
 	@ro.lrg.xcore.metametamodel.ThisIsARelationBuilder
-	public ro.lrg.xcore.metametamodel.Group<MIfStatement> rule3AntipatternGroup() {
-		return Rule3AntipatternGroup_INSTANCE.buildGroup(this);
+	public ro.lrg.xcore.metametamodel.Group<MIfStatement> rule5AntipatternBuilder() {
+		return Rule5AntipatternBuilder_INSTANCE.buildGroup(this);
 	}
 
 	@Override
 	@ro.lrg.xcore.metametamodel.ThisIsARelationBuilder
-	public ro.lrg.xcore.metametamodel.Group<MAssignment> optionalAssignmentToNullGroup() {
-		return OptionalAssignmentToNullGroup_INSTANCE.buildGroup(this);
+	public ro.lrg.xcore.metametamodel.Group<MIfStatement> rule6AntipatternBuilder() {
+		return Rule6AntipatternBuilder_INSTANCE.buildGroup(this);
+	}
+
+	@Override
+	@ro.lrg.xcore.metametamodel.ThisIsARelationBuilder
+	public ro.lrg.xcore.metametamodel.Group<MIfStatement> rule4AntipatternBuilder() {
+		return Rule4AntipatternBuilder_INSTANCE.buildGroup(this);
+	}
+
+	@Override
+	@ro.lrg.xcore.metametamodel.ThisIsARelationBuilder
+	public ro.lrg.xcore.metametamodel.Group<MInvocation> rule2AntipatternBuilder() {
+		return Rule2AntipatternBuilder_INSTANCE.buildGroup(this);
+	}
+
+	@Override
+	@ro.lrg.xcore.metametamodel.ThisIsARelationBuilder
+	public ro.lrg.xcore.metametamodel.Group<MAssignment> rule1AntipatternBuilder() {
+		return Rule1AntipatternBuilder_INSTANCE.buildGroup(this);
 	}
 
 	@Override
