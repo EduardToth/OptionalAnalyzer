@@ -13,6 +13,14 @@ public class Factory {
        lruCache_.setCapacity(capacity);
    }
    public void clearCache() {lruCache_.clear();}
+   public MDeclaration createMDeclaration(java.lang.Object obj) {
+       XEntity instance = lruCache_.get(obj);
+        if (null == instance) {
+           instance = new MDeclarationImpl(obj);
+           lruCache_.put(obj, instance);
+        }
+        return (MDeclaration)instance;
+    }
    public MInvocation createMInvocation(java.lang.Object obj) {
        XEntity instance = lruCache_.get(obj);
         if (null == instance) {
@@ -20,6 +28,14 @@ public class Factory {
            lruCache_.put(obj, instance);
         }
         return (MInvocation)instance;
+    }
+   public MVariableDeclaration createMVariableDeclaration(java.lang.Object obj) {
+       XEntity instance = lruCache_.get(obj);
+        if (null == instance) {
+           instance = new MVariableDeclarationImpl(obj);
+           lruCache_.put(obj, instance);
+        }
+        return (MVariableDeclaration)instance;
     }
    public MIfStatement createMIfStatement(java.lang.Object obj) {
        XEntity instance = lruCache_.get(obj);

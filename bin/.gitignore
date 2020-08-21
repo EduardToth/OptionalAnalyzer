@@ -2,8 +2,10 @@
 /compilationUnits/
 /ifStatements/
 /launcher/
+/methodDeclarations/
 /methodInvocations/
 /optionalanalizer/
 /projects/
 /tests/
 /utilities/
+/variableDeclarations/

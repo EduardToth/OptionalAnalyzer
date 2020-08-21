@@ -1,8 +1,11 @@
 package compilationUnits.groups.Rule3_4_5_6AntipatternBuilders.baseComponents;
 
+import java.util.Arrays;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.eclipse.jdt.core.dom.ASTVisitor;
+import org.eclipse.jdt.core.dom.Block;
 import org.eclipse.jdt.core.dom.IfStatement;
 import org.eclipse.jdt.core.dom.MethodInvocation;
 import org.eclipse.jdt.core.dom.ReturnStatement;
@@ -22,11 +25,11 @@ public class AntipatternFinderInIfStatements {
 		Optional<Statement> elseStatement = Optional.ofNullable(ifStatement.getElseStatement());
 		final Unit<TerminationStatementState> stateForThen = new Unit<>(TerminationStatementState.NONE);
 		final Unit<TerminationStatementState> stateForElse = new Unit<>(TerminationStatementState.NONE);
-	
+
 
 		thenStatement.ifPresent((el) ->  stateForThen.setAt0(analyzeStatement(el, invocatorName)));
 		elseStatement.ifPresent((el) -> stateForElse.setAt0(analyzeStatement(el, invocatorName)));
-		
+
 		System.out.println(stateForElse.getValue0() + " " + stateForThen.getValue0());
 
 		return lookForAntipattern(stateForThen.getValue0(), stateForElse.getValue0());
@@ -42,9 +45,19 @@ public class AntipatternFinderInIfStatements {
 			return Antipattern.RULE_5_ANTIPATTERN;
 		} else if(isRule6sAntipattern(stateForThen, stateForElse)) {
 			return Antipattern.RULE_6_ANTIPATTERN;
+		} else if(isRule8sAntipattern(stateForThen, stateForElse)) {
+			return Antipattern.RULE_8_ANTIPATTERN;
+		} else if(isRule9sAntipattern(stateForThen, stateForElse)) {
+			return Antipattern.RULE_9_ANTIPATTERN;
 		}
 
 		return Antipattern.NONE_OF_THEM;
+	}
+
+	private  boolean isRule8sAntipattern(TerminationStatementState stateForThen, TerminationStatementState stateForElse) {
+		return stateForThen == TerminationStatementState.VERIFIED_GET
+				&& (stateForElse == TerminationStatementState.NONE
+				|| stateForElse == TerminationStatementState.EMPTY);
 	}
 
 	private  boolean isRule4sAntipattern(TerminationStatementState stateForThen, TerminationStatementState stateForElse) {
@@ -75,34 +88,73 @@ public class AntipatternFinderInIfStatements {
 				&& stateForElse == TerminationStatementState.VERIFIED_GET;
 	}
 
+	private boolean isRule9sAntipattern(TerminationStatementState stateForThen, TerminationStatementState stateForElse) {
+		return stateForThen == TerminationStatementState.VERIFIED_GET
+				&& stateForElse == TerminationStatementState.SOMETHING
+				|| stateForThen == TerminationStatementState.SOMETHING
+				&& stateForElse == TerminationStatementState.VERIFIED_GET;
+	}
+
 	private TerminationStatementState analyzeStatement(Statement statement, String invocatorName) {
-		final Unit<TerminationStatementState> antipattern  = new Unit<>(TerminationStatementState.NONE);
+		final Unit<TerminationStatementState> statementState= new Unit<>(TerminationStatementState.NONE);
 
 		statement.accept(new ASTVisitor() {
 			@Override
 			public boolean visit(ThrowStatement statement) {
-			
+
 				String typeName = statement.getExpression().resolveTypeBinding().getQualifiedName();
-				System.out.println("$$$$$$$ " + typeName);
 				if(typeName.equals("java.util.NoSuchElementException")) {
-					antipattern.setAt0(TerminationStatementState.NSE_EXCEPTION);
+					statementState.setAt0(TerminationStatementState.NSE_EXCEPTION);
 				} else {
-					antipattern.setAt0(TerminationStatementState.EXCEPTION);
+					statementState.setAt0(TerminationStatementState.EXCEPTION);
 				}
 
 				return super.visit(statement);
 			}
 		});
-		if(antipattern.getValue0().equals(TerminationStatementState.NONE)) {
+		if(statementState.getValue0().equals(TerminationStatementState.NONE)) {
 			statement.accept(new ASTVisitor() {
 				@Override
 				public boolean visit(ReturnStatement statement) {
-					antipattern.setAt0( analyzeReturnStatement(invocatorName, statement) );
+					statementState.setAt0( analyzeReturnStatement(invocatorName, statement) );
 					return super.visit(statement);
 				}
 			});
 		}
-		return antipattern.getValue0();
+
+		if(statementState.getValue0().equals(TerminationStatementState.NONE)) {
+			final Unit<TerminationStatementState> state = new Unit<>(TerminationStatementState.NONE);
+			ReturnStatementVisitor visitor = new ReturnStatementVisitor(state, invocatorName);
+			statement.accept( visitor );
+			if( state.getValue0() != TerminationStatementState.NONE) {
+				statementState.setAt0( state.getValue0() );
+			}
+		}
+
+		if(statementState.getValue0().equals(TerminationStatementState.NONE)) {
+
+			String blockInStringFormWhithoutWhitespaces = removeWhiteSpaces(statement.toString());
+			if(blockInStringFormWhithoutWhitespaces.equals("{}")) {
+				statementState.setAt0( TerminationStatementState.EMPTY);
+			} else {
+				statementState.setAt0( TerminationStatementState.SOMETHING);
+			}
+
+		}
+
+		return statementState.getValue0();
+	}
+
+	private String removeWhiteSpaces(String str) {
+
+		String result = "";
+		for(int i=0; i < str.length(); i++) {
+			final char ch = str.charAt( i );
+			if(!Character.isWhitespace( ch ) ) {
+				result += ch;
+			}
+		}
+		return result;
 	}
 
 	private TerminationStatementState analyzeReturnStatement(String invocatorName, ReturnStatement statement) {

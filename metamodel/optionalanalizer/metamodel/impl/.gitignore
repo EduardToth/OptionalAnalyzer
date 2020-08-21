@@ -8,3 +8,5 @@
 /MVariableDeclarationFragmentImpl.java
 /MExpressionImpl.java
 /MIfStatementImpl.java
+/MDeclarationImpl.java
+/MVariableDeclarationImpl.java

@@ -85,4 +85,5 @@ public class UtilityClass {
 		ITextEditor ite = (ITextEditor)editor;
 		return ite;
 	}
+	
 }

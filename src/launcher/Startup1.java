@@ -4,10 +4,14 @@ import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.dom.Assignment;
 import org.eclipse.jdt.core.dom.IfStatement;
+import org.eclipse.jdt.core.dom.MethodDeclaration;
 import org.eclipse.jdt.core.dom.MethodInvocation;
+import org.eclipse.jdt.core.dom.SingleVariableDeclaration;
 import org.eclipse.jdt.core.dom.VariableDeclarationFragment;
 import org.eclipse.ui.IStartup;
 
+import optionalanalizer.metamodel.entity.MDeclaration;
+import optionalanalizer.metamodel.entity.MVariableDeclaration;
 import optionalanalizer.metamodel.factory.Factory;
 import ro.lrg.insider.view.ToolRegistration;
 import ro.lrg.insider.view.ToolRegistration.XEntityConverter;
@@ -35,6 +39,10 @@ public class Startup1 implements IStartup{
 							return Factory.getInstance().createMAssignment((VariableDeclarationFragment)element);
 						} else if(element instanceof IfStatement) {
 							return Factory.getInstance().createMIfStatement((IfStatement)element);
+						}  else if(element instanceof SingleVariableDeclaration) {
+							return Factory.getInstance().createMVariableDeclaration((SingleVariableDeclaration)element);
+						} else if(element instanceof MethodDeclaration) {
+							return Factory.getInstance().createMDeclaration((MethodDeclaration)element);
 						}
 						return null;
 					}

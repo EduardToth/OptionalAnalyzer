@@ -6,5 +6,7 @@ public enum TerminationStatementState {
 	INVOCATION,
 	NSE_EXCEPTION,
 	EXCEPTION,
-	NONE
+	NONE,
+	SOMETHING,
+	EMPTY
 }

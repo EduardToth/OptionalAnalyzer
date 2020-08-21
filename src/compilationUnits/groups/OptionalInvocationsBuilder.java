@@ -26,7 +26,7 @@ public class OptionalInvocationsBuilder implements IRelationBuilder<MInvocation,
 		ICompilationUnit iCompilationUnit = (ICompilationUnit)mCompilationUnit.getUnderlyingObject();
 		Group<MInvocation> group = new Group<>();
 
-		CompilationUnit compilationUnit = parse(iCompilationUnit);
+		CompilationUnit compilationUnit = UtilityClass.parse(iCompilationUnit);
 
 
 
@@ -60,14 +60,6 @@ public class OptionalInvocationsBuilder implements IRelationBuilder<MInvocation,
 
 	public void setInvokedMethodName(String invokedMethodName) {
 		this.invokedMethodName.setAt0(invokedMethodName);
-	}
-
-	private static CompilationUnit parse(ICompilationUnit unit) {
-		ASTParser parser = ASTParser.newParser(AST.JLS3);
-		parser.setKind(ASTParser.K_COMPILATION_UNIT);
-		parser.setSource(unit);
-		parser.setResolveBindings(true);
-		return (CompilationUnit) parser.createAST(null);
 	}
 
 

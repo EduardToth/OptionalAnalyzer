@@ -18,16 +18,22 @@ public interface MCompilationUnit extends ro.lrg.xcore.metametamodel.XEntity {
 	public ro.lrg.xcore.metametamodel.Group<MIfStatement> rule6AntipatternBuilder();
 
 	@ro.lrg.xcore.metametamodel.ThisIsARelationBuilder
+	public ro.lrg.xcore.metametamodel.Group<MIfStatement> rule9AntipatternBuilder();
+
+	@ro.lrg.xcore.metametamodel.ThisIsARelationBuilder
+	public ro.lrg.xcore.metametamodel.Group<MVariableDeclaration> rule16AntipatternBuilder();
+
+	@ro.lrg.xcore.metametamodel.ThisIsARelationBuilder
 	public ro.lrg.xcore.metametamodel.Group<MIfStatement> rule4AntipatternBuilder();
 
 	@ro.lrg.xcore.metametamodel.ThisIsARelationBuilder
 	public ro.lrg.xcore.metametamodel.Group<MInvocation> rule2AntipatternBuilder();
 
 	@ro.lrg.xcore.metametamodel.ThisIsARelationBuilder
-	public ro.lrg.xcore.metametamodel.Group<MAssignment> rule1AntipatternBuilder();
+	public ro.lrg.xcore.metametamodel.Group<MIfStatement> rule8AntipatternBuilder();
 
-	@ro.lrg.xcore.metametamodel.ThisIsAnAction(numParams = 0) 
-	public java.lang.String showInEditor ();
+	@ro.lrg.xcore.metametamodel.ThisIsARelationBuilder
+	public ro.lrg.xcore.metametamodel.Group<MAssignment> rule1AntipatternBuilder();
 
 	java.lang.Object getUnderlyingObject();
 }
