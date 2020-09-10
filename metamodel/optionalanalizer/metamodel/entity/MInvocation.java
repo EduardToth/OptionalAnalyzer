@@ -9,7 +9,7 @@ public interface MInvocation extends ro.lrg.xcore.metametamodel.XEntity {
 	public java.lang.String toString();
 
 	@ro.lrg.xcore.metametamodel.ThisIsAnAction(numParams = 0) 
-	public void optionalIsPresentLocatorInEditor ();
+	public void showInEditor ();
 
 	java.lang.Object getUnderlyingObject();
 }

@@ -18,4 +18,5 @@ Import-Package: org.eclipse.core.resources,
  org.eclipse.ui.texteditor,
  ro.lrg.xcore.metametamodel
 Bundle-ClassPath: lib/javatuples-1.2.jar,
- .
+ .,
+ lib/json-simple-1.1.jar

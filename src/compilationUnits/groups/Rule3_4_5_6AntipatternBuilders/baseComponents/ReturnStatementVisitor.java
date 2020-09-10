@@ -38,7 +38,7 @@ public class ReturnStatementVisitor extends ASTVisitor{
 		String invokedMethodName = invocation.getName().toString();
 
 		boolean isInvocatorOptional = invocation.getExpression() != null &&
-				UtilityClass.isInvocatorOfOptionalType(invocation.getExpression()
+				UtilityClass.isTypeOptional(invocation.getExpression()
 						.resolveTypeBinding().getQualifiedName());
 
 		final boolean itsFine = isTheSameInvocator && isInvocatorOptional && invokedMethodName.equals("get");

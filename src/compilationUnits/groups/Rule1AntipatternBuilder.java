@@ -44,7 +44,7 @@ public class Rule1AntipatternBuilder implements IRelationBuilder<MAssignment, MC
 				String typeName = declaration.resolveBinding().getType().getQualifiedName();
 				if(declaration.getInitializer() != null) {
 
-					if(UtilityClass.isInvocatorOfOptionalType(typeName)
+					if(UtilityClass.isTypeOptional(typeName)
 							&& declaration.getInitializer().toString().equals("null")) {
 						group.add(Factory.getInstance().createMAssignment(declaration));
 					}
@@ -62,7 +62,7 @@ public class Rule1AntipatternBuilder implements IRelationBuilder<MAssignment, MC
 		}
 		Object value =  assignment.getRightHandSide().resolveConstantExpressionValue();
 
-		return UtilityClass.isInvocatorOfOptionalType(assignment.getLeftHandSide().
+		return UtilityClass.isTypeOptional(assignment.getLeftHandSide().
 				resolveTypeBinding().getQualifiedName())
 				&& value == null;
 	}

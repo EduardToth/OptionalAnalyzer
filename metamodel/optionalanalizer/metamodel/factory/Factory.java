@@ -21,6 +21,14 @@ public class Factory {
         }
         return (MDeclaration)instance;
     }
+   public MPrefixExpression createMPrefixExpression(java.lang.Object obj) {
+       XEntity instance = lruCache_.get(obj);
+        if (null == instance) {
+           instance = new MPrefixExpressionImpl(obj);
+           lruCache_.put(obj, instance);
+        }
+        return (MPrefixExpression)instance;
+    }
    public MInvocation createMInvocation(java.lang.Object obj) {
        XEntity instance = lruCache_.get(obj);
         if (null == instance) {
@@ -37,6 +45,22 @@ public class Factory {
         }
         return (MVariableDeclaration)instance;
     }
+   public MMethod createMMethod(java.lang.Object obj) {
+       XEntity instance = lruCache_.get(obj);
+        if (null == instance) {
+           instance = new MMethodImpl(obj);
+           lruCache_.put(obj, instance);
+        }
+        return (MMethod)instance;
+    }
+   public MReturnStatement createMReturnStatement(java.lang.Object obj) {
+       XEntity instance = lruCache_.get(obj);
+        if (null == instance) {
+           instance = new MReturnStatementImpl(obj);
+           lruCache_.put(obj, instance);
+        }
+        return (MReturnStatement)instance;
+    }
    public MIfStatement createMIfStatement(java.lang.Object obj) {
        XEntity instance = lruCache_.get(obj);
         if (null == instance) {
@@ -44,6 +68,14 @@ public class Factory {
            lruCache_.put(obj, instance);
         }
         return (MIfStatement)instance;
+    }
+   public MInfixExpression createMInfixExpression(java.lang.Object obj) {
+       XEntity instance = lruCache_.get(obj);
+        if (null == instance) {
+           instance = new MInfixExpressionImpl(obj);
+           lruCache_.put(obj, instance);
+        }
+        return (MInfixExpression)instance;
     }
    public MAssignment createMAssignment(java.lang.Object obj) {
        XEntity instance = lruCache_.get(obj);

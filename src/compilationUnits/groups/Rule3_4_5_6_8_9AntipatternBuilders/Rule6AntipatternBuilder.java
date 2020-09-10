@@ -1,9 +1,8 @@
-package compilationUnits.groups.Rule3_4_5_6AntipatternBuilders;
+package compilationUnits.groups.Rule3_4_5_6_8_9AntipatternBuilders;
 
 import java.util.Optional;
-
 import org.eclipse.jdt.core.dom.IfStatement;
-
+import compilationUnits.groups.OptionalInvocationsBuilder;
 import compilationUnits.groups.Rule3_4_5_6AntipatternBuilders.baseComponents.Antipattern;
 import compilationUnits.groups.Rule3_4_5_6AntipatternBuilders.baseComponents.AntipatternFinderInIfStatements;
 import optionalanalizer.metamodel.entity.MCompilationUnit;
@@ -15,7 +14,7 @@ import ro.lrg.xcore.metametamodel.RelationBuilder;
 import utilities.Unit;
 
 @RelationBuilder
-public class Rule9AntipatternBuilder extends AntipatternFinderInIfStatements implements IRelationBuilder<MIfStatement, MCompilationUnit>{
+public class Rule6AntipatternBuilder extends AntipatternFinderInIfStatements implements IRelationBuilder<MIfStatement, MCompilationUnit>{
 
 	@Override
 	public Group<MIfStatement> buildGroup(MCompilationUnit arg0) {
@@ -35,7 +34,7 @@ public class Rule9AntipatternBuilder extends AntipatternFinderInIfStatements imp
 		.filter(this::isParentIfStatement)
 		.filter((inv) -> invocatorName.getValue0().isPresent())
 		.map(inv -> (IfStatement)inv.getParent())
-		.filter(ifStatement -> isAntipattern(Antipattern.RULE_9_ANTIPATTERN, ifStatement, invocatorName.getValue0().get()))
+		.filter(ifStatement -> isAntipattern(Antipattern.RULE_6_ANTIPATTERN, ifStatement, invocatorName.getValue0().get()))
 		.map(this::convertToMIfStatement)
 		.forEach(mIfStatement -> mIfStatementGroup.add(mIfStatement));
 

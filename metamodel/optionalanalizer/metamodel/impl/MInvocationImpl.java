@@ -3,7 +3,7 @@ package optionalanalizer.metamodel.impl;
 import optionalanalizer.metamodel.entity.*;
 import methodInvocations.properties.InvocationToOptionalsPresent;
 import methodInvocations.properties.ToString;
-import methodInvocations.actions.OptionalIsPresentLocatorInEditor;
+import methodInvocations.actions.ShowInEditor;
 
 public class MInvocationImpl implements MInvocation {
 
@@ -11,7 +11,7 @@ public class MInvocationImpl implements MInvocation {
 
 	private static final InvocationToOptionalsPresent InvocationToOptionalsPresent_INSTANCE = new InvocationToOptionalsPresent();
 	private static final ToString ToString_INSTANCE = new ToString();
-	private static final OptionalIsPresentLocatorInEditor OptionalIsPresentLocatorInEditor_INSTANCE = new OptionalIsPresentLocatorInEditor();
+	private static final ShowInEditor ShowInEditor_INSTANCE = new ShowInEditor();
 
 	public MInvocationImpl(java.lang.Object underlyingObj) {
 		underlyingObj_ = underlyingObj;
@@ -36,8 +36,8 @@ public class MInvocationImpl implements MInvocation {
 
 	@Override
 	@ro.lrg.xcore.metametamodel.ThisIsAnAction
-	public void optionalIsPresentLocatorInEditor() {
-		 OptionalIsPresentLocatorInEditor_INSTANCE.performAction(this, ro.lrg.xcore.metametamodel.HListEmpty.getInstance());
+	public void showInEditor() {
+		 ShowInEditor_INSTANCE.performAction(this, ro.lrg.xcore.metametamodel.HListEmpty.getInstance());
 	}
 
 	public boolean equals(Object obj) {

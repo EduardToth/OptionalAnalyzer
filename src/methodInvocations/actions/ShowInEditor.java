@@ -10,7 +10,7 @@ import ro.lrg.xcore.metametamodel.IActionPerformer;
 import utilities.UtilityClass;
 
 @ActionPerformer
-public class OptionalIsPresentLocatorInEditor implements IActionPerformer<Void, MInvocation, HListEmpty>{
+public class ShowInEditor implements IActionPerformer<Void, MInvocation, HListEmpty>{
 
 	@Override
 	public Void performAction(MInvocation arg0, HListEmpty arg1) {

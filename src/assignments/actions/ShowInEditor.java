@@ -20,7 +20,7 @@ public class ShowInEditor implements IActionPerformer<Void, MAssignment, HListEm
 	@Override
 	public Void performAction(MAssignment arg0, HListEmpty arg1) {
 		Object o = arg0.getUnderlyingObject();
-		Optional<ASTNode> node = Optional.empty();;
+		Optional<ASTNode> node = Optional.empty();
 		if(o instanceof ASTNode) {
 			node = Optional.of( (ASTNode)o );
 		}

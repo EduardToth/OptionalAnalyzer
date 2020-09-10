@@ -10,3 +10,7 @@
 /MIfStatementImpl.java
 /MDeclarationImpl.java
 /MVariableDeclarationImpl.java
+/MInfixExpressionImpl.java
+/MReturnStatementImpl.java
+/MMethodImpl.java
+/MPrefixExpressionImpl.java

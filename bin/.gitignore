@@ -1,11 +1,15 @@
 /assignments/
 /compilationUnits/
 /ifStatements/
+/infixExpressions/
 /launcher/
 /methodDeclarations/
 /methodInvocations/
+/methods/
 /optionalanalizer/
+/prefixExpressions/
 /projects/
+/returnStatements/
 /tests/
 /utilities/
 /variableDeclarations/
