@@ -1,6 +1,5 @@
 package projects.groups;
 
-import org.eclipse.core.resources.IProject;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.IPackageFragment;
@@ -14,11 +13,6 @@ import ro.lrg.xcore.metametamodel.Group;
 import ro.lrg.xcore.metametamodel.IRelationBuilder;
 import ro.lrg.xcore.metametamodel.RelationBuilder;
 
-/*
- * 
- * 1. Un pachet groups, properties, actions...
- * 2. Ca si denumire: CompilationUnitGroup
- */
 @RelationBuilder
 public class CompilationUnitBuilder implements IRelationBuilder<MCompilationUnit, MProject>{
 

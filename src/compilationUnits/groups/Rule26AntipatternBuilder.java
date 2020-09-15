@@ -1,56 +1,31 @@
 package compilationUnits.groups;
 
 import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
-import org.eclipse.jdt.core.dom.ASTNode;
-import org.eclipse.jdt.core.dom.MethodInvocation;
-import org.eclipse.jdt.core.dom.PrefixExpression;
+import org.eclipse.jdt.core.ICompilationUnit;
+import org.eclipse.jdt.core.dom.CompilationUnit;
 
 import optionalanalizer.metamodel.entity.MCompilationUnit;
-import optionalanalizer.metamodel.entity.MInvocation;
-import optionalanalizer.metamodel.entity.MPrefixExpression;
-import optionalanalizer.metamodel.factory.Factory;
+import optionalanalizer.metamodel.entity.MRule26Atom;
 import ro.lrg.xcore.metametamodel.Group;
 import ro.lrg.xcore.metametamodel.IRelationBuilder;
 import ro.lrg.xcore.metametamodel.RelationBuilder;
+import rule26Antipattern.Rule26AtomFinder;
+import utilities.UtilityClass;
 
 @RelationBuilder
-public class Rule26AntipatternBuilder implements IRelationBuilder<MPrefixExpression, MCompilationUnit>{
-
+public class Rule26AntipatternBuilder implements IRelationBuilder<MRule26Atom, MCompilationUnit>{
 
 	@Override
-	public Group<MPrefixExpression> buildGroup(MCompilationUnit arg0) {
-		Group<MInvocation> isPresentInvocations = arg0.optionalInvocationsBuilder();
-		Group<MPrefixExpression> group = new Group<>();
-		List<MPrefixExpression> mPrefixExpressions = isPresentInvocations.getElements().stream()
-				.map(this::getParentPrefixExpression)
-				.filter(Optional::isPresent)
-				.map(Optional::get)
-				.filter(this::isOperatorNegation)
-				.map(expr -> Factory.getInstance().createMPrefixExpression(expr))
-				.collect(Collectors.toList());
-		group.addAll(mPrefixExpressions);
+	public Group<MRule26Atom> buildGroup(MCompilationUnit arg0) {
+		Rule26AtomFinder rule26AtomFinder = new Rule26AtomFinder();
+		Group<MRule26Atom> group = new Group<>();
+		ICompilationUnit iCompilationUnit = (ICompilationUnit) arg0.getUnderlyingObject();
+		CompilationUnit compilationUnit = UtilityClass.parse(iCompilationUnit);
+		List<MRule26Atom> atoms = rule26AtomFinder.getMAtoms(compilationUnit);
+		
+		group.addAll(atoms);
+
 		return group;
 	}
-
-	private Optional<PrefixExpression> getParentPrefixExpression(MInvocation mInvocation) {
-		MethodInvocation methodInvocation = (MethodInvocation) mInvocation.getUnderlyingObject();
-		ASTNode astNode = methodInvocation;
-
-		while(astNode != null && !(astNode instanceof PrefixExpression)) {
-			astNode = astNode.getParent();
-		}
-
-		return Optional.ofNullable((PrefixExpression)astNode);
-	}
-
-	private boolean isOperatorNegation(PrefixExpression prefixExpression) {
-		String stringForm = prefixExpression.getOperator().toString();
-		PrefixExpression.Operator operator = PrefixExpression.Operator.toOperator(stringForm);
-
-		return operator == PrefixExpression.Operator.NOT;
-	}
-
 }
