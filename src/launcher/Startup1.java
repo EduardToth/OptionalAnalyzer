@@ -29,6 +29,13 @@ import rule_7Antipattern.Rule7Atom;
 import rule_8Antipattern.Rule8Atom;
 import rule_9Antipattern.Rule9Atom;
 
+
+/*
+ * Intrebari:
+ * La regula 18 de Stream::distinct
+ * La regula 20 (Optional cu tipuri nepotrivite in colectii sau tablouri)
+ * Intreb daca sa tin cont de tipurile de compilator
+ */
 /*
  * N-am facut inca la:
  * 10

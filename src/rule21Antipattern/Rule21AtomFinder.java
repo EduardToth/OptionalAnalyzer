@@ -17,8 +17,9 @@ public class Rule21AtomFinder {
 	
 	public List<MRule21Atom> getMAtoms(ASTNode astNode) {
 		OptionalInvocationFinder optionalInvocationFinder = new OptionalInvocationFinder();
-		List<MethodInvocation> equalsInvocationsFromOptional = optionalInvocationFinder.getInvocations(astNode, "equals");
+		List<MethodInvocation> equalsInvocationsFromOptional = optionalInvocationFinder.getInvocations(astNode, "get");
 
+		System.out.println("first: " + equalsInvocationsFromOptional);
 		return equalsInvocationsFromOptional.stream()
 				.map(this::getAntipatternOccurencies)
 				.flatMap(Collection::stream)

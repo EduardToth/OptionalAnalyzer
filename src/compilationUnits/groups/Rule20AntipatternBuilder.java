@@ -22,6 +22,7 @@ public class Rule20AntipatternBuilder  implements IRelationBuilder<MRule20Atom, 
 		Rule20AtomFinder rule20AtomFinder = new Rule20AtomFinder();
 		CompilationUnit compilationUnit = UtilityClass.parse(iCompilationUnit);
 		List<MRule20Atom> atoms = rule20AtomFinder.getMAtoms(compilationUnit);
+		atoms.stream().forEach(el -> System.out.println("**************: " + el.getUnderlyingObject().toString()));
 		Group<MRule20Atom> group = new Group<>();
 		group.addAll(atoms);
 		return group;

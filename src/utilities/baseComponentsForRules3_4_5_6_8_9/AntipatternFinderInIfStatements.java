@@ -186,9 +186,7 @@ public class AntipatternFinderInIfStatements {
 	}
 
 	protected boolean isAntipattern(Antipattern antipattern, IfStatement ifStatement, String invocatorName) {
-		AntipatternFinderInIfStatements finder = new AntipatternFinderInIfStatements();
-		Antipattern foundAntipattern = finder.lookForAntipatternInIfStatement(ifStatement, invocatorName);
-
+		Antipattern foundAntipattern = lookForAntipatternInIfStatement(ifStatement, invocatorName);
 		return foundAntipattern  == antipattern;
 	}
 

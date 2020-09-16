@@ -27,11 +27,8 @@ public class Rule20AtomFinder {
 				.map(Rule20Atom::getInstance)
 				.filter(Optional::isPresent)
 				.map(Optional::get)
-				.distinct()
-				.map(variableDeclaration -> Factory.getInstance().createMRule20Atom(variableDeclarations))
+				.map(variableDeclaration -> Factory.getInstance().createMRule20Atom(variableDeclaration))
 				.collect(Collectors.toList());
-
-
 	}
 
 	private void setTypeName(final Unit<String> typeName, VariableDeclarationFragment variableDeclarationFragment) {

@@ -45,11 +45,9 @@ public class Rule7AtomFinder extends AntipatternFinderInIfStatements{
 		return mIfStatements;
 	}
 
-	private void setMethodInvocationsIfNotSet(MethodInvocation methodInvocationForThen, MethodInvocation methodInvocationForElse) {
-		if(this.firstMethodInvocationForThen == null) {
+	private void setMethodInvocations(MethodInvocation methodInvocationForThen, MethodInvocation methodInvocationForElse) {
 			this.firstMethodInvocationForThen = methodInvocationForThen;
 			this.firstMethodInvocationForElse = methodInvocationForElse;
-		}
 	}
 
 	private boolean isContextTheSame(IfStatement ifStatement) {
@@ -62,13 +60,13 @@ public class Rule7AtomFinder extends AntipatternFinderInIfStatements{
 		String contextWithoutInvocationForThen = takeOutInvocation(thenStatement.toString(), firstMethodInvocationForThen.toString());
 		String contextWithoutInvocationForElse = takeOutInvocation(elseStatement.toString(), firstMethodInvocationForElse.toString());
 
-		System.out.println(contextWithoutInvocationForElse);
-		System.out.println();
-		System.out.println(contextWithoutInvocationForThen);
 		return contextWithoutInvocationForElse.equals(contextWithoutInvocationForThen);
 	}
 
 	private String takeOutInvocation(String context, String invocation) {
+		System.out.println("-------------> " + context);
+		System.out.println("############: " + invocation);
+		System.out.println("^^^^^^^^^^^^^^^^^: " + invocation.toString().length());
 		int startIndex = context.indexOf(invocation);
 		int endIndex = startIndex + invocation.length();
 
@@ -91,7 +89,7 @@ public class Rule7AtomFinder extends AntipatternFinderInIfStatements{
 	private boolean doesListContainMethodInvocation(final List<MethodInvocation> methodInvocations, MethodInvocation methodInvocation) {
 		return methodInvocations.stream()
 				.filter(inv -> areInvokedMethodsTheSame(inv, methodInvocation))
-				.peek(inv -> setMethodInvocationsIfNotSet(inv, methodInvocation))
+				.peek(inv -> setMethodInvocations(inv, methodInvocation))
 				.findAny()
 				.isPresent();
 	}

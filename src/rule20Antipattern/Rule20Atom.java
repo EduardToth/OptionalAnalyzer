@@ -12,13 +12,15 @@ import utilities.UtilityClass;
 
 public class Rule20Atom extends Atom{
 
-	public Rule20Atom(ASTNode atom) throws ASTNodeDoesNotBelongHere {
-		super(atom);
+	public Rule20Atom(ASTNode wrappedElement) throws ASTNodeDoesNotBelongHere {
+		super(wrappedElement);
 	}
 
 	@Override
-	protected boolean belongs(ASTNode atom) {
-		return atom instanceof VariableDeclarationFragment;
+	protected boolean belongs(ASTNode wrappedElement) {
+		boolean itIs = wrappedElement instanceof VariableDeclarationFragment;
+		
+		return itIs;
 	}
 	
 	@Override
@@ -27,10 +29,10 @@ public class Rule20Atom extends Atom{
 		ite.selectAndReveal(wrappedElement.getParent().getStartPosition(), wrappedElement.getParent().getLength());
 	}
 	
-	public static Optional<Rule20Atom> getInstance(ASTNode atom) {
+	public static Optional<Rule20Atom> getInstance(ASTNode wrappedElement) {
 		Rule20Atom instance = null;
 		try {
-			instance =  new Rule20Atom(atom);
+			instance =  new Rule20Atom(wrappedElement);
 		} catch (ASTNodeDoesNotBelongHere e) {
 			e.printStackTrace();
 		}
