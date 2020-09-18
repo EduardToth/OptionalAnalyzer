@@ -37,5 +37,5 @@ public abstract class Atom {
 		int startLineNumber = compilationUnit.getLineNumber(wrappedElement.getStartPosition()) - 1;
 		return "On line: " + startLineNumber;
 	}
-	protected abstract boolean belongs(ASTNode atom);
+	protected abstract boolean belongs(ASTNode wrappedElement);
 }

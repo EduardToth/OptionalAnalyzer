@@ -93,6 +93,14 @@ public class Factory {
         }
         return (MRule3Atom)instance;
     }
+   public MRule7Atom createMRule7Atom(java.lang.Object obj) {
+       XEntity instance = lruCache_.get(obj);
+        if (null == instance) {
+           instance = new MRule7AtomImpl(obj);
+           lruCache_.put(obj, instance);
+        }
+        return (MRule7Atom)instance;
+    }
    public MRule12Atom createMRule12Atom(java.lang.Object obj) {
        XEntity instance = lruCache_.get(obj);
         if (null == instance) {
@@ -101,13 +109,13 @@ public class Factory {
         }
         return (MRule12Atom)instance;
     }
-   public MRule7Atom createMRule7Atom(java.lang.Object obj) {
+   public MRule10Atom createMRule10Atom(java.lang.Object obj) {
        XEntity instance = lruCache_.get(obj);
         if (null == instance) {
-           instance = new MRule7AtomImpl(obj);
+           instance = new MRule10AtomImpl(obj);
            lruCache_.put(obj, instance);
         }
-        return (MRule7Atom)instance;
+        return (MRule10Atom)instance;
     }
    public MRule21Atom createMRule21Atom(java.lang.Object obj) {
        XEntity instance = lruCache_.get(obj);
@@ -117,14 +125,6 @@ public class Factory {
         }
         return (MRule21Atom)instance;
     }
-   public MRule14Atom createMRule14Atom(java.lang.Object obj) {
-       XEntity instance = lruCache_.get(obj);
-        if (null == instance) {
-           instance = new MRule14AtomImpl(obj);
-           lruCache_.put(obj, instance);
-        }
-        return (MRule14Atom)instance;
-    }
    public MRule20Atom createMRule20Atom(java.lang.Object obj) {
        XEntity instance = lruCache_.get(obj);
         if (null == instance) {
@@ -132,6 +132,14 @@ public class Factory {
            lruCache_.put(obj, instance);
         }
         return (MRule20Atom)instance;
+    }
+   public MRule14Atom createMRule14Atom(java.lang.Object obj) {
+       XEntity instance = lruCache_.get(obj);
+        if (null == instance) {
+           instance = new MRule14AtomImpl(obj);
+           lruCache_.put(obj, instance);
+        }
+        return (MRule14Atom)instance;
     }
    public MRule25Atom createMRule25Atom(java.lang.Object obj) {
        XEntity instance = lruCache_.get(obj);

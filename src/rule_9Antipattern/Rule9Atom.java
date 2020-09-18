@@ -10,19 +10,19 @@ import utilities.Atom;
 
 public class Rule9Atom extends Atom {
 
-	public Rule9Atom(ASTNode atom) throws ASTNodeDoesNotBelongHere {
-		super(atom);
+	public Rule9Atom(ASTNode wrapppedElement) throws ASTNodeDoesNotBelongHere {
+		super(wrapppedElement);
 	}
 
 	@Override
-	protected boolean belongs(ASTNode atom) {
-		return atom instanceof IfStatement;
+	protected boolean belongs(ASTNode wrapppedElement) {
+		return wrapppedElement instanceof IfStatement;
 	}
 	
-	public static Optional<Rule9Atom> getInstance(ASTNode atom) {
+	public static Optional<Rule9Atom> getInstance(ASTNode wrapppedElement) {
 		Rule9Atom instance = null;
 		try {
-			instance =  new Rule9Atom(atom);
+			instance =  new Rule9Atom(wrapppedElement);
 		} catch (ASTNodeDoesNotBelongHere e) {
 			e.printStackTrace();
 		}

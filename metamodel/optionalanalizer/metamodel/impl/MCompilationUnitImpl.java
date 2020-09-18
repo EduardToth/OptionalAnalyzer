@@ -2,6 +2,7 @@ package optionalanalizer.metamodel.impl;
 
 import optionalanalizer.metamodel.entity.*;
 import compilationUnits.properties.ToString;
+import compilationUnits.groups.Rule10AntipatternBuilder;
 import compilationUnits.groups.Rule17AntipatternBuilder;
 import compilationUnits.groups.Rule20AntipatternBuilder;
 import compilationUnits.groups.Rule_3AntipatternBuilder;
@@ -28,6 +29,7 @@ public class MCompilationUnitImpl implements MCompilationUnit {
 	private java.lang.Object underlyingObj_;
 
 	private static final ToString ToString_INSTANCE = new ToString();
+	private static final Rule10AntipatternBuilder Rule10AntipatternBuilder_INSTANCE = new Rule10AntipatternBuilder();
 	private static final Rule17AntipatternBuilder Rule17AntipatternBuilder_INSTANCE = new Rule17AntipatternBuilder();
 	private static final Rule20AntipatternBuilder Rule20AntipatternBuilder_INSTANCE = new Rule20AntipatternBuilder();
 	private static final Rule_3AntipatternBuilder Rule_3AntipatternBuilder_INSTANCE = new Rule_3AntipatternBuilder();
@@ -62,6 +64,12 @@ public class MCompilationUnitImpl implements MCompilationUnit {
 	@ro.lrg.xcore.metametamodel.ThisIsAProperty
 	public java.lang.String toString() {
 		return ToString_INSTANCE.compute(this);
+	}
+
+	@Override
+	@ro.lrg.xcore.metametamodel.ThisIsARelationBuilder
+	public ro.lrg.xcore.metametamodel.Group<MRule10Atom> rule10AntipatternBuilder() {
+		return Rule10AntipatternBuilder_INSTANCE.buildGroup(this);
 	}
 
 	@Override

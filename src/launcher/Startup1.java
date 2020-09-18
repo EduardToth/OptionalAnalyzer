@@ -8,6 +8,7 @@ import optionalanalizer.metamodel.factory.Factory;
 import ro.lrg.insider.view.ToolRegistration;
 import ro.lrg.insider.view.ToolRegistration.XEntityConverter;
 import ro.lrg.xcore.metametamodel.XEntity;
+import rule10Antipattern.Rule10Atom;
 import rule12Antipattern.Rule12Atom;
 import rule14Antipattern.Rule14Atom;
 import rule15Antipattern.Rule15Atom;
@@ -32,13 +33,14 @@ import rule_9Antipattern.Rule9Atom;
 
 /*
  * Intrebari:
+ * La regula: ce-i cu antipattern2??????????????????????
+ * La regulile 8 si 9, cum sa detectez exceptiile neverificate
  * La regula 18 de Stream::distinct
  * La regula 20 (Optional cu tipuri nepotrivite in colectii sau tablouri)
  * Intreb daca sa tin cont de tipurile de compilator
  */
 /*
  * N-am facut inca la:
- * 10
  * 11 -> inca nu stiu
  * 22
  * 23
@@ -71,6 +73,8 @@ public class Startup1 implements IStartup{
 							return Factory.getInstance().createMRule8Atom((Rule8Atom)element);
 						} else if(element instanceof Rule9Atom) {
 							return Factory.getInstance().createMRule9Atom((Rule9Atom)element);
+						} else if(element instanceof Rule10Atom) {
+							return Factory.getInstance().createMRule10Atom((Rule10Atom)element);
 						} else if(element instanceof Rule12Atom) {
 							return Factory.getInstance().createMRule12Atom((Rule12Atom)element);
 						} else if(element instanceof Rule14Atom) {

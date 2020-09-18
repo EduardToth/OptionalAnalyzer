@@ -6,6 +6,9 @@ public interface MCompilationUnit extends ro.lrg.xcore.metametamodel.XEntity {
 	public java.lang.String toString();
 
 	@ro.lrg.xcore.metametamodel.ThisIsARelationBuilder
+	public ro.lrg.xcore.metametamodel.Group<MRule10Atom> rule10AntipatternBuilder();
+
+	@ro.lrg.xcore.metametamodel.ThisIsARelationBuilder
 	public ro.lrg.xcore.metametamodel.Group<MRule17Atom> rule17AntipatternBuilder();
 
 	@ro.lrg.xcore.metametamodel.ThisIsARelationBuilder

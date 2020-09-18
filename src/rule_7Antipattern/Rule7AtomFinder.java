@@ -15,10 +15,10 @@ import org.eclipse.jdt.core.dom.Statement;
 import optionalanalizer.metamodel.entity.MRule7Atom;
 import optionalanalizer.metamodel.factory.Factory;
 import utilities.OptionalInvocationFinder;
+import utilities.ToolBoxForIfStatementAnalysis;
 import utilities.UtilityClass;
-import utilities.baseComponentsForRules3_4_5_6_8_9.AntipatternFinderInIfStatements;
 
-public class Rule7AtomFinder extends AntipatternFinderInIfStatements{
+public class Rule7AtomFinder{
 
 	private MethodInvocation firstMethodInvocationForThen = null;
 	private MethodInvocation firstMethodInvocationForElse = null;
@@ -32,7 +32,7 @@ public class Rule7AtomFinder extends AntipatternFinderInIfStatements{
 	private List<MRule7Atom> collectRule7Antipatterns(List<MethodInvocation> isPresentList) {
 
 		List<MRule7Atom> mIfStatements = isPresentList.stream()
-				.filter(this::isParentIfStatement)
+				.filter(ToolBoxForIfStatementAnalysis::isParentIfStatement)
 				.map(inv -> (IfStatement)inv.getParent())
 				.filter(ifStm -> isThereSameMethodInvokedInThenElseBlocks(ifStm))
 				.filter(ifStm -> isContextTheSame(ifStm))
@@ -56,27 +56,18 @@ public class Rule7AtomFinder extends AntipatternFinderInIfStatements{
 		}
 		Statement thenStatement = ifStatement.getThenStatement();
 		Statement elseStatement = ifStatement.getElseStatement();
-
-		String contextWithoutInvocationForThen = takeOutInvocation(thenStatement.toString(), firstMethodInvocationForThen.toString());
-		String contextWithoutInvocationForElse = takeOutInvocation(elseStatement.toString(), firstMethodInvocationForElse.toString());
-
-		return contextWithoutInvocationForElse.equals(contextWithoutInvocationForThen);
-	}
-
-	private String takeOutInvocation(String context, String invocation) {
-		System.out.println("-------------> " + context);
-		System.out.println("############: " + invocation);
-		System.out.println("^^^^^^^^^^^^^^^^^: " + invocation.toString().length());
-		int startIndex = context.indexOf(invocation);
-		int endIndex = startIndex + invocation.length();
-
-		return context.substring(0, startIndex) + context.substring(endIndex);
+		
+		return ToolBoxForIfStatementAnalysis.isSameContext(thenStatement, firstMethodInvocationForThen, elseStatement, firstMethodInvocationForElse);
 	}
 
 	private boolean isThereSameMethodInvokedInThenElseBlocks(IfStatement ifStatement) {
 		Statement thenStatement = ifStatement.getThenStatement();
 		Statement elseStatement = ifStatement.getElseStatement();
 
+		if(elseStatement == null) {
+			return false;
+		}
+		
 		final List<MethodInvocation> methodInvocationsForTheStatement = getMethodInvocationFromStatement(thenStatement);
 		final List<MethodInvocation> methodInvocationsForElseStatement = getMethodInvocationFromStatement(elseStatement);
 
