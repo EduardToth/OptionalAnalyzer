@@ -1,11 +1,8 @@
 package rule25Antipattern;
 
 import java.util.Optional;
-
 import org.eclipse.jdt.core.dom.ASTNode;
 import org.eclipse.jdt.core.dom.InfixExpression;
-
-import rule21Antipattern.Rule21Atom;
 import utilities.ASTNodeDoesNotBelongHere;
 import utilities.Atom;
 
@@ -30,5 +27,4 @@ public class Rule25Atom extends Atom {
 		
 		return Optional.ofNullable(instance);
 	}
-
 }

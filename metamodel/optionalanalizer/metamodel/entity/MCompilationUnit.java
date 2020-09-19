@@ -9,9 +9,6 @@ public interface MCompilationUnit extends ro.lrg.xcore.metametamodel.XEntity {
 	public ro.lrg.xcore.metametamodel.Group<MRule10Atom> rule10AntipatternBuilder();
 
 	@ro.lrg.xcore.metametamodel.ThisIsARelationBuilder
-	public ro.lrg.xcore.metametamodel.Group<MRule17Atom> rule17AntipatternBuilder();
-
-	@ro.lrg.xcore.metametamodel.ThisIsARelationBuilder
 	public ro.lrg.xcore.metametamodel.Group<MRule20Atom> rule20AntipatternBuilder();
 
 	@ro.lrg.xcore.metametamodel.ThisIsARelationBuilder
@@ -21,16 +18,10 @@ public interface MCompilationUnit extends ro.lrg.xcore.metametamodel.XEntity {
 	public ro.lrg.xcore.metametamodel.Group<MRule26Atom> rule26AntipatternBuilder();
 
 	@ro.lrg.xcore.metametamodel.ThisIsARelationBuilder
-	public ro.lrg.xcore.metametamodel.Group<MRule7Atom> rule_7AntipatternBuilder();
-
-	@ro.lrg.xcore.metametamodel.ThisIsARelationBuilder
 	public ro.lrg.xcore.metametamodel.Group<MRule16Atom> rule16AntipatternBuilder();
 
 	@ro.lrg.xcore.metametamodel.ThisIsARelationBuilder
 	public ro.lrg.xcore.metametamodel.Group<MRule18Atom> rule18AntipatternBuilder();
-
-	@ro.lrg.xcore.metametamodel.ThisIsARelationBuilder
-	public ro.lrg.xcore.metametamodel.Group<MRule2Atom> rule_2AntipatternBuilder();
 
 	@ro.lrg.xcore.metametamodel.ThisIsARelationBuilder
 	public ro.lrg.xcore.metametamodel.Group<MRule5Atom> rule_5AntipatternBuilder();
@@ -54,10 +45,19 @@ public interface MCompilationUnit extends ro.lrg.xcore.metametamodel.XEntity {
 	public ro.lrg.xcore.metametamodel.Group<MRule4Atom> rule_4AntipatternBuilder();
 
 	@ro.lrg.xcore.metametamodel.ThisIsARelationBuilder
-	public ro.lrg.xcore.metametamodel.Group<MRule6Atom> rule_6AntipatternBuilder();
+	public ro.lrg.xcore.metametamodel.Group<MRule1Atom> rule_1AntipatternBuilder();
 
 	@ro.lrg.xcore.metametamodel.ThisIsARelationBuilder
-	public ro.lrg.xcore.metametamodel.Group<MRule1Atom> rule_1AntipatternBuilder();
+	public ro.lrg.xcore.metametamodel.Group<MRule17Atom> rule17AntipatternBuilder();
+
+	@ro.lrg.xcore.metametamodel.ThisIsARelationBuilder
+	public ro.lrg.xcore.metametamodel.Group<MRule7Atom> rule_7AntipatternBuilder();
+
+	@ro.lrg.xcore.metametamodel.ThisIsARelationBuilder
+	public ro.lrg.xcore.metametamodel.Group<MRule2Atom> rule_2AntipatternBuilder();
+
+	@ro.lrg.xcore.metametamodel.ThisIsARelationBuilder
+	public ro.lrg.xcore.metametamodel.Group<MRule6Atom> rule_6AntipatternBuilder();
 
 	@ro.lrg.xcore.metametamodel.ThisIsARelationBuilder
 	public ro.lrg.xcore.metametamodel.Group<MRule14Atom> rule14AntipatternBuilder();

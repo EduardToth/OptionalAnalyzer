@@ -1,7 +1,7 @@
 package launcher;
 
-import org.eclipse.core.resources.IProject;
 import org.eclipse.jdt.core.ICompilationUnit;
+import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.ui.IStartup;
 
 import optionalanalizer.metamodel.factory.Factory;
@@ -38,6 +38,7 @@ import rule_9Antipattern.Rule9Atom;
  * La regula 18 de Stream::distinct
  * La regula 20 (Optional cu tipuri nepotrivite in colectii sau tablouri)
  * Intreb daca sa tin cont de tipurile de compilator
+ * Cum sa folosesc diferent()
  */
 /*
  * N-am facut inca la:
@@ -99,8 +100,8 @@ public class Startup1 implements IStartup{
 							return Factory.getInstance().createMRule26Atom((Rule26Atom)element);
 						} else if(element instanceof ICompilationUnit) {
 							return Factory.getInstance().createMCompilationUnit((ICompilationUnit)element);
-						} else if(element instanceof IProject) {
-							return Factory.getInstance().createMProject((IProject)element);
+						} else if(element instanceof IJavaProject) {
+							return Factory.getInstance().createMProject((IJavaProject)element);
 						} 
 						return null;
 					}
