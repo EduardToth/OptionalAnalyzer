@@ -25,14 +25,15 @@ public class Rule18Atom extends Atom {
 
 	@Override
 	public boolean equals(Object o) { 
-		if(o instanceof SimpleName) {
-			ASTNode astNode = getParentNode((ASTNode) o);
-			ASTNode wrappedElement = getParentNode(this.wrappedElement);
-		
-			return astNode.getStartPosition() 
-					== wrappedElement.getStartPosition();
+		if(o instanceof Rule18Atom) {
+			return this.hashCode() == o.hashCode();
 		}
 		return false;
+	}
+	
+	@Override
+	public int hashCode() {
+		return getParentNode(wrappedElement).getStartPosition();
 	}
 
 	private ASTNode getParentNode(ASTNode astNode) {

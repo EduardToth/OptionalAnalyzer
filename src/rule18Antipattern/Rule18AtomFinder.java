@@ -21,6 +21,7 @@ public class Rule18AtomFinder {
 		List<SimpleName> simpleNames = getSimpleNames(astNode);
 
 		final Unit<String> typeName = new Unit<>(null);
+		 
 		return simpleNames.stream()
 				.peek(simpleName -> typeName.setAt0(simpleName.resolveTypeBinding().getQualifiedName()))
 				.filter(simpleName -> UtilityClass.isCollectionType(typeName.getValue0()))

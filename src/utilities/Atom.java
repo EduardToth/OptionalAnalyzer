@@ -30,6 +30,12 @@ public abstract class Atom {
 		}
 		return false;
 	}
+	
+	@Override
+	public int hashCode() {
+		return this.wrappedElement.getStartPosition();
+	}
+	
 
 	@Override
 	public String toString() {
