@@ -3,12 +3,15 @@ package rule_2Antipattern;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.eclipse.jdt.core.dom.ASTNode;
 import org.eclipse.jdt.core.dom.Expression;
+import org.eclipse.jdt.core.dom.ForStatement;
 import org.eclipse.jdt.core.dom.IfStatement;
 import org.eclipse.jdt.core.dom.MethodDeclaration;
 import org.eclipse.jdt.core.dom.MethodInvocation;
+import org.eclipse.jdt.core.dom.WhileStatement;
 
 import optionalanalizer.metamodel.entity.MRule2Atom;
 import optionalanalizer.metamodel.factory.Factory;
@@ -29,8 +32,13 @@ public class Rule2AtomFinder{
 
 	private List<MethodInvocation> getAtoms(ASTNode astNode) {
 		OptionalInvocationFinder optionalInvocationFinder = new OptionalInvocationFinder();
-		List<MethodInvocation> invocations = optionalInvocationFinder.getInvocations(astNode, "get");
-		return invocations.parallelStream()
+		List<MethodInvocation> simpleGetInvocations = optionalInvocationFinder.getInvocations(astNode, "get");
+		List<MethodInvocation> getAsIntInvocations = optionalInvocationFinder.getInvocations(astNode, "getAsInt");
+		List<MethodInvocation> getAsLongInvocations = optionalInvocationFinder.getInvocations(astNode, "getAsLong");
+		List<MethodInvocation> getAsDoubleInvocations = optionalInvocationFinder.getInvocations(astNode, "getAsDouble");
+
+		return  Stream.of(simpleGetInvocations, getAsIntInvocations, getAsLongInvocations, getAsDoubleInvocations)
+				.flatMap(List::stream)
 				.filter(this::isTheSecondRulesAntipattern)
 				.collect(Collectors.toList());
 
@@ -41,6 +49,7 @@ public class Rule2AtomFinder{
 		String invocatorName = UtilityClass
 				.getInvocatorName(methodInvocation)
 				.orElse(null);
+
 		return verifyInParents(methodInvocation, invocatorName);
 	}
 
@@ -52,12 +61,24 @@ public class Rule2AtomFinder{
 					&& containsIsPresentInvocationForTheVariable(((IfStatement) astNode).getExpression(), invocatorName)) {
 				return false;
 			}
+			
+			if(astNode instanceof WhileStatement 
+					&& containsIsPresentInvocationForTheVariable(((WhileStatement) astNode).getExpression(), invocatorName)) {
+				return false;
+			}
+			
+			if(astNode instanceof ForStatement 
+					&& ((ForStatement) astNode).getExpression() != null 
+					&& containsIsPresentInvocationForTheVariable(((ForStatement) astNode).getExpression(), invocatorName)) {
+				return false;
+			}
 			astNode = astNode.getParent();
 		}
 		return true;
 	}
 
 	private boolean containsIsPresentInvocationForTheVariable(Expression expression, String invocatorName) {
-		return expression.toString().indexOf(invocatorName + ".isPresent()") != -1;
+		return expression.toString()
+				.indexOf(invocatorName + ".isPresent()") != -1;
 	}
 }

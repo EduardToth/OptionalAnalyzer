@@ -71,12 +71,11 @@ public class Rule10AtomFinder {
 		return invocations.stream()
 				.peek(inv -> ToolBoxForIfStatementAnalysis.setInvocatorName(inv, invocatorName))
 				.filter(el -> invocatorName.getValue0() != null)
-				.filter(ToolBoxForIfStatementAnalysis::isParentIfStatement)
-				.map(inv -> (IfStatement)inv.getParent())
+				.filter(ToolBoxForIfStatementAnalysis::isSuperParentIfStatement)
+				.map(ToolBoxForIfStatementAnalysis::getIfStatement)
 				.filter(ifStatement -> isIfStatementAntipattern(ifStatement, invocatorName.getValue0()))
 				.collect(Collectors.toList());
 	}
-
 
 	private  boolean isIfStatementAntipattern(IfStatement ifStatement, String invocatorName) {
 		Optional<Statement> thenStatementOptional = Optional.ofNullable(ifStatement.getThenStatement());
@@ -94,8 +93,6 @@ public class Rule10AtomFinder {
 
 		return isIfStatementAntipattern(thenStatement, elseStatement, invocatorName);
 	}
-
-
 
 	private boolean isIfStatementAntipattern(Statement thenStatement, Statement elseStatement, String invocatorName) {
 
@@ -130,8 +127,6 @@ public class Rule10AtomFinder {
 						.statementDoesNotContainNonConsumerElementsExceptReturnStatements(statementForThen));
 
 	}
-
-
 
 	private boolean containsSingleReturnStatement(Statement statement, ReturnStatement returnStatement, String invocatorName) {
 		String context = ToolBoxForIfStatementAnalysis.takeOutStatement(statement, returnStatement);

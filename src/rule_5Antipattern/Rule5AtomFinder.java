@@ -32,6 +32,7 @@ public class Rule5AtomFinder {
 	private List<IfStatement> getAtoms(ASTNode astNode) {
 		OptionalInvocationFinder optionalInvocationFinder = new OptionalInvocationFinder();
 		List<MethodInvocation> invocations = optionalInvocationFinder.getInvocations(astNode);
+		
 		return collectAntipatterns(invocations);
 	}
 
@@ -41,8 +42,8 @@ public class Rule5AtomFinder {
 		return invocations.stream()
 				.peek(inv -> ToolBoxForIfStatementAnalysis.setInvocatorName(inv, invocatorName))
 				.filter(el -> invocatorName.getValue0() != null)
-				.filter(ToolBoxForIfStatementAnalysis::isParentIfStatement)
-				.map(inv -> (IfStatement)inv.getParent())
+				.filter(ToolBoxForIfStatementAnalysis::isSuperParentIfStatement)
+				.map(ToolBoxForIfStatementAnalysis::getIfStatement)
 				.filter(ifStatement -> isAntipattern(ifStatement, invocatorName.getValue0()))
 				.collect(Collectors.toList());
 	}
@@ -51,7 +52,6 @@ public class Rule5AtomFinder {
 	private  boolean isAntipattern(IfStatement ifStatement, String invocatorName) {
 		Optional<Statement> thenStatementOptional = Optional.ofNullable(ifStatement.getThenStatement());
 		Optional<Statement> elseStatementOptional = Optional.ofNullable(ifStatement.getElseStatement());
-
 		Statement thenStatement = null;
 		Statement elseStatement = null;
 

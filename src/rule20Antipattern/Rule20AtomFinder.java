@@ -32,6 +32,28 @@ public class Rule20AtomFinder {
 	}
 
 	private void setTypeName(final Unit<String> typeName, VariableDeclarationFragment variableDeclarationFragment) {
+		
+		System.out.println("####################: " + variableDeclarationFragment);
+		try {
+			variableDeclarationFragment.resolveBinding();
+		} catch(NullPointerException nullPointerException) {
+			System.out.println("----------------------------> 1");
+		}
+		
+		try {
+			variableDeclarationFragment.resolveBinding().getType();
+		} catch(NullPointerException nullPointerException) {
+			System.out.println("----------------------------> 2");
+		}
+		
+		try {
+			variableDeclarationFragment.resolveBinding().getType().getQualifiedName();
+		} catch(NullPointerException nullPointerException) {
+			System.out.println("-----------------------------> 3");
+		}
+		
+		
+		variableDeclarationFragment.resolveBinding();
 		typeName.setAt0(variableDeclarationFragment.resolveBinding().getType().getQualifiedName());
 	}
 

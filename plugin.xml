@@ -2,6 +2,7 @@
 <?eclipse version="3.4"?>
 <plugin>
    <extension
+         id="optionalAnalizer"
          point="org.eclipse.ui.startup">
       <startup
             class="launcher.Startup1">

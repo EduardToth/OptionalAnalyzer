@@ -4,6 +4,7 @@ import java.util.Optional;
 
 import org.eclipse.jdt.core.dom.ASTNode;
 import org.eclipse.jdt.core.dom.IfStatement;
+import org.eclipse.jdt.core.dom.ReturnStatement;
 
 import rule_3Antipattern.Rule3Atom;
 import utilities.ASTNodeDoesNotBelongHere;
@@ -17,7 +18,8 @@ public class Rule4Atom extends Atom {
 
 	@Override
 	protected boolean belongs(ASTNode atom) {
-		return atom instanceof IfStatement;
+		return atom instanceof IfStatement ||
+				atom instanceof ReturnStatement;
 	}
 	
 	public static Optional<Rule4Atom> getInstance(ASTNode atom) {

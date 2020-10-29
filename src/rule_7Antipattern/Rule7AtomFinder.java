@@ -32,8 +32,8 @@ public class Rule7AtomFinder{
 	private List<MRule7Atom> collectRule7Antipatterns(List<MethodInvocation> isPresentList) {
 
 		List<MRule7Atom> mIfStatements = isPresentList.stream()
-				.filter(ToolBoxForIfStatementAnalysis::isParentIfStatement)
-				.map(inv -> (IfStatement)inv.getParent())
+				.filter(ToolBoxForIfStatementAnalysis::isSuperParentIfStatement)
+				.map(ToolBoxForIfStatementAnalysis::getIfStatement)
 				.filter(ifStm -> isThereSameMethodInvokedInThenElseBlocks(ifStm))
 				.filter(ifStm -> isContextTheSame(ifStm))
 				.map(Rule7Atom::getInstance)
@@ -86,7 +86,6 @@ public class Rule7AtomFinder{
 	}
 
 	private List<MethodInvocation> getMethodInvocationFromStatement(Statement statement) {
-
 		final List<MethodInvocation> methodInvocations = new LinkedList<>();
 
 		statement.accept(new ASTVisitor() {
@@ -118,4 +117,5 @@ public class Rule7AtomFinder{
 
 		return bindings1.equals(bindings2);
 	}
+
 }

@@ -40,8 +40,16 @@ public abstract class Atom {
 	@Override
 	public String toString() {
 		CompilationUnit compilationUnit = UtilityClass.getCompilationUnit(wrappedElement);
-		int startLineNumber = compilationUnit.getLineNumber(wrappedElement.getStartPosition()) - 1;
+		int startLineNumber = compilationUnit.getLineNumber(wrappedElement.getStartPosition());
 		return "On line: " + startLineNumber;
 	}
 	protected abstract boolean belongs(ASTNode wrappedElement);
+	
+	public int getStartingPosition() {
+		return wrappedElement.getStartPosition();
+	}
+	
+	public ASTNode getWrappedElement() {
+		return wrappedElement;
+	}
 }

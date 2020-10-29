@@ -39,8 +39,8 @@ public class Rule8AtomFinder{
 		return invocations.stream()
 				.peek(inv -> ToolBoxForIfStatementAnalysis.setInvocatorName(inv, invocatorName))
 				.filter(el -> invocatorName.getValue0() != null)
-				.filter(ToolBoxForIfStatementAnalysis::isParentIfStatement)
-				.map(inv -> (IfStatement)inv.getParent())
+				.filter(ToolBoxForIfStatementAnalysis::isSuperParentIfStatement)
+				.map(ToolBoxForIfStatementAnalysis::getIfStatement)
 				.filter(ifStatement -> isAntipattern(ifStatement, invocatorName.getValue0()))
 				.collect(Collectors.toList());
 	}

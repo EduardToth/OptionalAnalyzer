@@ -3,6 +3,9 @@ package rule_3Antipattern;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
+import org.eclipse.jdt.core.dom.AST;
 import org.eclipse.jdt.core.dom.ASTNode;
 import org.eclipse.jdt.core.dom.IfStatement;
 import org.eclipse.jdt.core.dom.MethodInvocation;
@@ -29,6 +32,7 @@ public class Rule3AtomFinder{
 	private List<IfStatement> getAtoms(ASTNode astNode) {
 		OptionalInvocationFinder optionalInvocationFinder = new OptionalInvocationFinder();
 		List<MethodInvocation> invocations = optionalInvocationFinder.getInvocations(astNode);
+		
 		return collectAntipatterns(invocations);
 	}
 
@@ -38,8 +42,8 @@ public class Rule3AtomFinder{
 		return invocations.stream()
 				.peek(inv -> ToolBoxForIfStatementAnalysis.setInvocatorName(inv, invocatorName))
 				.filter(el -> invocatorName.getValue0() != null)
-				.filter(ToolBoxForIfStatementAnalysis::isParentIfStatement)
-				.map(inv -> (IfStatement)inv.getParent())
+				.filter(ToolBoxForIfStatementAnalysis::isSuperParentIfStatement)
+				.map(ToolBoxForIfStatementAnalysis::getIfStatement)
 				.filter(ifStatement -> isAntipattern(ifStatement, invocatorName.getValue0()))
 				.collect(Collectors.toList());
 	}
@@ -72,9 +76,6 @@ public class Rule3AtomFinder{
 				ToolBoxForIfStatementAnalysis.containsGetFromOptional(returnStatementForElse, invocatorName) &&
 				!containsMethodInvocation(returnStatementForThen);
 	}
-
-
-	
 
 	private boolean containsMethodInvocation(ReturnStatement returnStatement) {
 		String stringExpression = returnStatement.getExpression().toString();

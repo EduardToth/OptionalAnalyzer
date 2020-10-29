@@ -30,10 +30,13 @@ public class MethodInvokedFromOptionalVisitor extends ASTVisitor{
 	}
 
 	private boolean itsFine(MethodInvocation invocation, String invokedMethodName) {
-
+		try {
 		return invocation.getExpression() != null &&
 				UtilityClass.isTypeOptional(invocation.getExpression()
 						.resolveTypeBinding().getQualifiedName())
 				&& invokedMethodName.equals(this.invokedMethodName);
+		} catch(NullPointerException nullPointerException) {
+			return false;
+		}
 	}
 }

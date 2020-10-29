@@ -42,9 +42,30 @@ public class ToolBoxForIfStatementAnalysis {
 
 		return rawContext1.equals(rawContext2);
 	}
+	
+	public static IfStatement getIfStatement(MethodInvocation methodInvocation) {
+		ASTNode astNode = methodInvocation.getParent();
+		
+		if(astNode instanceof IfStatement) {
+			return (IfStatement)astNode;
+		}
+		
+		return (IfStatement)astNode.getParent();
+	}
+	
+	public static boolean isSuperParentIfStatement(MethodInvocation methodInvocation) {
+		return ToolBoxForIfStatementAnalysis.isParentIfStatement(methodInvocation) ||
+				(ToolBoxForIfStatementAnalysis.isParentNotStatement(methodInvocation) &&
+				ToolBoxForIfStatementAnalysis.isParentIfStatement(methodInvocation.getParent()));
+ 	}
 
-	public static boolean isParentIfStatement(MethodInvocation methodInvocation) {
-		return methodInvocation.getParent() instanceof IfStatement;
+	private static boolean isParentIfStatement(ASTNode astNode) {
+		return astNode.getParent() instanceof IfStatement;
+	}
+	
+	public static boolean isParentNotStatement(MethodInvocation methodInvocation) {
+		return methodInvocation.getParent() instanceof PrefixExpression &&
+				((PrefixExpression)methodInvocation.getParent()).getOperator() == PrefixExpression.Operator.NOT;
 	}
 
 	public static String takeOutStatement(ASTNode context, ASTNode statement) {

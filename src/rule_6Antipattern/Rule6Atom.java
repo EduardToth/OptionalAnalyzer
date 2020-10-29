@@ -29,5 +29,4 @@ public class Rule6Atom extends Atom {
 		
 		return Optional.ofNullable(instance);
 	}
-
 }

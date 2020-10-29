@@ -36,7 +36,9 @@ public class VerifiedGetVisitor extends ASTVisitor{
 				UtilityClass.isTypeOptional(invocation.getExpression()
 						.resolveTypeBinding().getQualifiedName());
 
-		return isTheSameInvocator && isInvocatorOptional && invokedMethodName.equals("get");
+		return isTheSameInvocator && isInvocatorOptional && (invokedMethodName.equals("get") || 
+				invokedMethodName.equals("getAsInt") || invokedMethodName.equals("getAsLong") ||
+				invokedMethodName.equals("getAsDouble"));
 	}
 
 	public boolean properGetInvocationFound() {

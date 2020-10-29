@@ -35,11 +35,10 @@ import rule_9Antipattern.Rule9Atom;
  * Intrebari:
  * La regula: ce-i cu antipattern2??????????????????????
  * La regulile 8 si 9, cum sa detectez exceptiile neverificate
- * La regula 18 de Stream::distinct
  * La regula 20 (Optional cu tipuri nepotrivite in colectii sau tablouri)
  * Intreb daca sa tin cont de tipurile de compilator
- * Cum sa folosesc diferent()
  */
+
 /*
  * N-am facut inca la:
  * 11 -> inca nu stiu
@@ -47,7 +46,9 @@ import rule_9Antipattern.Rule9Atom;
  * 23
  * 24
  */
-public class Startup1 implements IStartup{
+
+
+public class Startup1 implements IStartup {
 
 	@Override
 	public void earlyStartup() {
@@ -106,6 +107,6 @@ public class Startup1 implements IStartup{
 						return null;
 					}
 				}
-				);
+			);
 	}
 }

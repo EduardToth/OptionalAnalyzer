@@ -1,8 +1,7 @@
 
 [
-	"java.util.OptionalFloat",
+	"java.util.OptionalDouble",
 	"java.util.OptionalLong",
 	"java.util.Optional",
-	"java.util.OptionalInt",
-	"java.Util.OptionalDouble"
+	"java.util.OptionalInt"
 ]

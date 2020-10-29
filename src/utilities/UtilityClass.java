@@ -37,6 +37,7 @@ public class UtilityClass {
 	private static final String pathToBadGenericTypesForJSON = "C:\\Users\\40752\\eclipse-workspace\\OptionalAnalizer\\jsonFolder\\badGenericTypesForOptional.json";
 
 	public static CompilationUnit parse(ICompilationUnit unit) {
+
 		ASTParser parser = ASTParser.newParser(AST.JLS14);
 		parser.setKind(ASTParser.K_COMPILATION_UNIT);
 		parser.setSource(unit);
@@ -132,12 +133,20 @@ public class UtilityClass {
 				.map(UtilityClass::removeGenericArguments)
 				.collect(Collectors.toList());
 
-		return Arrays.asList(arrayOfTypes.toArray()).stream()
+		boolean contains =  Arrays.asList(arrayOfTypes.toArray()).stream()
 				.filter(optionalTypeName -> rawGenericTypes.contains(optionalTypeName.toString()))
 				.findAny()
 				.isPresent();
-	}
 
+
+		if(!contains) {
+			contains = genericTypes.stream()
+					.filter(type -> hasGenericTypeInside(arrayOfTypes, type))
+					.findAny()
+					.isPresent();
+		}
+		return contains;
+	}
 
 	private static boolean isTypeNamePresent(String typeName, String pathToJsonFile) {
 		Optional<JSONArray> jsonArray = readJSONFile(pathToJsonFile); 
@@ -146,7 +155,6 @@ public class UtilityClass {
 				.filter(array -> array.contains(typeName))
 				.isPresent();
 	}
-
 
 	private static Optional<JSONArray> readJSONFile(String fileName) {
 		Optional<JSONArray> jsonArray = Optional.empty();
@@ -181,7 +189,7 @@ public class UtilityClass {
 
 		return "";
 	}
-	
+
 	public static List<MethodDeclaration> getMethodDeclarations(ASTNode astNode) {
 
 		final List<MethodDeclaration> methodDeclarations = new LinkedList<>();

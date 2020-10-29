@@ -19,6 +19,7 @@ public class Rule20AntipatternBuilder implements IRelationBuilder<MRule20Atom, M
 
 		 List<MRule20Atom> atoms = arg0.compilationUnitBuilder()
 				.getElements().stream()
+				.peek(el -> System.out.println("^^^^^^^^^^^^^^^^^^^: " + el))
 				.map(MCompilationUnit::rule20AntipatternBuilder)
 				.map(Group::getElements)
 				.flatMap(List::stream)

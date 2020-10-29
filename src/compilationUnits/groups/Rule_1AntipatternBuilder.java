@@ -1,14 +1,12 @@
 package compilationUnits.groups;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 
 import optionalanalizer.metamodel.entity.MCompilationUnit;
 import optionalanalizer.metamodel.entity.MRule1Atom;
-import optionalanalizer.metamodel.factory.Factory;
 import ro.lrg.xcore.metametamodel.Group;
 import ro.lrg.xcore.metametamodel.IRelationBuilder;
 import ro.lrg.xcore.metametamodel.RelationBuilder;
@@ -30,7 +28,6 @@ public class Rule_1AntipatternBuilder implements IRelationBuilder<MRule1Atom, MC
 		
 		return group;
 	}
-
 }
 
 

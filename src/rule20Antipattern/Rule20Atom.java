@@ -18,15 +18,29 @@ public class Rule20Atom extends Atom{
 
 	@Override
 	protected boolean belongs(ASTNode wrappedElement) {
-		boolean itIs = wrappedElement instanceof VariableDeclarationFragment;
-		
-		return itIs;
+		return wrappedElement instanceof VariableDeclarationFragment;
 	}
 	
 	@Override
+	public int hashCode() {
+		return super.wrappedElement.getParent().getStartPosition();
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if(obj instanceof Rule20Atom) {
+			return this.hashCode() == obj.hashCode();
+		}
+		return false;
+	}
+
+	@Override
 	public void showInEditor() {
 		ITextEditor ite = UtilityClass.getITextEditor(wrappedElement);
-		ite.selectAndReveal(wrappedElement.getParent().getStartPosition(), wrappedElement.getParent().getLength());
+		
+		ite.selectAndReveal(wrappedElement.getParent()
+				.getStartPosition(), 
+				wrappedElement.getParent().getLength());
 	}
 	
 	public static Optional<Rule20Atom> getInstance(ASTNode wrappedElement) {

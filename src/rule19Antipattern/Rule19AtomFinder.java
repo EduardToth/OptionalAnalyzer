@@ -28,7 +28,6 @@ public class Rule19AtomFinder {
 		OptionalInvocationFinder optionalInvocationFinder = new OptionalInvocationFinder();
 		List<MethodInvocation> ofGroup = optionalInvocationFinder.getInvocations(astNode, "of");
 		List<MethodInvocation> ofNullableGroup = optionalInvocationFinder.getInvocations(astNode, "ofNullable");
-
 		List<MethodInvocation> badInvocationsForOptionalOf = getBadInvocationsForOptionalOf(ofGroup);
 		List<MethodInvocation> badInvocationsForOptionalOfNullable = getBadInvocationsForOptionalOfNullable(ofNullableGroup);
 
@@ -108,6 +107,7 @@ public class Rule19AtomFinder {
 		List<MethodInvocation> badInvocationsForOptionalOfNullable = ofNullableList.stream()
 				.filter(methodInvocation -> isArgumentAnOperationOfLiterals(methodInvocation) || isArgumentLiteral(methodInvocation))
 				.collect(Collectors.toList());
+		
 		return badInvocationsForOptionalOfNullable;
 	}
 
@@ -119,4 +119,5 @@ public class Rule19AtomFinder {
 
 		return badInvocationsForOptionalOf;
 	}
+	
 }

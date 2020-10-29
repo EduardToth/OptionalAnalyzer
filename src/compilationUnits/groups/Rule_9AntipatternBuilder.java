@@ -13,8 +13,10 @@ import ro.lrg.xcore.metametamodel.Group;
 import ro.lrg.xcore.metametamodel.IRelationBuilder;
 import ro.lrg.xcore.metametamodel.RelationBuilder;
 import rule_7Antipattern.Rule7Atom;
+import rule_7Antipattern.Rule7AtomFinder;
 import rule_9Antipattern.Rule9Atom;
 import rule_9Antipattern.Rule9AtomFinder;
+import utilities.Atom;
 import utilities.UtilityClass;
 
 @RelationBuilder
@@ -27,8 +29,7 @@ public class Rule_9AntipatternBuilder implements IRelationBuilder<MRule9Atom, MC
 		ICompilationUnit iCompilationUnit = (ICompilationUnit) arg0.getUnderlyingObject();
 		CompilationUnit compilationUnit = UtilityClass.parse(iCompilationUnit);
 		List<MRule9Atom> atoms = rule9AtomFinder.getMAtoms(compilationUnit);
-		
-		group.addAll(filterResult(atoms, arg0));
+		group.addAll(atoms );
 		
 		return group;
 	}
@@ -40,19 +41,21 @@ public class Rule_9AntipatternBuilder implements IRelationBuilder<MRule9Atom, MC
 	 * combined with the rule 7 antipattern would be a nightmare, so I decided to make a compromise and filter the result
 	 * using the rule 7 antipattern.
 	 */
-	private List<MRule9Atom> filterResult(List<MRule9Atom> rawAtoms,
-			MCompilationUnit mCompilationUnit) {
-		List<Rule7Atom> rule7List = mCompilationUnit.rule_7AntipatternBuilder()
-				.getElements()
+	private List<MRule9Atom> filterResult(List<MRule9Atom> rawAtoms, CompilationUnit compilationUnit) {
+		Rule7AtomFinder rule7AtomFinder = new Rule7AtomFinder();
+		List<? extends Atom> rule7List = rule7AtomFinder.getMAtoms(compilationUnit)
 				.stream()
 				.map(atom -> (Rule7Atom)atom.getUnderlyingObject())
 				.collect(Collectors.toList());
 		
-		List<Rule9Atom> rule9List = rawAtoms.stream()
+		System.out.println(rule7List);
+		
+		List<? extends Atom> rule9List = rawAtoms.stream()
 				.map(atom -> (Rule9Atom)atom.getUnderlyingObject())
 				.collect(Collectors.toList());
+		System.out.println(rule9List);
 		
-		rule9List.removeAll(rule7List);
+		rule9List.removeAll(rule9List);
 	
 		return rule9List.stream()
 				.map(atom -> Factory.getInstance().createMRule9Atom(atom))
