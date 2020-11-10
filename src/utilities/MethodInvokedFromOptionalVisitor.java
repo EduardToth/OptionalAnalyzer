@@ -24,19 +24,20 @@ public class MethodInvokedFromOptionalVisitor extends ASTVisitor{
 		}
 		return super.visit( invocation );
 	}
-	
+
 	public List<MethodInvocation> getInvocations() {
 		return invocations;
 	}
 
 	private boolean itsFine(MethodInvocation invocation, String invokedMethodName) {
+		String typeName = "";
 		try {
+			typeName = invocation.getExpression().resolveTypeBinding().getQualifiedName();
+		} catch(NullPointerException npe) {}
+
 		return invocation.getExpression() != null &&
-				UtilityClass.isTypeOptional(invocation.getExpression()
-						.resolveTypeBinding().getQualifiedName())
+				UtilityClass.isTypeOptional(typeName)
 				&& invokedMethodName.equals(this.invokedMethodName);
-		} catch(NullPointerException nullPointerException) {
-			return false;
-		}
+
 	}
 }

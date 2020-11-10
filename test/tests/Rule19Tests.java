@@ -12,9 +12,9 @@ import utilities.Atom;
 
 public class Rule19Tests extends TestBaseClass{
 
-	private static final  String packageName = "rule1Examples";
-	private static final  String testFileName = "BasicTest.java"; 
-	private static final int[] linesWithProblems = {8, 16, 21, 26};
+	private static final  String packageName = "rule19Examples";
+	private static final  String testFileName = "Example1.java"; 
+	private static final int[] linesWithProblems = {12, 13, 14, 15};
 
 	public Rule19Tests() throws BadNamingException {
 		super(packageName, testFileName, linesWithProblems);

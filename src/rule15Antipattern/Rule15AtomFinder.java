@@ -25,6 +25,5 @@ public class Rule15AtomFinder {
 				.map(Optional::get)
 				.map(atom -> Factory.getInstance().createMRule15Atom(atom))
 				.collect(Collectors.toList());
-		
 	}
 }

@@ -7,6 +7,7 @@ import ro.lrg.xcore.metametamodel.PropertyComputer;
 @PropertyComputer
 public class ToString implements IPropertyComputer<String, MRule3Atom>{
 
+
 	@Override
 	public String compute(MRule3Atom arg0) {
 		// TODO Auto-generated method stub

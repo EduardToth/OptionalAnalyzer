@@ -15,4 +15,6 @@ public class ToString implements IPropertyComputer<String, MProject>{
 	public String compute(MProject arg0) {
 		return ((IJavaProject)arg0.getUnderlyingObject()).getElementName();
 	}
+	
+	
 }

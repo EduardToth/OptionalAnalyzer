@@ -93,14 +93,6 @@ public class Factory {
         }
         return (MRule3Atom)instance;
     }
-   public MRule7Atom createMRule7Atom(java.lang.Object obj) {
-       XEntity instance = lruCache_.get(obj);
-        if (null == instance) {
-           instance = new MRule7AtomImpl(obj);
-           lruCache_.put(obj, instance);
-        }
-        return (MRule7Atom)instance;
-    }
    public MRule12Atom createMRule12Atom(java.lang.Object obj) {
        XEntity instance = lruCache_.get(obj);
         if (null == instance) {
@@ -108,6 +100,14 @@ public class Factory {
            lruCache_.put(obj, instance);
         }
         return (MRule12Atom)instance;
+    }
+   public MRule7Atom createMRule7Atom(java.lang.Object obj) {
+       XEntity instance = lruCache_.get(obj);
+        if (null == instance) {
+           instance = new MRule7AtomImpl(obj);
+           lruCache_.put(obj, instance);
+        }
+        return (MRule7Atom)instance;
     }
    public MRule10Atom createMRule10Atom(java.lang.Object obj) {
        XEntity instance = lruCache_.get(obj);

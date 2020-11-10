@@ -15,9 +15,9 @@ import optionalanalizer.metamodel.factory.Factory;
 import utilities.UtilityClass;
 
 public class Rule1AtomFinder{
-	
+
 	public List<MRule1Atom> getMAtoms(ASTNode astNode) {
-	
+
 		return getAtoms(astNode).stream()
 				.map(el -> Factory.getInstance().createMRule1Atom(el))
 				.collect(Collectors.toList());
@@ -40,9 +40,10 @@ public class Rule1AtomFinder{
 
 			@Override
 			public boolean visit(VariableDeclarationFragment declaration) {
-
-
-				String typeName = declaration.resolveBinding().getType().getQualifiedName();
+				String typeName = "";
+				try {
+					typeName = declaration.resolveBinding().getType().getQualifiedName();
+				} catch(NullPointerException npe) {}
 				if(declaration.getInitializer() != null) {
 
 					if(UtilityClass.isTypeOptional(typeName)
@@ -56,7 +57,7 @@ public class Rule1AtomFinder{
 		});
 		return antipatterns;
 	}
-	
+
 	private boolean isAssignmentAnOptionalAssignedToNull(Assignment assignment) {
 		if(assignment.getLeftHandSide().
 				resolveTypeBinding() == null) {
@@ -64,8 +65,12 @@ public class Rule1AtomFinder{
 		}
 		Object value =  assignment.getRightHandSide().resolveConstantExpressionValue();
 
-		return UtilityClass.isTypeOptional(assignment.getLeftHandSide().
-				resolveTypeBinding().getQualifiedName())
+		String typeName = "";
+		try {
+			typeName = assignment.getLeftHandSide().
+					resolveTypeBinding().getQualifiedName();
+		} catch(NullPointerException npe) {}
+		return UtilityClass.isTypeOptional(typeName)
 				&& value == null;
 	}
 

@@ -8,6 +8,7 @@ import java.util.stream.Collectors;
 
 import org.eclipse.jdt.core.dom.ASTNode;
 import org.eclipse.jdt.core.dom.ASTVisitor;
+import org.eclipse.jdt.core.dom.MethodDeclaration;
 import org.eclipse.jdt.core.dom.SimpleName;
 
 import optionalanalizer.metamodel.entity.MRule18Atom;
@@ -16,15 +17,15 @@ import utilities.Unit;
 import utilities.UtilityClass;
 
 public class Rule18AtomFinder {
-	
+
 	public List<MRule18Atom> getMAtoms(ASTNode astNode) {
 
 		List<SimpleName> simpleNames = getSimpleNames(astNode);
 
 		final Unit<String> typeName = new Unit<>(null);
-		 
+
 		return simpleNames.stream()
-				.peek(simpleName -> typeName.setAt0(simpleName.resolveTypeBinding().getQualifiedName()))
+				.peek(simpleName -> typeName.setAt0(getTypeName(simpleName)))
 				.filter(el -> isRule18Antipattern(typeName.getValue0()))
 				.map(Rule18Atom::getInstance)
 				.filter(Optional::isPresent)
@@ -32,6 +33,15 @@ public class Rule18AtomFinder {
 				.distinct()
 				.map(atom -> Factory.getInstance().createMRule18Atom(atom))
 				.collect(Collectors.toList());
+	}
+
+	private String getTypeName(SimpleName simpleName) {
+		String typeName = "";
+		try {
+			typeName = simpleName.resolveTypeBinding().getQualifiedName();
+		}catch(NullPointerException npe) {}
+
+		return typeName;
 	}
 
 	private List<SimpleName> getSimpleNames(ASTNode astNode) {
@@ -56,14 +66,14 @@ public class Rule18AtomFinder {
 		if(UtilityClass.isCollectionType(typeName) && UtilityClass.hasOptionalTypeInside(typeName)) {
 			return true;
 		}
-		
+
 		String[] genericTypes = UtilityClass.getGenericTypes(typeName);
-		
+
 		boolean containsOptional = Arrays.asList(genericTypes).stream()
 				.filter(this::isRule18Antipattern)
 				.findAny()
 				.isPresent();
-		
+
 		return containsOptional;
 	}
 }

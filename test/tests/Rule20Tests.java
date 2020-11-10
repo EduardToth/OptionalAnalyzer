@@ -11,9 +11,9 @@ import utilities.Atom;
 
 public class Rule20Tests extends TestBaseClass{
 
-	private static final  String packageName = "rule1Examples";
-	private static final  String testFileName = "BasicTest.java"; 
-	private static final int[] linesWithProblems = {8, 16, 21, 26};
+	private static final  String packageName = "rule20Examples";
+	private static final  String testFileName = "Example1.java"; 
+	private static final int[] linesWithProblems = {7, 8, 9};
 
 	public Rule20Tests() throws BadNamingException {
 		super(packageName, testFileName, linesWithProblems);

@@ -1,6 +1,8 @@
 package tests;
 
 import java.util.List;
+
+import org.junit.After;
 import org.junit.jupiter.api.Test;
 import java.util.stream.Collectors;
 
@@ -16,6 +18,7 @@ public class Rule_1Tests extends TestBaseClass{
 
 	public Rule_1Tests() throws BadNamingException {
 		super(packageName, testFileName, linesWithProblems);
+		System.out.println("Am fooooost");
 	}
 
 	@Override

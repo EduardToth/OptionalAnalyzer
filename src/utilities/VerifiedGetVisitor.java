@@ -32,9 +32,13 @@ public class VerifiedGetVisitor extends ASTVisitor{
 
 		String invokedMethodName = invocation.getName().toString();
 
-		boolean isInvocatorOptional = invocation.getExpression() != null &&
-				UtilityClass.isTypeOptional(invocation.getExpression()
-						.resolveTypeBinding().getQualifiedName());
+		String typeName = "";
+		try {
+			typeName = invocation.getExpression()
+					.resolveTypeBinding().getQualifiedName();
+		} catch(NullPointerException npe) {}
+		
+		boolean isInvocatorOptional = UtilityClass.isTypeOptional(typeName);
 
 		return isTheSameInvocator && isInvocatorOptional && (invokedMethodName.equals("get") || 
 				invokedMethodName.equals("getAsInt") || invokedMethodName.equals("getAsLong") ||

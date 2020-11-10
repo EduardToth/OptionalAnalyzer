@@ -23,15 +23,24 @@ public class Rule17AtomFinder {
 		return methodDeclarations.stream()
 				.peek(decl -> currentMethodDeclaration.setAt0( decl ))
 				.filter(decl -> !decl.isConstructor())
-				.map(decl -> decl.resolveBinding().getReturnType().getQualifiedName())
+				.map(this::getTypeName)
 				.filter(this::isExpressionOfTypeOptionalContainingArrayOrCollection)
 				.map((el) -> Rule17Atom.getInstance(currentMethodDeclaration.getValue0()))
+				.peek(el -> System.out.println(el))
 				.filter(Optional::isPresent)
 				.map(Optional::get)
 				.map(atom -> Factory.getInstance().createMRule17Atom(atom))
 				.collect(Collectors.toList());
 	}
-
+	
+	private String getTypeName(MethodDeclaration methodDeclaration) {
+		String typeName = "";
+		try {
+			typeName = methodDeclaration.resolveBinding().getReturnType().getQualifiedName();
+		}catch(NullPointerException npe) {}
+		
+		return typeName;
+	}
 
 	private boolean isExpressionOfTypeOptionalContainingArrayOrCollection(String typeName) {
 		return UtilityClass.isTypeOptional(typeName) && 

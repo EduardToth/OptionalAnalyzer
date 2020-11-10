@@ -15,6 +15,7 @@ import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.junit.After;
 
 import optionalanalizer.metamodel.entity.MCompilationUnit;
 import optionalanalizer.metamodel.factory.Factory;
@@ -33,6 +34,9 @@ public abstract class TestBaseClass {
 
 	public TestBaseClass(String packageName, String testFileName,
 			int[] linesWithProblems) throws BadNamingException {
+		try {
+			TestUtil.deleteProject(TEST_PROJECT);
+		} catch(RuntimeException e) {}
 		TestUtil.importProject(TEST_PROJECT, TEST_PROJECT + ".zip");
 		this.packageName = packageName;
 		this.testFileName = testFileName;
@@ -135,6 +139,7 @@ public abstract class TestBaseClass {
 		CompilationUnit compilationUnit = UtilityClass.parse(iCompilationUnit);
 		List<Atom> atoms = getAtoms();
 		System.out.println(atoms);
+
 		long nrOfAtomsFound =  atoms.stream()
 				.map(atom -> compilationUnit.getLineNumber(atom.getWrappedElement().getStartPosition()))
 				.filter(lineNr -> errorLineMap.containsKey(lineNr))
@@ -162,5 +167,10 @@ public abstract class TestBaseClass {
 
 	protected MCompilationUnit getMCompilationUnit() {
 		return Factory.getInstance().createMCompilationUnit(iCompilationUnit);
+	}
+
+	@After
+	public void deleteProject() {
+		TestUtil.deleteProject(TEST_PROJECT);
 	}
 }

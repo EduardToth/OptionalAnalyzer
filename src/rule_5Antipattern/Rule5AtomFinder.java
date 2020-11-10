@@ -32,7 +32,7 @@ public class Rule5AtomFinder {
 	private List<IfStatement> getAtoms(ASTNode astNode) {
 		OptionalInvocationFinder optionalInvocationFinder = new OptionalInvocationFinder();
 		List<MethodInvocation> invocations = optionalInvocationFinder.getInvocations(astNode);
-		
+
 		return collectAntipatterns(invocations);
 	}
 
@@ -114,7 +114,10 @@ public class Rule5AtomFinder {
 
 			@Override
 			public boolean visit(ThrowStatement throwStatement) {
-				String typeName = throwStatement.getExpression().resolveTypeBinding().getQualifiedName();
+				String typeName = "";
+				try {
+					typeName = throwStatement.getExpression().resolveTypeBinding().getQualifiedName();
+				} catch(NullPointerException npe) {}
 				contains.setAt0(typeName.equals("java.util.NoSuchElementException"));
 				return super.visit(throwStatement);
 			}

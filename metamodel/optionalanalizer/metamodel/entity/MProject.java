@@ -3,6 +3,9 @@ package optionalanalizer.metamodel.entity;
 public interface MProject extends ro.lrg.xcore.metametamodel.XEntity {
 
 	@ro.lrg.xcore.metametamodel.ThisIsAProperty
+	public java.lang.Integer getNrOfClasses();
+
+	@ro.lrg.xcore.metametamodel.ThisIsAProperty
 	public java.lang.String toString();
 
 	@ro.lrg.xcore.metametamodel.ThisIsARelationBuilder

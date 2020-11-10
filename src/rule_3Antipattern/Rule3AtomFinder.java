@@ -3,14 +3,13 @@ package rule_3Antipattern;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
-import org.eclipse.jdt.core.dom.AST;
 import org.eclipse.jdt.core.dom.ASTNode;
 import org.eclipse.jdt.core.dom.IfStatement;
 import org.eclipse.jdt.core.dom.MethodInvocation;
 import org.eclipse.jdt.core.dom.ReturnStatement;
 import org.eclipse.jdt.core.dom.Statement;
+
 import optionalanalizer.metamodel.entity.MRule3Atom;
 import optionalanalizer.metamodel.factory.Factory;
 import utilities.OptionalInvocationFinder;

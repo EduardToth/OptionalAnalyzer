@@ -1,6 +1,4 @@
 package utilities;
-import java.io.FileReader;
-import java.io.IOException;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
@@ -15,6 +13,7 @@ import org.eclipse.jdt.core.dom.ASTNode;
 import org.eclipse.jdt.core.dom.ASTParser;
 import org.eclipse.jdt.core.dom.ASTVisitor;
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jdt.core.dom.Expression;
 import org.eclipse.jdt.core.dom.FieldDeclaration;
 import org.eclipse.jdt.core.dom.MethodDeclaration;
 import org.eclipse.jdt.core.dom.MethodInvocation;
@@ -25,16 +24,8 @@ import org.eclipse.jdt.ui.JavaUI;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.texteditor.ITextEditor;
-import org.json.simple.JSONArray;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
 
 public class UtilityClass {
-
-	private static final String pathToOptionalTypesJSON = "C:\\Users\\40752\\eclipse-workspace\\OptionalAnalizer\\jsonFolder\\optionalTypes.json";
-	private static final String pathToSpecialOptionalTypesJSON = "C:\\Users\\40752\\eclipse-workspace\\OptionalAnalizer\\jsonFolder\\specialOptionalType.json";
-	private static final String pathToCollectionTypesJSON = "C:\\Users\\40752\\eclipse-workspace\\OptionalAnalizer\\jsonFolder\\collectionTypes.json";
-	private static final String pathToBadGenericTypesForJSON = "C:\\Users\\40752\\eclipse-workspace\\OptionalAnalizer\\jsonFolder\\badGenericTypesForOptional.json";
 
 	public static CompilationUnit parse(ICompilationUnit unit) {
 
@@ -76,12 +67,12 @@ public class UtilityClass {
 	public static boolean isTypeOptional(String typeName) {
 		typeName = removeGenericArguments(typeName);
 		return isTypeNamePresent(typeName
-				, pathToOptionalTypesJSON);
+				, Libraries.optionalTypes);
 	}
 
 	public static boolean isSpecialOptionalType(String typeName) {
 		return isTypeNamePresent(typeName
-				,pathToSpecialOptionalTypesJSON);
+				,Libraries.specialOptionalTypes);
 	}
 
 	public static boolean isSimpleOptionalType(String typeName) {
@@ -92,26 +83,21 @@ public class UtilityClass {
 	public static boolean isCollectionType(final String typeName) {
 		String rawTypeName = removeGenericArguments(typeName);
 		return isTypeNamePresent(rawTypeName
-				, pathToCollectionTypesJSON);
+				, Libraries.collectionTypes);
 	}
 
 	public static boolean hasBadGenericTypeArgumentForOptional(String typeName) {
 		String[] genericArguments = getGenericTypes(typeName);
 
 		return Arrays.asList(genericArguments).stream()
-				.filter(genericArgument -> isTypeNamePresent(genericArgument,  pathToBadGenericTypesForJSON))
-				.findAny()
-				.isPresent();
+				.filter(genericArgument -> isTypeNamePresent(genericArgument, Libraries.badGenericTypesForOptional))
+		        .findAny()
+		        .isPresent();
+				
 	}
 
 	public static boolean hasOptionalTypeInside(String typeName) {
-		Optional<JSONArray> jsonArray = readJSONFile(pathToOptionalTypesJSON); 
-
-
-		if(jsonArray.isPresent()) {
-			return hasGenericTypeInside(jsonArray.get(), typeName);
-		}
-		return false;
+			return hasGenericTypeInside(Libraries.optionalTypes, typeName);
 
 	}
 
@@ -126,14 +112,14 @@ public class UtilityClass {
 		return typeName.substring(startIndex + 1, endIndex).split(", *");
 	}
 
-	private static boolean hasGenericTypeInside(JSONArray arrayOfTypes, String typeName) {
+	private static boolean hasGenericTypeInside(List<String> listOfTypes, String typeName) {
 		List<String> genericTypes = Arrays.asList(getGenericTypes(typeName));
 
 		List<String> rawGenericTypes = genericTypes.stream()
 				.map(UtilityClass::removeGenericArguments)
 				.collect(Collectors.toList());
 
-		boolean contains =  Arrays.asList(arrayOfTypes.toArray()).stream()
+		boolean contains =  listOfTypes.stream()
 				.filter(optionalTypeName -> rawGenericTypes.contains(optionalTypeName.toString()))
 				.findAny()
 				.isPresent();
@@ -141,35 +127,17 @@ public class UtilityClass {
 
 		if(!contains) {
 			contains = genericTypes.stream()
-					.filter(type -> hasGenericTypeInside(arrayOfTypes, type))
+					.filter(type -> hasGenericTypeInside(listOfTypes, type))
 					.findAny()
 					.isPresent();
 		}
 		return contains;
 	}
 
-	private static boolean isTypeNamePresent(String typeName, String pathToJsonFile) {
-		Optional<JSONArray> jsonArray = readJSONFile(pathToJsonFile); 
-
-		return jsonArray
-				.filter(array -> array.contains(typeName))
-				.isPresent();
+	private static boolean isTypeNamePresent(String typeName, List<String> types) {
+		return types.contains(typeName);
 	}
 
-	private static Optional<JSONArray> readJSONFile(String fileName) {
-		Optional<JSONArray> jsonArray = Optional.empty();
-
-		try {
-			Object obj = new JSONParser().parse(new FileReader(fileName));
-			if(obj instanceof JSONArray) {
-				jsonArray = Optional.of( (JSONArray)obj );
-			}
-		} catch (IOException | ParseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return jsonArray;
-	}
 
 	public static CompilationUnit getCompilationUnit(ASTNode astNode) {
 		ASTNode node = astNode;
@@ -276,6 +244,10 @@ public class UtilityClass {
 		}
 
 		return Optional.ofNullable(typeDeclaration);
+	}
+	
+	public static Optional<String> getTypeName(Expression expression) {
+		return Optional.ofNullable(expression.resolveTypeBinding().getQualifiedName());
 	}
 
 }

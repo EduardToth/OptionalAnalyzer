@@ -24,7 +24,7 @@ public class Rule10AtomFinder {
 	public List<MRule10Atom> getMAtoms(ASTNode astNode) {
 		List<ReturnStatement> problematicReturnStatements = getProblematicReturnStatements(astNode);
 		List<IfStatement> problematicIfStatements = getProblematicIfStatements(astNode);
-		
+
 		return Stream.of(problematicIfStatements, problematicReturnStatements)
 				.flatMap(List::stream)
 				.map(Rule10Atom::getInstance)
@@ -40,21 +40,24 @@ public class Rule10AtomFinder {
 		astNode.accept(new ASTVisitor() {
 			@Override
 			public boolean visit(ReturnStatement returnStatement) {
-				String typeOfExpression = returnStatement.getExpression()
-						.resolveTypeBinding()
-						.getQualifiedName();
+				String typeOfExpression = "";
+				try{
+					typeOfExpression = returnStatement.getExpression()
+							.resolveTypeBinding()
+							.getQualifiedName();
+				} catch(NullPointerException npe) {}
 				if(UtilityClass.isTypeOptional(typeOfExpression)) {
 					suspectReturnStatements.add(returnStatement);
 				}
 				return super.visit(returnStatement);
 			}
 		});
-		
+
 		return suspectReturnStatements.stream()
 				.filter(this::isProblematicReturnStatement)
 				.collect(Collectors.toList());
 	}
-	
+
 	private boolean isProblematicReturnStatement(ReturnStatement returnStatement) {
 		return returnStatement.getExpression().toString().matches(".*\\.orElseGet\\(.*\\)");
 	}
@@ -118,7 +121,11 @@ public class Rule10AtomFinder {
 	private boolean isIfStatementAntipattern(Statement statementForThen, Statement statementForElse,
 			ReturnStatement returnStatementForThen, ReturnStatement returnStatementForElse, String invocatorName) {
 
-		return UtilityClass.isTypeOptional(returnStatementForThen.getExpression().resolveTypeBinding().getQualifiedName()) &&
+		String typeName = "";
+		try {
+			typeName = returnStatementForThen.getExpression().resolveTypeBinding().getQualifiedName();
+		}catch(NullPointerException npe) {}
+		return UtilityClass.isTypeOptional(typeName) &&
 				(containsSingleReturnStatement(statementForThen, returnStatementForThen, invocatorName) &&
 						ToolBoxForIfStatementAnalysis
 						.statementDoesNotContainNonConsumerElementsExceptReturnStatements(statementForElse) ||

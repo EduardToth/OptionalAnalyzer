@@ -1,6 +1,7 @@
 package optionalanalizer.metamodel.impl;
 
 import optionalanalizer.metamodel.entity.*;
+import projects.properties.GetNrOfClasses;
 import projects.properties.ToString;
 import projects.groups.Rule10AntipatternBuilder;
 import projects.groups.Rule20AntipatternBuilder;
@@ -29,6 +30,7 @@ public class MProjectImpl implements MProject {
 
 	private java.lang.Object underlyingObj_;
 
+	private static final GetNrOfClasses GetNrOfClasses_INSTANCE = new GetNrOfClasses();
 	private static final ToString ToString_INSTANCE = new ToString();
 	private static final Rule10AntipatternBuilder Rule10AntipatternBuilder_INSTANCE = new Rule10AntipatternBuilder();
 	private static final Rule20AntipatternBuilder Rule20AntipatternBuilder_INSTANCE = new Rule20AntipatternBuilder();
@@ -60,6 +62,12 @@ public class MProjectImpl implements MProject {
 	@Override
 	public java.lang.Object getUnderlyingObject() {
 		return underlyingObj_;
+	}
+
+	@Override
+	@ro.lrg.xcore.metametamodel.ThisIsAProperty
+	public java.lang.Integer getNrOfClasses() {
+		return GetNrOfClasses_INSTANCE.compute(this);
 	}
 
 	@Override

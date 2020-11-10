@@ -1,6 +1,7 @@
 package optionalanalizer.metamodel.impl;
 
 import optionalanalizer.metamodel.entity.*;
+import compilationUnits.properties.LineCounter;
 import compilationUnits.properties.ToString;
 import compilationUnits.groups.Rule10AntipatternBuilder;
 import compilationUnits.groups.Rule20AntipatternBuilder;
@@ -28,6 +29,7 @@ public class MCompilationUnitImpl implements MCompilationUnit {
 
 	private java.lang.Object underlyingObj_;
 
+	private static final LineCounter LineCounter_INSTANCE = new LineCounter();
 	private static final ToString ToString_INSTANCE = new ToString();
 	private static final Rule10AntipatternBuilder Rule10AntipatternBuilder_INSTANCE = new Rule10AntipatternBuilder();
 	private static final Rule20AntipatternBuilder Rule20AntipatternBuilder_INSTANCE = new Rule20AntipatternBuilder();
@@ -58,6 +60,12 @@ public class MCompilationUnitImpl implements MCompilationUnit {
 	@Override
 	public java.lang.Object getUnderlyingObject() {
 		return underlyingObj_;
+	}
+
+	@Override
+	@ro.lrg.xcore.metametamodel.ThisIsAProperty
+	public java.lang.Integer lineCounter() {
+		return LineCounter_INSTANCE.compute(this);
 	}
 
 	@Override
