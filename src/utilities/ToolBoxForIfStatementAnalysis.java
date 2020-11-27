@@ -3,10 +3,13 @@ package utilities;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import org.eclipse.jdt.core.dom.ASTNode;
 import org.eclipse.jdt.core.dom.ASTVisitor;
 import org.eclipse.jdt.core.dom.Assignment;
+import org.eclipse.jdt.core.dom.DoStatement;
+import org.eclipse.jdt.core.dom.ForStatement;
 import org.eclipse.jdt.core.dom.IfStatement;
 import org.eclipse.jdt.core.dom.MethodInvocation;
 import org.eclipse.jdt.core.dom.PostfixExpression;
@@ -15,6 +18,7 @@ import org.eclipse.jdt.core.dom.ReturnStatement;
 import org.eclipse.jdt.core.dom.Statement;
 import org.eclipse.jdt.core.dom.ThrowStatement;
 import org.eclipse.jdt.core.dom.VariableDeclarationFragment;
+import org.eclipse.jdt.core.dom.WhileStatement;
 
 public class ToolBoxForIfStatementAnalysis {
 
@@ -31,17 +35,13 @@ public class ToolBoxForIfStatementAnalysis {
 
 		return Optional.ofNullable(unit.getValue0());
 	}
+	
 
 	public static void setInvocatorName(MethodInvocation invocation, Unit<String> invocatorName) {
 		invocatorName.setAt0( UtilityClass.getInvocatorName(invocation).orElse(""));
 	}
 
-	public static boolean isSameContext(ASTNode context1, ASTNode statement1, ASTNode context2, ASTNode statement2) {
-		String rawContext1 = takeOutStatement(context1, statement1);
-		String rawContext2 = takeOutStatement(context2, statement2);
-
-		return rawContext1.equals(rawContext2);
-	}
+	
 	
 	public static IfStatement getIfStatement(MethodInvocation methodInvocation) {
 		ASTNode astNode = methodInvocation.getParent();
@@ -115,8 +115,6 @@ public class ToolBoxForIfStatementAnalysis {
 				!thereAreModifiersToOuterVariables(statement);
 	}
 	
-
-
 	private static boolean thereAreModifiersToOuterVariables(Statement statement) {
 		final List<String> variableNames = getAllDeclaredvariablesInside(statement);
 		Unit<Boolean> thereAre = new Unit<>(false);
@@ -191,5 +189,43 @@ public class ToolBoxForIfStatementAnalysis {
 		stringForm = removeWhiteSpaces(stringForm);
 
 		return stringForm.equals("{}");
+	}
+	
+	public static boolean containsMethodInvocation(ReturnStatement returnStatement) {
+		String stringExpression = returnStatement.getExpression().toString();
+		return stringExpression.matches(".*\\(.*\\).*");
+	}
+
+	public static int getCyclomaticComplexity(Statement statement) {
+		AtomicInteger cyclomaticComplexity = new AtomicInteger(1);
+
+		statement.accept(new ASTVisitor() {
+
+			public boolean visit(IfStatement ifStatement) {
+				cyclomaticComplexity.incrementAndGet();
+				return super.visit(ifStatement);
+			}
+
+			public boolean visit(ForStatement forStatement) {
+				cyclomaticComplexity.incrementAndGet();
+				return super.visit(forStatement);
+			}
+
+			public boolean visit(WhileStatement whileStatement) {
+				cyclomaticComplexity.incrementAndGet();
+				return super.visit(whileStatement);
+			}
+
+			public boolean visit(DoStatement doStatement) {
+				cyclomaticComplexity.incrementAndGet();
+				return super.visit(doStatement);
+			}
+		});
+
+		return cyclomaticComplexity.get();
+	}
+	
+	public static boolean isStatementComposedByASimgleAction(Statement statement) {
+		return statement.toString().indexOf(";") == statement.toString().lastIndexOf(";");
 	}
 }

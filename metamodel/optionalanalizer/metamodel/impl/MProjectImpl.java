@@ -21,6 +21,7 @@ import projects.groups.Rule_1AntipatternBuilder;
 import projects.groups.Rule17AntipatternBuilder;
 import projects.groups.Rule_7AntipatternBuilder;
 import projects.groups.Rule_2AntipatternBuilder;
+import projects.groups.FullAnalysis;
 import projects.groups.Rule_6AntipatternBuilder;
 import projects.groups.Rule14AntipatternBuilder;
 import projects.groups.Rule21AntipatternBuilder;
@@ -50,6 +51,7 @@ public class MProjectImpl implements MProject {
 	private static final Rule17AntipatternBuilder Rule17AntipatternBuilder_INSTANCE = new Rule17AntipatternBuilder();
 	private static final Rule_7AntipatternBuilder Rule_7AntipatternBuilder_INSTANCE = new Rule_7AntipatternBuilder();
 	private static final Rule_2AntipatternBuilder Rule_2AntipatternBuilder_INSTANCE = new Rule_2AntipatternBuilder();
+	private static final FullAnalysis FullAnalysis_INSTANCE = new FullAnalysis();
 	private static final Rule_6AntipatternBuilder Rule_6AntipatternBuilder_INSTANCE = new Rule_6AntipatternBuilder();
 	private static final Rule14AntipatternBuilder Rule14AntipatternBuilder_INSTANCE = new Rule14AntipatternBuilder();
 	private static final Rule21AntipatternBuilder Rule21AntipatternBuilder_INSTANCE = new Rule21AntipatternBuilder();
@@ -182,6 +184,12 @@ public class MProjectImpl implements MProject {
 	@ro.lrg.xcore.metametamodel.ThisIsARelationBuilder
 	public ro.lrg.xcore.metametamodel.Group<MRule2Atom> rule_2AntipatternBuilder() {
 		return Rule_2AntipatternBuilder_INSTANCE.buildGroup(this);
+	}
+
+	@Override
+	@ro.lrg.xcore.metametamodel.ThisIsARelationBuilder
+	public ro.lrg.xcore.metametamodel.Group<MAnalysis> fullAnalysis() {
+		return FullAnalysis_INSTANCE.buildGroup(this);
 	}
 
 	@Override

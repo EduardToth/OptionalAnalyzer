@@ -18,7 +18,8 @@ public class Rule_8AntipatternBuilder implements IRelationBuilder<MRule8Atom, MP
 		Group<MRule8Atom> group = new Group<>();
 
 		 List<MRule8Atom> atoms = arg0.compilationUnitBuilder()
-				.getElements().stream()
+				.getElements()
+				.stream()
 				.map(MCompilationUnit::rule_8AntipatternBuilder)
 				.map(Group::getElements)
 				.flatMap(List::stream)

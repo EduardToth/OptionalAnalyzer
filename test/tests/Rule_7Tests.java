@@ -3,7 +3,7 @@ package tests;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 
 import optionalanalizer.metamodel.entity.MRule7Atom;
 import ro.lrg.xcore.metametamodel.Group;
@@ -13,7 +13,7 @@ public class Rule_7Tests extends TestBaseClass{
 
 	private static final  String packageName = "rule7Examples";
 	private static final  String testFileName = "Example1.java"; 
-	private static final int[] linesWithProblems = {60, 48, 38, 28, 18};
+	private static final int[] linesWithProblems = {60, 38, 28, 18};
 
 	public Rule_7Tests() throws BadNamingException {
 		super(packageName, testFileName, linesWithProblems);

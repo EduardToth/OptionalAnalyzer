@@ -52,7 +52,6 @@ public class GetNrOfClasses implements IPropertyComputer<Integer, MProject>{
 		try {
 			iCompilationUnits = iPackageFragment.getCompilationUnits();
 		} catch (JavaModelException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 

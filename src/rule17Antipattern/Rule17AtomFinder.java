@@ -26,7 +26,6 @@ public class Rule17AtomFinder {
 				.map(this::getTypeName)
 				.filter(this::isExpressionOfTypeOptionalContainingArrayOrCollection)
 				.map((el) -> Rule17Atom.getInstance(currentMethodDeclaration.getValue0()))
-				.peek(el -> System.out.println(el))
 				.filter(Optional::isPresent)
 				.map(Optional::get)
 				.map(atom -> Factory.getInstance().createMRule17Atom(atom))

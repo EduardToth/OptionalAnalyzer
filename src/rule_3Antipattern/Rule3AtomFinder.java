@@ -31,7 +31,7 @@ public class Rule3AtomFinder{
 	private List<IfStatement> getAtoms(ASTNode astNode) {
 		OptionalInvocationFinder optionalInvocationFinder = new OptionalInvocationFinder();
 		List<MethodInvocation> invocations = optionalInvocationFinder.getInvocations(astNode);
-		
+
 		return collectAntipatterns(invocations);
 	}
 
@@ -63,21 +63,19 @@ public class Rule3AtomFinder{
 			return false;
 		}
 
-		return ToolBoxForIfStatementAnalysis.isSameContext(thenStatement.get(), returnStatementForThen.get(),
-				elseStatement.get(), returnStatementForElse.get()) &&
-				isAntipattern(returnStatementForThen.get(), returnStatementForElse.get(), invocatorName);
+		return ToolBoxForIfStatementAnalysis.getCyclomaticComplexity(thenStatement.get()) == 1 
+				&& ToolBoxForIfStatementAnalysis.getCyclomaticComplexity(elseStatement.get()) == 1 
+				&& isAntipattern(returnStatementForThen.get(), returnStatementForElse.get(), invocatorName)
+				&& ToolBoxForIfStatementAnalysis.isStatementComposedByASimgleAction(thenStatement.get())
+				&& ToolBoxForIfStatementAnalysis.isStatementComposedByASimgleAction(elseStatement.get());
 
 	}
+
 
 	private boolean isAntipattern(ReturnStatement returnStatementForThen, ReturnStatement returnStatementForElse, String invocatorName) {
-		return ToolBoxForIfStatementAnalysis.containsGetFromOptional(returnStatementForThen, invocatorName) &&
-				!containsMethodInvocation(returnStatementForElse) ||
-				ToolBoxForIfStatementAnalysis.containsGetFromOptional(returnStatementForElse, invocatorName) &&
-				!containsMethodInvocation(returnStatementForThen);
-	}
-
-	private boolean containsMethodInvocation(ReturnStatement returnStatement) {
-		String stringExpression = returnStatement.getExpression().toString();
-		return stringExpression.matches(".*\\(.*\\).*");
+		return ToolBoxForIfStatementAnalysis.containsGetFromOptional(returnStatementForThen, invocatorName)
+				&& !ToolBoxForIfStatementAnalysis.containsMethodInvocation(returnStatementForElse) 
+				|| ToolBoxForIfStatementAnalysis.containsGetFromOptional(returnStatementForElse, invocatorName)
+				&& !ToolBoxForIfStatementAnalysis.containsMethodInvocation(returnStatementForThen);
 	}
 }

@@ -1,9 +1,12 @@
 package rule21Antipattern;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.eclipse.jdt.core.dom.ASTNode;
@@ -19,15 +22,18 @@ public class Rule21AtomFinder {
 		OptionalInvocationFinder optionalInvocationFinder = new OptionalInvocationFinder();
 		List<MethodInvocation> equalsInvocationsFromOptional = optionalInvocationFinder.getInvocations(astNode, "get");
 
-		System.out.println("first: " + equalsInvocationsFromOptional);
-		return equalsInvocationsFromOptional.stream()
+		List<Rule21Atom> atoms =  equalsInvocationsFromOptional.stream()
 				.map(this::getAntipatternOccurencies)
 				.flatMap(Collection::stream)
 				.map(Rule21Atom::getInstance)
 				.filter(Optional::isPresent)
 				.map(Optional::get)
-				.distinct()
-				.map(methodInvocation -> Factory.getInstance().createMRule21Atom(methodInvocation))
+				.collect(Collectors.toList());
+		
+		atoms = removeDuplicates(atoms);
+		
+		return atoms.stream()
+				.map(atom -> Factory.getInstance().createMRule21Atom(atom))
 				.collect(Collectors.toList());
 
 	}
@@ -65,5 +71,19 @@ public class Rule21AtomFinder {
 		methodInvocation.getParent().accept(the21stAntipatternVisitor);
 
 		return the21stAntipatternVisitor.getMethodInvocations();
+	}
+	
+	private List<Rule21Atom> removeDuplicates(List<Rule21Atom> atoms) {
+		
+		Set<Integer> startPositions = new HashSet<>();
+		List<Rule21Atom> newList = new ArrayList<>();
+		for(Rule21Atom rule21Atom : atoms) {
+			if(!startPositions.contains(rule21Atom.getStartingPosition())) {
+				newList.add(rule21Atom);
+				startPositions.add(rule21Atom.getStartingPosition());
+			}
+			
+		}
+		return newList;
 	}
 }

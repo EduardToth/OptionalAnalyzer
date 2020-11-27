@@ -20,6 +20,7 @@ public class Rule16AtomFinder {
 				.filter(decl -> !decl.isConstructor())
 				.filter(decl -> !UtilityClass.isSetter( decl ))
 				.filter(decl -> UtilityClass.containsAtLeastOneOptionalAsParameter( decl ))
+				.peek(el -> System.out.println("----------------------> " + UtilityClass.getFirstOptionalParameter( el )))
 				.map(decl -> UtilityClass.getFirstOptionalParameter( decl ))
 				.map(Rule16Atom::getInstance)
 				.filter(Optional::isPresent)

@@ -94,22 +94,19 @@ public class Rule4AtomFinder{
 			return false;
 		}
 
-		return ToolBoxForIfStatementAnalysis.isSameContext(thenStatement.get(), returnStatementForThen.get(),
-				elseStatement.get(), returnStatementForElse.get()) &&
-				isAntipattern(returnStatementForThen.get(), returnStatementForElse.get(), invocatorName);
+		return ToolBoxForIfStatementAnalysis.getCyclomaticComplexity(thenStatement.get()) == 1 
+				&& ToolBoxForIfStatementAnalysis.getCyclomaticComplexity(elseStatement.get()) == 1 
+				&& isAntipattern(returnStatementForThen.get(), returnStatementForElse.get(), invocatorName)
+				&& ToolBoxForIfStatementAnalysis.isStatementComposedByASimgleAction(thenStatement.get())
+				&& ToolBoxForIfStatementAnalysis.isStatementComposedByASimgleAction(elseStatement.get());
 
 	}
 
 	private boolean isAntipattern(ReturnStatement returnStatementForThen, ReturnStatement returnStatementForElse, String invocatorName) {
-		return ToolBoxForIfStatementAnalysis.containsGetFromOptional(returnStatementForThen, invocatorName) &&
-				containsMethodInvocation(returnStatementForElse) ||
-				ToolBoxForIfStatementAnalysis.containsGetFromOptional(returnStatementForElse, invocatorName) &&
-				containsMethodInvocation(returnStatementForThen);
+		return ToolBoxForIfStatementAnalysis.containsGetFromOptional(returnStatementForThen, invocatorName)
+				&& ToolBoxForIfStatementAnalysis.containsMethodInvocation(returnStatementForElse)
+				|| ToolBoxForIfStatementAnalysis.containsGetFromOptional(returnStatementForElse, invocatorName)
+				&& ToolBoxForIfStatementAnalysis.containsMethodInvocation(returnStatementForThen);
 	}
 
-
-	private boolean containsMethodInvocation(ReturnStatement returnStatement) {
-		String stringExpression = returnStatement.getExpression().toString();
-		return stringExpression.matches(".*\\(.*\\).*");
-	}
 }

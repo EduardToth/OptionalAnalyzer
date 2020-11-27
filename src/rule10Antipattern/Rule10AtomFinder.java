@@ -1,17 +1,15 @@
 package rule10Antipattern;
 
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import org.eclipse.jdt.core.dom.ASTNode;
-import org.eclipse.jdt.core.dom.ASTVisitor;
 import org.eclipse.jdt.core.dom.IfStatement;
 import org.eclipse.jdt.core.dom.MethodInvocation;
-import org.eclipse.jdt.core.dom.ReturnStatement;
 import org.eclipse.jdt.core.dom.Statement;
+import org.javatuples.Pair;
 
 import optionalanalizer.metamodel.entity.MRule10Atom;
 import optionalanalizer.metamodel.factory.Factory;
@@ -22,49 +20,20 @@ import utilities.UtilityClass;
 
 public class Rule10AtomFinder {
 	public List<MRule10Atom> getMAtoms(ASTNode astNode) {
-		List<ReturnStatement> problematicReturnStatements = getProblematicReturnStatements(astNode);
-		List<IfStatement> problematicIfStatements = getProblematicIfStatements(astNode);
 
-		return Stream.of(problematicIfStatements, problematicReturnStatements)
-				.flatMap(List::stream)
+		return  getProblematicIfStatements(astNode).stream()
 				.map(Rule10Atom::getInstance)
 				.filter(Optional::isPresent)
 				.map(Optional::get)
 				.map(el -> Factory.getInstance().createMRule10Atom(el))
 				.collect(Collectors.toList());
-	}
 
-	private List<ReturnStatement> getProblematicReturnStatements(ASTNode astNode) {
-		final List<ReturnStatement> suspectReturnStatements = new LinkedList<>();
-		//Look for return statements that return an Optional 
-		astNode.accept(new ASTVisitor() {
-			@Override
-			public boolean visit(ReturnStatement returnStatement) {
-				String typeOfExpression = "";
-				try{
-					typeOfExpression = returnStatement.getExpression()
-							.resolveTypeBinding()
-							.getQualifiedName();
-				} catch(NullPointerException npe) {}
-				if(UtilityClass.isTypeOptional(typeOfExpression)) {
-					suspectReturnStatements.add(returnStatement);
-				}
-				return super.visit(returnStatement);
-			}
-		});
-
-		return suspectReturnStatements.stream()
-				.filter(this::isProblematicReturnStatement)
-				.collect(Collectors.toList());
-	}
-
-	private boolean isProblematicReturnStatement(ReturnStatement returnStatement) {
-		return returnStatement.getExpression().toString().matches(".*\\.orElseGet\\(.*\\)");
 	}
 
 	private List<IfStatement> getProblematicIfStatements(ASTNode astNode) {
 		OptionalInvocationFinder optionalInvocationFinder = new OptionalInvocationFinder();
 		List<MethodInvocation> invocations = optionalInvocationFinder.getInvocations(astNode);
+		
 		return getProblematicIfStatements(invocations);
 	}
 
@@ -76,68 +45,38 @@ public class Rule10AtomFinder {
 				.filter(el -> invocatorName.getValue0() != null)
 				.filter(ToolBoxForIfStatementAnalysis::isSuperParentIfStatement)
 				.map(ToolBoxForIfStatementAnalysis::getIfStatement)
-				.filter(ifStatement -> isIfStatementAntipattern(ifStatement, invocatorName.getValue0()))
+				.filter(ifStatement -> isAntipattern(ifStatement, invocatorName.getValue0()))
 				.collect(Collectors.toList());
 	}
 
-	private  boolean isIfStatementAntipattern(IfStatement ifStatement, String invocatorName) {
-		Optional<Statement> thenStatementOptional = Optional.ofNullable(ifStatement.getThenStatement());
-		Optional<Statement> elseStatementOptional = Optional.ofNullable(ifStatement.getElseStatement());
-		Statement thenStatement = null;
-		Statement elseStatement = null;
-		boolean areComponentsPresent = thenStatementOptional.isPresent() && elseStatementOptional.isPresent();
-
-		if(areComponentsPresent) {
-			thenStatement = thenStatementOptional.get();
-			elseStatement = elseStatementOptional.get();
-		} else {
-			return false;
-		}
-
-		return isIfStatementAntipattern(thenStatement, elseStatement, invocatorName);
+	private  boolean isAntipattern(IfStatement ifStatement, String invocatorName) {
+		
+		return Stream.of(Pair.with(ifStatement.getThenStatement(), ifStatement.getElseStatement()))
+				.filter(pair -> pair.getValue0() != null && pair.getValue1() != null)
+				.filter(this::bothOfThemContainReturnStatement)
+				.allMatch(pair -> isAntipattern(pair.getValue0(), pair.getValue1(), invocatorName));
 	}
 
-	private boolean isIfStatementAntipattern(Statement thenStatement, Statement elseStatement, String invocatorName) {
-
-		Optional<ReturnStatement> returnStatementForThenOptional = ToolBoxForIfStatementAnalysis.getReturnStatement(thenStatement);
-		Optional<ReturnStatement> returnStatementForElseOptional = ToolBoxForIfStatementAnalysis.getReturnStatement(elseStatement);
-		ReturnStatement returnStatementForThen = null;
-		ReturnStatement returnStatementForElse = null;
-		if(returnStatementForThenOptional.isPresent() && returnStatementForElseOptional.isPresent()) {
-			returnStatementForThen = returnStatementForThenOptional.get();
-			returnStatementForElse = returnStatementForElseOptional.get();
-		} else {
-			return false;
-		}
-
-		/*
-		 * All the return statements should be of type Optional in this case, but it is enough to verify that only 
-		 * with one return statement, because their type are the same
-		 */
-		return isIfStatementAntipattern(thenStatement, elseStatement,
-				returnStatementForThen, returnStatementForElse, invocatorName);
+	private boolean bothOfThemContainReturnStatement(Pair<Statement, Statement> statementPair) {
+		return ToolBoxForIfStatementAnalysis.getReturnStatement(statementPair.getValue0()).isPresent()
+				&& ToolBoxForIfStatementAnalysis.getReturnStatement(statementPair.getValue1()).isPresent();
 	}
 
-	private boolean isIfStatementAntipattern(Statement statementForThen, Statement statementForElse,
-			ReturnStatement returnStatementForThen, ReturnStatement returnStatementForElse, String invocatorName) {
+	private boolean isAntipattern(Statement statementForThen, Statement statementForElse, String invocatorName) {
 
 		String typeName = "";
 		try {
-			typeName = returnStatementForThen.getExpression().resolveTypeBinding().getQualifiedName();
+			typeName = ToolBoxForIfStatementAnalysis.getReturnStatement(statementForThen)
+					.get()
+					.getExpression()
+					.resolveTypeBinding()
+					.getQualifiedName();
 		}catch(NullPointerException npe) {}
-		return UtilityClass.isTypeOptional(typeName) &&
-				(containsSingleReturnStatement(statementForThen, returnStatementForThen, invocatorName) &&
-						ToolBoxForIfStatementAnalysis
-						.statementDoesNotContainNonConsumerElementsExceptReturnStatements(statementForElse) ||
-						containsSingleReturnStatement(statementForElse, returnStatementForElse, invocatorName) &&
-						ToolBoxForIfStatementAnalysis
-						.statementDoesNotContainNonConsumerElementsExceptReturnStatements(statementForThen));
-
-	}
-
-	private boolean containsSingleReturnStatement(Statement statement, ReturnStatement returnStatement, String invocatorName) {
-		String context = ToolBoxForIfStatementAnalysis.takeOutStatement(statement, returnStatement);
-		String rawContext = ToolBoxForIfStatementAnalysis.removeWhiteSpaces(context);
-		return (rawContext.equals("{}") || rawContext.equals("{;}")) && returnStatement.getExpression().toString().equals(invocatorName);
+		
+		return 	ToolBoxForIfStatementAnalysis.getCyclomaticComplexity(statementForThen) == 1
+				&& ToolBoxForIfStatementAnalysis.getCyclomaticComplexity(statementForElse) == 1
+				&& ToolBoxForIfStatementAnalysis.isStatementComposedByASimgleAction(statementForThen)
+				&& ToolBoxForIfStatementAnalysis.isStatementComposedByASimgleAction(statementForElse) 
+				&& UtilityClass.isTypeOptional(typeName);
 	}
 }

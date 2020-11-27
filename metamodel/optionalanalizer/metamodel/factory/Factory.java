@@ -117,6 +117,14 @@ public class Factory {
         }
         return (MRule10Atom)instance;
     }
+   public MAnalysis createMAnalysis(java.lang.Object obj) {
+       XEntity instance = lruCache_.get(obj);
+        if (null == instance) {
+           instance = new MAnalysisImpl(obj);
+           lruCache_.put(obj, instance);
+        }
+        return (MAnalysis)instance;
+    }
    public MRule21Atom createMRule21Atom(java.lang.Object obj) {
        XEntity instance = lruCache_.get(obj);
         if (null == instance) {

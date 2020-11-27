@@ -3,11 +3,13 @@ package rule_9Antipattern;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.eclipse.jdt.core.dom.ASTNode;
 import org.eclipse.jdt.core.dom.IfStatement;
 import org.eclipse.jdt.core.dom.MethodInvocation;
 import org.eclipse.jdt.core.dom.Statement;
+import org.javatuples.Pair;
 
 import optionalanalizer.metamodel.entity.MRule9Atom;
 import optionalanalizer.metamodel.factory.Factory;
@@ -20,8 +22,6 @@ import utilities.Unit;
 
 public class Rule9AtomFinder{
 
-
-
 	public List<MRule9Atom> getMAtoms(ASTNode astNode) {
 
 		List<? extends Atom> rule7Atoms = getRule7Atoms(astNode);
@@ -30,9 +30,9 @@ public class Rule9AtomFinder{
 				.filter(Optional::isPresent)
 				.map(Optional::get)
 				.collect(Collectors.toList());
-		
+
 		rule9Atoms.removeAll(rule7Atoms);
-		
+
 		return rule9Atoms.stream()
 				.map(el -> Factory.getInstance().createMRule9Atom(el))
 				.collect(Collectors.toList());
@@ -41,12 +41,13 @@ public class Rule9AtomFinder{
 	private List<IfStatement> getAtoms(ASTNode astNode) {
 		OptionalInvocationFinder optionalInvocationFinder = new OptionalInvocationFinder();
 		List<MethodInvocation> invocations = optionalInvocationFinder.getInvocations(astNode);
+
 		return collectAntipatterns(invocations);
 	}
-	
+
 	private List<Rule7Atom> getRule7Atoms(ASTNode astNode) {
 		Rule7AtomFinder rule7AtomFinder = new Rule7AtomFinder();
-		
+
 		return rule7AtomFinder.getMAtoms(astNode).stream()
 				.map(mAtom -> (Rule7Atom)mAtom.getUnderlyingObject())
 				.collect(Collectors.toList());
@@ -64,30 +65,23 @@ public class Rule9AtomFinder{
 				.collect(Collectors.toList());
 	}
 
-
 	private  boolean isAntipattern(IfStatement ifStatement, String invocatorName) {
-		Optional<Statement> thenStatementOptional = Optional.ofNullable(ifStatement.getThenStatement());
-		Optional<Statement> elseStatementOptional = Optional.ofNullable(ifStatement.getElseStatement());
-		Statement thenStatement = null;
-		Statement elseStatement = null;
-		boolean areComponentsPresent = thenStatementOptional.isPresent() && elseStatementOptional.isPresent() &&
-				!ToolBoxForIfStatementAnalysis.isEmptyStatement(elseStatementOptional.get());
-
-		if(areComponentsPresent) {
-			thenStatement = thenStatementOptional.get();
-			elseStatement = elseStatementOptional.get();
-		} else {
-			return false;
-		}
-
-		return isAntipattern(thenStatement, elseStatement, invocatorName);
+		
+		return Stream.of(Pair.with(ifStatement.getThenStatement(), ifStatement.getElseStatement()))
+				.filter(pair -> pair.getValue0() != null && pair.getValue1() != null)
+				.allMatch(pair -> isAntipattern(pair.getValue0(), pair.getValue1(), invocatorName));
 	}
 
-
-
 	private boolean isAntipattern(Statement thenStatement, Statement elseStatement, String invocatorName) {
-		return ToolBoxForIfStatementAnalysis.statementDoesNotContainNonConsumerElements(thenStatement) && ToolBoxForIfStatementAnalysis.statementDoesNotContainNonConsumerElements(elseStatement) &&
-				(ToolBoxForIfStatementAnalysis.containsGetFromOptional(thenStatement, invocatorName) && !ToolBoxForIfStatementAnalysis.containsGetFromOptional(elseStatement, invocatorName) ||
-						!ToolBoxForIfStatementAnalysis.containsGetFromOptional(thenStatement, invocatorName) && ToolBoxForIfStatementAnalysis.containsGetFromOptional(elseStatement, invocatorName));
+		return		ToolBoxForIfStatementAnalysis.getCyclomaticComplexity(thenStatement) == 1
+				&& ToolBoxForIfStatementAnalysis.getCyclomaticComplexity(elseStatement) == 1
+				&& ToolBoxForIfStatementAnalysis.isStatementComposedByASimgleAction(thenStatement)
+				&& ToolBoxForIfStatementAnalysis.isStatementComposedByASimgleAction(elseStatement)
+				&& ToolBoxForIfStatementAnalysis.statementDoesNotContainNonConsumerElements(thenStatement) 
+				&& ToolBoxForIfStatementAnalysis.statementDoesNotContainNonConsumerElements(elseStatement)
+				&& (ToolBoxForIfStatementAnalysis.containsGetFromOptional(thenStatement, invocatorName) 
+						&& !ToolBoxForIfStatementAnalysis.containsGetFromOptional(elseStatement, invocatorName) 
+						|| !ToolBoxForIfStatementAnalysis.containsGetFromOptional(thenStatement, invocatorName) 
+						&& ToolBoxForIfStatementAnalysis.containsGetFromOptional(elseStatement, invocatorName));
 	}
 }

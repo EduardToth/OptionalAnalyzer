@@ -1,5 +1,6 @@
 package utilities;
 
+import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.dom.ASTNode;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.ui.texteditor.ITextEditor;
@@ -21,34 +22,26 @@ public abstract class Atom {
 		ite.selectAndReveal(wrappedElement.getStartPosition(), wrappedElement.getLength());
 	}
 
-	@Override
-	public boolean equals(Object o) {
-		if(o instanceof Atom) {
-			if(this.wrappedElement.getStartPosition() - ((Atom)o).wrappedElement.getStartPosition() == 0) {
-				return true;
-			}
-		}
-		return false;
-	}
 	
-	@Override
-	public int hashCode() {
-		return this.wrappedElement.getStartPosition();
-	}
-	
+
 
 	@Override
 	public String toString() {
 		CompilationUnit compilationUnit = UtilityClass.getCompilationUnit(wrappedElement);
+
+		String fileName = compilationUnit.getJavaElement().getElementName();
 		int startLineNumber = compilationUnit.getLineNumber(wrappedElement.getStartPosition());
-		return "On line: " + startLineNumber;
+		return "In file: " + fileName + " "
+					+ "On line: " + startLineNumber;
 	}
+
 	protected abstract boolean belongs(ASTNode wrappedElement);
-	
+
 	public int getStartingPosition() {
+
 		return wrappedElement.getStartPosition();
 	}
-	
+
 	public ASTNode getWrappedElement() {
 		return wrappedElement;
 	}

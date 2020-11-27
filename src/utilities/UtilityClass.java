@@ -105,7 +105,7 @@ public class UtilityClass {
 		int startIndex = typeName.indexOf("<");
 		int endIndex = typeName.lastIndexOf(">");
 
-		if(startIndex == -1) {
+		if(startIndex == -1 || endIndex == -1) {
 			return new String[ 0 ];
 		}
 
@@ -177,10 +177,22 @@ public class UtilityClass {
 		List<SingleVariableDeclaration> parameters = methodDeclaration.parameters();
 
 		return parameters.stream()
+				.filter(UtilityClass::hasType)
 				.map(param -> param.getType().resolveBinding().getQualifiedName())
 				.filter(typeName -> utilities.UtilityClass.isTypeOptional(typeName))
 				.findFirst()
 				.isPresent();
+	}
+	
+	private static boolean hasType(SingleVariableDeclaration singleVariableDeclaration) {
+		try {
+			singleVariableDeclaration.getType()
+			.resolveBinding()
+			.getQualifiedName();
+			return true;
+		} catch (NullPointerException e) {
+			return false;
+		}
 	}
 
 	public static SingleVariableDeclaration getFirstOptionalParameter(MethodDeclaration methodDeclaration) {

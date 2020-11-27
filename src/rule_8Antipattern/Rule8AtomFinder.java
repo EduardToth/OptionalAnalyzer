@@ -3,11 +3,13 @@ package rule_8Antipattern;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.eclipse.jdt.core.dom.ASTNode;
 import org.eclipse.jdt.core.dom.IfStatement;
 import org.eclipse.jdt.core.dom.MethodInvocation;
 import org.eclipse.jdt.core.dom.Statement;
+import org.javatuples.Pair;
 
 import optionalanalizer.metamodel.entity.MRule8Atom;
 import optionalanalizer.metamodel.factory.Factory;
@@ -16,7 +18,7 @@ import utilities.ToolBoxForIfStatementAnalysis;
 import utilities.Unit;
 
 public class Rule8AtomFinder{
-	
+
 	public List<MRule8Atom> getMAtoms(ASTNode astNode) {
 
 		return getAtoms(astNode).stream()
@@ -30,6 +32,7 @@ public class Rule8AtomFinder{
 	private List<IfStatement> getAtoms(ASTNode astNode) {
 		OptionalInvocationFinder optionalInvocationFinder = new OptionalInvocationFinder();
 		List<MethodInvocation> invocations = optionalInvocationFinder.getInvocations(astNode);
+		
 		return collectAntipatterns(invocations);
 	}
 
@@ -46,28 +49,24 @@ public class Rule8AtomFinder{
 	}
 
 	private  boolean isAntipattern(IfStatement ifStatement, String invocatorName) {
-		Optional<Statement> thenStatementOptional = Optional.ofNullable(ifStatement.getThenStatement());
-		Optional<Statement> elseStatementOptional = Optional.ofNullable(ifStatement.getElseStatement());
+		
+		 return Stream.of(Pair.with(ifStatement.getThenStatement(), ifStatement.getElseStatement()))
+				.filter(this::containsOnlyThenBlock)
+				.map(Pair::getValue0)
+				.allMatch(thenStatement -> isAntipattern(thenStatement, invocatorName));
 
-		if(elseStatementOptional.isPresent() && !ToolBoxForIfStatementAnalysis.isEmptyStatement(elseStatementOptional.get())) {
-			return false;
-		}
-
-		Statement thenStatement = null;
-
-		if(!thenStatementOptional.isPresent()) {
-			return false;
-		} else {
-			thenStatement = thenStatementOptional.get();
-		}
-		return isAntipattern(thenStatement, invocatorName);
-
+	}
+	
+	private boolean containsOnlyThenBlock(Pair<Statement, Statement> statementPair) {
+		return  statementPair.getValue0() != null && (statementPair.getValue1() == null);
 	}
 
 
 	private boolean isAntipattern(Statement statementForThen, String invocatorName) {
-		return ToolBoxForIfStatementAnalysis.containsGetFromOptional(statementForThen, invocatorName) &&
-				ToolBoxForIfStatementAnalysis.statementDoesNotContainNonConsumerElements(statementForThen);
+		return ToolBoxForIfStatementAnalysis.getCyclomaticComplexity(statementForThen) == 1
+				&& ToolBoxForIfStatementAnalysis.isStatementComposedByASimgleAction(statementForThen)
+				&& ToolBoxForIfStatementAnalysis.containsGetFromOptional(statementForThen, invocatorName) 
+				&& ToolBoxForIfStatementAnalysis.statementDoesNotContainNonConsumerElements(statementForThen);
 	}
 
 }

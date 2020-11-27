@@ -4,6 +4,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.eclipse.jdt.core.dom.ASTNode;
 import org.eclipse.jdt.core.dom.ASTVisitor;
@@ -11,6 +12,7 @@ import org.eclipse.jdt.core.dom.IMethodBinding;
 import org.eclipse.jdt.core.dom.IfStatement;
 import org.eclipse.jdt.core.dom.MethodInvocation;
 import org.eclipse.jdt.core.dom.Statement;
+import org.javatuples.Pair;
 
 import optionalanalizer.metamodel.entity.MRule7Atom;
 import optionalanalizer.metamodel.factory.Factory;
@@ -20,8 +22,6 @@ import utilities.UtilityClass;
 
 public class Rule7AtomFinder{
 
-	private MethodInvocation firstMethodInvocationForThen = null;
-	private MethodInvocation firstMethodInvocationForElse = null;
 
 	public List<MRule7Atom> getMAtoms(ASTNode astNode) {
 		OptionalInvocationFinder optionalInvocationFinder = new OptionalInvocationFinder();
@@ -34,40 +34,36 @@ public class Rule7AtomFinder{
 		List<MRule7Atom> mIfStatements = isPresentList.stream()
 				.filter(ToolBoxForIfStatementAnalysis::isSuperParentIfStatement)
 				.map(ToolBoxForIfStatementAnalysis::getIfStatement)
-				.filter(ifStm -> isThereSameMethodInvokedInThenElseBlocks(ifStm))
-				.filter(ifStm -> isContextTheSame(ifStm))
+				.filter(this::isThereSameMethodInvokedInThenElseBlocks)
+				.filter(this::isCyclomaticComplexityForBothOne)
 				.map(Rule7Atom::getInstance)
 				.filter(Optional::isPresent)
 				.map(Optional::get)
-				.map(el -> Factory.getInstance().createMRule7Atom(el))
+				.map(Factory.getInstance()::createMRule7Atom)
 				.collect(Collectors.toList());
 
 		return mIfStatements;
 	}
 
-	private void setMethodInvocations(MethodInvocation methodInvocationForThen, MethodInvocation methodInvocationForElse) {
-			this.firstMethodInvocationForThen = methodInvocationForThen;
-			this.firstMethodInvocationForElse = methodInvocationForElse;
+	private boolean isCyclomaticComplexityForBothOne(IfStatement ifStatement) {
+		return Stream.of(Pair.with(ifStatement.getThenStatement(), ifStatement.getElseStatement()))
+				.filter(pair -> pair.getValue0() != null && pair.getValue1() != null)
+				.allMatch(this::isCyclomaticComplexityForBothOne);
 	}
-
-	private boolean isContextTheSame(IfStatement ifStatement) {
-		if(this.firstMethodInvocationForThen == null) {
-			return false;
-		}
-		Statement thenStatement = ifStatement.getThenStatement();
-		Statement elseStatement = ifStatement.getElseStatement();
-		
-		return ToolBoxForIfStatementAnalysis.isSameContext(thenStatement, firstMethodInvocationForThen, elseStatement, firstMethodInvocationForElse);
+	
+	private boolean isCyclomaticComplexityForBothOne(Pair<Statement,Statement> statementPair) {
+		return ToolBoxForIfStatementAnalysis.getCyclomaticComplexity(statementPair.getValue0()) == 1 
+				&& ToolBoxForIfStatementAnalysis.getCyclomaticComplexity(statementPair.getValue1()) == 1;
 	}
 
 	private boolean isThereSameMethodInvokedInThenElseBlocks(IfStatement ifStatement) {
 		Statement thenStatement = ifStatement.getThenStatement();
 		Statement elseStatement = ifStatement.getElseStatement();
 
-		if(elseStatement == null) {
+		if(thenStatement == null || elseStatement == null) {
 			return false;
 		}
-		
+
 		final List<MethodInvocation> methodInvocationsForTheStatement = getMethodInvocationFromStatement(thenStatement);
 		final List<MethodInvocation> methodInvocationsForElseStatement = getMethodInvocationFromStatement(elseStatement);
 
@@ -80,7 +76,6 @@ public class Rule7AtomFinder{
 	private boolean doesListContainMethodInvocation(final List<MethodInvocation> methodInvocations, MethodInvocation methodInvocation) {
 		return methodInvocations.stream()
 				.filter(inv -> areInvokedMethodsTheSame(inv, methodInvocation))
-				.peek(inv -> setMethodInvocations(inv, methodInvocation))
 				.findAny()
 				.isPresent();
 	}
@@ -117,5 +112,4 @@ public class Rule7AtomFinder{
 
 		return bindings1.equals(bindings2);
 	}
-
 }

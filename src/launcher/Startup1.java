@@ -4,6 +4,7 @@ import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.ui.IStartup;
 
+import FullAnalysis.Analysis;
 import optionalanalizer.metamodel.factory.Factory;
 import ro.lrg.insider.view.ToolRegistration;
 import ro.lrg.insider.view.ToolRegistration.XEntityConverter;
@@ -29,23 +30,6 @@ import rule_6Antipattern.Rule6Atom;
 import rule_7Antipattern.Rule7Atom;
 import rule_8Antipattern.Rule8Atom;
 import rule_9Antipattern.Rule9Atom;
-
-
-/*
- * Intrebari:
- * La regula: ce-i cu antipattern2??????????????????????
- * La regulile 8 si 9, cum sa detectez exceptiile neverificate
- * La regula 20 (Optional cu tipuri nepotrivite in colectii sau tablouri)
- * Intreb daca sa tin cont de tipurile de compilator
- */
-
-/*
- * N-am facut inca la:
- * 11 -> inca nu stiu
- * 22
- * 23
- * 24
- */
 
 
 public class Startup1 implements IStartup {
@@ -103,6 +87,8 @@ public class Startup1 implements IStartup {
 							return Factory.getInstance().createMCompilationUnit((ICompilationUnit)element);
 						} else if(element instanceof IJavaProject) {
 							return Factory.getInstance().createMProject((IJavaProject)element);
+						} else if(element instanceof Analysis) {
+							return Factory.getInstance().createMAnalysis((Analysis)element);
 						} 
 						return null;
 					}

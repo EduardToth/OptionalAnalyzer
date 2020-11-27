@@ -18,6 +18,9 @@ public interface MCompilationUnit extends ro.lrg.xcore.metametamodel.XEntity {
 	public ro.lrg.xcore.metametamodel.Group<MRule3Atom> rule_3AntipatternBuilder();
 
 	@ro.lrg.xcore.metametamodel.ThisIsARelationBuilder
+	public ro.lrg.xcore.metametamodel.Group<MAnalysis> groupBuilder();
+
+	@ro.lrg.xcore.metametamodel.ThisIsARelationBuilder
 	public ro.lrg.xcore.metametamodel.Group<MRule26Atom> rule26AntipatternBuilder();
 
 	@ro.lrg.xcore.metametamodel.ThisIsARelationBuilder

@@ -6,6 +6,7 @@ import compilationUnits.properties.ToString;
 import compilationUnits.groups.Rule10AntipatternBuilder;
 import compilationUnits.groups.Rule20AntipatternBuilder;
 import compilationUnits.groups.Rule_3AntipatternBuilder;
+import FullAnalysis.groups.GroupBuilder;
 import compilationUnits.groups.Rule26AntipatternBuilder;
 import compilationUnits.groups.Rule16AntipatternBuilder;
 import compilationUnits.groups.Rule18AntipatternBuilder;
@@ -34,6 +35,7 @@ public class MCompilationUnitImpl implements MCompilationUnit {
 	private static final Rule10AntipatternBuilder Rule10AntipatternBuilder_INSTANCE = new Rule10AntipatternBuilder();
 	private static final Rule20AntipatternBuilder Rule20AntipatternBuilder_INSTANCE = new Rule20AntipatternBuilder();
 	private static final Rule_3AntipatternBuilder Rule_3AntipatternBuilder_INSTANCE = new Rule_3AntipatternBuilder();
+	private static final GroupBuilder GroupBuilder_INSTANCE = new GroupBuilder();
 	private static final Rule26AntipatternBuilder Rule26AntipatternBuilder_INSTANCE = new Rule26AntipatternBuilder();
 	private static final Rule16AntipatternBuilder Rule16AntipatternBuilder_INSTANCE = new Rule16AntipatternBuilder();
 	private static final Rule18AntipatternBuilder Rule18AntipatternBuilder_INSTANCE = new Rule18AntipatternBuilder();
@@ -90,6 +92,12 @@ public class MCompilationUnitImpl implements MCompilationUnit {
 	@ro.lrg.xcore.metametamodel.ThisIsARelationBuilder
 	public ro.lrg.xcore.metametamodel.Group<MRule3Atom> rule_3AntipatternBuilder() {
 		return Rule_3AntipatternBuilder_INSTANCE.buildGroup(this);
+	}
+
+	@Override
+	@ro.lrg.xcore.metametamodel.ThisIsARelationBuilder
+	public ro.lrg.xcore.metametamodel.Group<MAnalysis> groupBuilder() {
+		return GroupBuilder_INSTANCE.buildGroup(this);
 	}
 
 	@Override

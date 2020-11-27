@@ -2,15 +2,14 @@ package rule18Antipattern;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
-
 import org.eclipse.jdt.core.dom.ASTNode;
 import org.eclipse.jdt.core.dom.ASTVisitor;
-import org.eclipse.jdt.core.dom.MethodDeclaration;
 import org.eclipse.jdt.core.dom.SimpleName;
-
 import optionalanalizer.metamodel.entity.MRule18Atom;
 import optionalanalizer.metamodel.factory.Factory;
 import utilities.Unit;
@@ -24,13 +23,17 @@ public class Rule18AtomFinder {
 
 		final Unit<String> typeName = new Unit<>(null);
 
-		return simpleNames.stream()
-				.peek(simpleName -> typeName.setAt0(getTypeName(simpleName)))
-				.filter(el -> isRule18Antipattern(typeName.getValue0()))
-				.map(Rule18Atom::getInstance)
-				.filter(Optional::isPresent)
-				.map(Optional::get)
-				.distinct()
+		List<Rule18Atom> atoms = simpleNames.stream()
+		.peek(simpleName -> typeName.setAt0(getTypeName(simpleName)))
+		.filter(el -> isRule18Antipattern(typeName.getValue0()))
+		.map(Rule18Atom::getInstance)
+		.filter(Optional::isPresent)
+		.map(Optional::get)
+		.collect(Collectors.toList());
+		
+		atoms = removeDuplicates(atoms);
+		
+		return atoms.stream()
 				.map(atom -> Factory.getInstance().createMRule18Atom(atom))
 				.collect(Collectors.toList());
 	}
@@ -75,5 +78,19 @@ public class Rule18AtomFinder {
 				.isPresent();
 
 		return containsOptional;
+	}
+
+	private List<Rule18Atom> removeDuplicates(List<Rule18Atom> atoms) {
+
+		Set<Integer> startPositions = new HashSet<>();
+		List<Rule18Atom> newList = new ArrayList<>();
+		for(Rule18Atom rule21Atom : atoms) {
+			if(!startPositions.contains(rule21Atom.getStartingPosition())) {
+				newList.add(rule21Atom);
+				startPositions.add(rule21Atom.getStartingPosition());
+			}
+
+		}
+		return newList;
 	}
 }
