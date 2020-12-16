@@ -27,6 +27,9 @@ public interface MProject extends ro.lrg.xcore.metametamodel.XEntity {
 	public ro.lrg.xcore.metametamodel.Group<MRule18Atom> rule18AntipatternBuilder();
 
 	@ro.lrg.xcore.metametamodel.ThisIsARelationBuilder
+	public ro.lrg.xcore.metametamodel.Group<MRule13Atom> rule13AntipatternBuilder();
+
+	@ro.lrg.xcore.metametamodel.ThisIsARelationBuilder
 	public ro.lrg.xcore.metametamodel.Group<MCompilationUnit> compilationUnitBuilder();
 
 	@ro.lrg.xcore.metametamodel.ThisIsARelationBuilder

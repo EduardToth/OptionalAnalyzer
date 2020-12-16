@@ -22,12 +22,13 @@ public class Rule18Tests extends TestBaseClass{
 	@Override
 	protected List<Atom> getAtoms() {
 		Group<MRule18Atom> group = getMCompilationUnit().rule18AntipatternBuilder();
-		
-		return group.getElements().stream()
-			.map(mAtom -> (Atom)mAtom.getUnderlyingObject())
-			.collect(Collectors.toList());
+
+		return group.getElements()
+				.stream()
+				.map(mAtom -> (Atom)mAtom.getUnderlyingObject())
+				.collect(Collectors.toList());
 	}
-	
+
 	@Test
 	@Override
 	public void test() {

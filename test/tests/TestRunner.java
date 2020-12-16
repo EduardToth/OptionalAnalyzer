@@ -17,6 +17,7 @@ import org.junit.runners.Suite;
 	Rule_9Tests.class,
 	Rule10Tests.class,
 	Rule12Tests.class,
+	Rule13Tests.class,
 	Rule14Tests.class,
 	Rule15Tests.class,
 	Rule16Tests.class,
