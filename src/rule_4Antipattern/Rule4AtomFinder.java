@@ -24,7 +24,7 @@ public class Rule4AtomFinder{
 				.map(Rule4Atom::getInstance)
 				.filter(Optional::isPresent)
 				.map(Optional::get)
-				.map(el -> Factory.getInstance().createMRule4Atom(el))
+				.map(Factory.getInstance()::createMRule4Atom)
 				.collect(Collectors.toList());
 		
 		List<MRule4Atom> returnStatementMAtoms = getProblematicReturnStatements(astNode)
@@ -32,7 +32,7 @@ public class Rule4AtomFinder{
 				.map(Rule4Atom::getInstance)
 				.filter(Optional::isPresent)
 				.map(Optional::get)
-				.map(el -> Factory.getInstance().createMRule4Atom(el))
+				.map(Factory.getInstance()::createMRule4Atom)
 				.collect(Collectors.toList());
 				
 		return Stream.of(ifStatementMAtoms, returnStatementMAtoms)

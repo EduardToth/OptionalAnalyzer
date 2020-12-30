@@ -31,7 +31,8 @@ import rule_7Antipattern.Rule7Atom;
 import rule_8Antipattern.Rule8Atom;
 import rule_9Antipattern.Rule9Atom;
 
-
+import org.eclipse.core.internal.resources.Project;
+import org.eclipse.core.runtime.CoreException;
 public class Startup1 implements IStartup {
 
 	@Override
@@ -90,6 +91,7 @@ public class Startup1 implements IStartup {
 						} else if(element instanceof Analysis) {
 							return Factory.getInstance().createMAnalysis((Analysis)element);
 						} 
+
 						return null;
 					}
 				}

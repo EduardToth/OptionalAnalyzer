@@ -34,7 +34,7 @@ public class Rule18AtomFinder {
 		atoms = removeDuplicates(atoms);
 		
 		return atoms.stream()
-				.map(atom -> Factory.getInstance().createMRule18Atom(atom))
+				.map(Factory.getInstance()::createMRule18Atom)
 				.collect(Collectors.toList());
 	}
 

@@ -26,7 +26,7 @@ public class Rule26AtomFinder {
 				.map(Rule26Atom::getInstance)
 				.filter(Optional::isPresent)
 				.map(Optional::get)
-				.map(prefixExpression -> Factory.getInstance().createMRule26Atom(prefixExpression))
+				.map(Factory.getInstance()::createMRule26Atom)
 				.collect(Collectors.toList());
 	}
 

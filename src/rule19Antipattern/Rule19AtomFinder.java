@@ -37,7 +37,7 @@ public class Rule19AtomFinder {
 				.map(Rule19Atom::getInstance)
 				.filter(Optional::isPresent)
 				.map(Optional::get)
-				.map(methodInvocation -> Factory.getInstance().createMRule19Atom(methodInvocation))
+				.map(Factory.getInstance()::createMRule19Atom)
                 .collect(Collectors.toList());
 	}
 

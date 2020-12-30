@@ -61,14 +61,6 @@ public class Factory {
         }
         return (MRule3Atom)instance;
     }
-   public MRule12Atom createMRule12Atom(java.lang.Object obj) {
-       XEntity instance = lruCache_.get(obj);
-        if (null == instance) {
-           instance = new MRule12AtomImpl(obj);
-           lruCache_.put(obj, instance);
-        }
-        return (MRule12Atom)instance;
-    }
    public MRule7Atom createMRule7Atom(java.lang.Object obj) {
        XEntity instance = lruCache_.get(obj);
         if (null == instance) {
@@ -77,13 +69,13 @@ public class Factory {
         }
         return (MRule7Atom)instance;
     }
-   public MRule21Atom createMRule21Atom(java.lang.Object obj) {
+   public MRule12Atom createMRule12Atom(java.lang.Object obj) {
        XEntity instance = lruCache_.get(obj);
         if (null == instance) {
-           instance = new MRule21AtomImpl(obj);
+           instance = new MRule12AtomImpl(obj);
            lruCache_.put(obj, instance);
         }
-        return (MRule21Atom)instance;
+        return (MRule12Atom)instance;
     }
    public MAnalysis createMAnalysis(java.lang.Object obj) {
        XEntity instance = lruCache_.get(obj);
@@ -92,6 +84,14 @@ public class Factory {
            lruCache_.put(obj, instance);
         }
         return (MAnalysis)instance;
+    }
+   public MRule21Atom createMRule21Atom(java.lang.Object obj) {
+       XEntity instance = lruCache_.get(obj);
+        if (null == instance) {
+           instance = new MRule21AtomImpl(obj);
+           lruCache_.put(obj, instance);
+        }
+        return (MRule21Atom)instance;
     }
    public MRule20Atom createMRule20Atom(java.lang.Object obj) {
        XEntity instance = lruCache_.get(obj);

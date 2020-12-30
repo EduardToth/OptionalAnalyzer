@@ -19,7 +19,7 @@ public class Rule1AtomFinder{
 	public List<MRule1Atom> getMAtoms(ASTNode astNode) {
 
 		return getAtoms(astNode).stream()
-				.map(el -> Factory.getInstance().createMRule1Atom(el))
+				.map(Factory.getInstance()::createMRule1Atom)
 				.collect(Collectors.toList());
 	}
 

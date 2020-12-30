@@ -31,7 +31,7 @@ public class Rule7AtomFinder{
 
 	private List<MRule7Atom> collectRule7Antipatterns(List<MethodInvocation> isPresentList) {
 
-		List<MRule7Atom> mIfStatements = isPresentList.stream()
+		return isPresentList.parallelStream()
 				.filter(ToolBoxForIfStatementAnalysis::isSuperParentIfStatement)
 				.map(ToolBoxForIfStatementAnalysis::getIfStatement)
 				.filter(this::isThereSameMethodInvokedInThenElseBlocks)
@@ -41,8 +41,6 @@ public class Rule7AtomFinder{
 				.map(Optional::get)
 				.map(Factory.getInstance()::createMRule7Atom)
 				.collect(Collectors.toList());
-
-		return mIfStatements;
 	}
 
 	private boolean isCyclomaticComplexityForBothOne(IfStatement ifStatement) {

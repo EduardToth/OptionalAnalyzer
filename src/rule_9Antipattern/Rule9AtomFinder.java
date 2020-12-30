@@ -34,7 +34,7 @@ public class Rule9AtomFinder{
 		rule9Atoms.removeAll(rule7Atoms);
 
 		return rule9Atoms.stream()
-				.map(el -> Factory.getInstance().createMRule9Atom(el))
+				.map(Factory.getInstance()::createMRule9Atom)
 				.collect(Collectors.toList());
 	}
 

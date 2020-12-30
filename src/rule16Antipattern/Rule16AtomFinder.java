@@ -19,12 +19,12 @@ public class Rule16AtomFinder {
 		return methodDeclarations.parallelStream()
 				.filter(decl -> !decl.isConstructor())
 				.filter(decl -> !UtilityClass.isSetter( decl ))
-				.filter(decl -> UtilityClass.containsAtLeastOneOptionalAsParameter( decl ))
-				.map(decl -> UtilityClass.getFirstOptionalParameter( decl ))
+				.filter(UtilityClass::containsAtLeastOneOptionalAsParameter)
+				.map(UtilityClass::getFirstOptionalParameter)
 				.map(Rule16Atom::getInstance)
 				.filter(Optional::isPresent)
 				.map(Optional::get)
-				.map(atom -> Factory.getInstance().createMRule16Atom(atom))
+				.map(Factory.getInstance()::createMRule16Atom)
 				.collect(Collectors.toList());
 	}
 }

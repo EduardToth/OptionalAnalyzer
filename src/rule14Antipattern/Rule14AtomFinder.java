@@ -16,14 +16,13 @@ public class Rule14AtomFinder {
 		List<MethodDeclaration> methodDeclarations = UtilityClass.getMethodDeclarations(astNode);
 
 		return methodDeclarations.stream()
-				.filter(decl -> decl.isConstructor())
-				.filter(decl -> UtilityClass.containsAtLeastOneOptionalAsParameter( decl ))
-				.map(decl -> UtilityClass.getFirstOptionalParameter( decl ))
+				.filter(MethodDeclaration::isConstructor)
+				.filter(UtilityClass::containsAtLeastOneOptionalAsParameter)
+				.map(UtilityClass::getFirstOptionalParameter)
 				.map(Rule14Atom::getInstance)
 				.filter(Optional::isPresent)
 				.map(Optional::get)
-				.map(atom -> Factory.getInstance().createMRule14Atom(atom))
+				.map(Factory.getInstance()::createMRule14Atom)
 				.collect(Collectors.toList());
-
 	}
 }

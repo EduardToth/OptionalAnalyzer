@@ -21,14 +21,14 @@ public class Rule17AtomFinder {
 		final Unit<MethodDeclaration> currentMethodDeclaration = new Unit<>(null);
 		
 		return methodDeclarations.stream()
-				.peek(decl -> currentMethodDeclaration.setAt0( decl ))
+				.peek(currentMethodDeclaration::setAt0)
 				.filter(decl -> !decl.isConstructor())
 				.map(this::getTypeName)
 				.filter(this::isExpressionOfTypeOptionalContainingArrayOrCollection)
-				.map((el) -> Rule17Atom.getInstance(currentMethodDeclaration.getValue0()))
+				.map(el -> Rule17Atom.getInstance(currentMethodDeclaration.getValue0()))
 				.filter(Optional::isPresent)
 				.map(Optional::get)
-				.map(atom -> Factory.getInstance().createMRule17Atom(atom))
+				.map(Factory.getInstance()::createMRule17Atom)
 				.collect(Collectors.toList());
 	}
 	

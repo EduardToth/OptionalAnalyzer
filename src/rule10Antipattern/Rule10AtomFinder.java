@@ -25,7 +25,7 @@ public class Rule10AtomFinder {
 				.map(Rule10Atom::getInstance)
 				.filter(Optional::isPresent)
 				.map(Optional::get)
-				.map(el -> Factory.getInstance().createMRule10Atom(el))
+				.map(Factory.getInstance()::createMRule10Atom)
 				.collect(Collectors.toList());
 
 	}

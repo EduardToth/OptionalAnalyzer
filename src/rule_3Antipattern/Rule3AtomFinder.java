@@ -24,7 +24,7 @@ public class Rule3AtomFinder{
 				.map(Rule3Atom::getInstance)
 				.filter(Optional::isPresent)
 				.map(Optional::get)
-				.map(el -> Factory.getInstance().createMRule3Atom(el))
+				.map(Factory.getInstance()::createMRule3Atom)
 				.collect(Collectors.toList());
 	}
 

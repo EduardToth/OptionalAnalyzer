@@ -5,6 +5,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.eclipse.jdt.core.dom.ASTNode;
+import org.eclipse.jdt.core.dom.MethodDeclaration;
 import org.eclipse.jdt.core.dom.MethodInvocation;
 
 import optionalanalizer.metamodel.entity.MRule12Atom;
@@ -18,20 +19,22 @@ public class Rule12AtomFinder {
 	public List<MRule12Atom> getMAtoms(ASTNode astNode) {
 		OptionalInvocationFinder optionalInvocationFinder = new OptionalInvocationFinder();
 		List<MethodInvocation> ofNullableList = optionalInvocationFinder.getInvocations(astNode, "ofNullable");
-		List<MRule12Atom> antipatternList = ofNullableList.stream()
+		
+		return ofNullableList.parallelStream()
 				.filter(this::respectsThePattern)
-				.map(methodInvocation -> methodInvocation.getParent())
-				.filter(el -> el instanceof MethodInvocation)
+				.map(MethodInvocation::getParent)
+				.filter(MethodInvocation.class::isInstance)
 				.map(Rule12Atom::getInstance)
 				.filter(Optional::isPresent)
 				.map(Optional::get)
-				.map(el -> Factory.getInstance().createMRule12Atom(el))
+				.map(Factory.getInstance()::createMRule12Atom)
 				.collect(Collectors.toList());
 		
-		return antipatternList;
 	}
 
 	private boolean respectsThePattern(MethodInvocation methodInvocation) {
-		return methodInvocation.getParent().toString().matches(matchingRegEx);
+		return methodInvocation.getParent()
+				.toString()
+				.matches(matchingRegEx);
 	}
 }

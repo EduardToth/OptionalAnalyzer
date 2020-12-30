@@ -25,7 +25,7 @@ public class Rule8AtomFinder{
 				.map(Rule8Atom::getInstance)
 				.filter(Optional::isPresent)
 				.map(Optional::get)
-				.map(el -> Factory.getInstance().createMRule8Atom(el))
+				.map(Factory.getInstance()::createMRule8Atom)
 				.collect(Collectors.toList());
 	}
 
