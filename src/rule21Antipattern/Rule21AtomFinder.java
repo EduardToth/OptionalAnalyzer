@@ -22,7 +22,7 @@ public class Rule21AtomFinder {
 		OptionalInvocationFinder optionalInvocationFinder = new OptionalInvocationFinder();
 		List<MethodInvocation> equalsInvocationsFromOptional = optionalInvocationFinder.getInvocations(astNode, "get");
 
-		List<Rule21Atom> atoms =  equalsInvocationsFromOptional.stream()
+		List<Rule21Atom> atoms =  equalsInvocationsFromOptional.parallelStream()
 				.map(this::getAntipatternOccurencies)
 				.flatMap(Collection::stream)
 				.map(Rule21Atom::getInstance)

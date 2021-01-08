@@ -3,7 +3,6 @@ package rule_9Antipattern;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import org.eclipse.jdt.core.dom.ASTNode;
 import org.eclipse.jdt.core.dom.IfStatement;
@@ -18,14 +17,14 @@ import rule_7Antipattern.Rule7AtomFinder;
 import utilities.Atom;
 import utilities.OptionalInvocationFinder;
 import utilities.ToolBoxForIfStatementAnalysis;
-import utilities.Unit;
+import utilities.UtilityClass;
 
 public class Rule9AtomFinder{
 
 	public List<MRule9Atom> getMAtoms(ASTNode astNode) {
 
 		List<? extends Atom> rule7Atoms = getRule7Atoms(astNode);
-		List<? extends Atom > rule9Atoms =  getAtoms(astNode).stream()
+		List<? extends Atom> rule9Atoms =  getAtoms(astNode).stream()
 				.map(Rule9Atom::getInstance)
 				.filter(Optional::isPresent)
 				.map(Optional::get)
@@ -54,22 +53,31 @@ public class Rule9AtomFinder{
 	}
 
 	private List<IfStatement> collectAntipatterns(List<MethodInvocation> invocations) {
-		final Unit<String> invocatorName = new Unit<>(null);
 
-		return invocations.stream()
-				.peek(inv -> ToolBoxForIfStatementAnalysis.setInvocatorName(inv, invocatorName))
-				.filter(el -> invocatorName.getValue0() != null)
-				.filter(ToolBoxForIfStatementAnalysis::isSuperParentIfStatement)
-				.map(ToolBoxForIfStatementAnalysis::getIfStatement)
-				.filter(ifStatement -> isAntipattern(ifStatement, invocatorName.getValue0()))
+		return invocations.parallelStream()
+				.map(inv -> Pair.with(inv, UtilityClass.getInvocatorName(inv).orElse("")))
+				.filter(invocationAndInvocatorName 
+						-> !invocationAndInvocatorName.getValue1().equals(""))
+				.filter(invocationAndInvocatorName 
+						-> ToolBoxForIfStatementAnalysis
+						.isSuperParentIfStatement(invocationAndInvocatorName.getValue0()))
+				.map(invocationAndInvocatorName 
+						-> Pair.with(ToolBoxForIfStatementAnalysis
+								.getIfStatement(invocationAndInvocatorName.getValue0()),
+								invocationAndInvocatorName.getValue1()))
+				.filter(ifStatementAndInvocatorName 
+						-> isAntipattern(ifStatementAndInvocatorName.getValue0(),
+								ifStatementAndInvocatorName.getValue1()))
+				.map(ifStatementAndInvocatorName -> ifStatementAndInvocatorName.getValue0())
 				.collect(Collectors.toList());
 	}
 
 	private  boolean isAntipattern(IfStatement ifStatement, String invocatorName) {
-		
-		return Stream.of(Pair.with(ifStatement.getThenStatement(), ifStatement.getElseStatement()))
+
+		return Optional.of(Pair.with(ifStatement.getThenStatement(), ifStatement.getElseStatement()))
 				.filter(pair -> pair.getValue0() != null && pair.getValue1() != null)
-				.allMatch(pair -> isAntipattern(pair.getValue0(), pair.getValue1(), invocatorName));
+				.map(pair -> isAntipattern(pair.getValue0(), pair.getValue1(), invocatorName))
+				.orElse(false);
 	}
 
 	private boolean isAntipattern(Statement thenStatement, Statement elseStatement, String invocatorName) {

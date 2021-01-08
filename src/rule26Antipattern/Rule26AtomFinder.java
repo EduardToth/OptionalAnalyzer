@@ -18,7 +18,7 @@ public class Rule26AtomFinder {
 		OptionalInvocationFinder optionalInvocationFinder = new OptionalInvocationFinder();
 		List<MethodInvocation> isPresentInvocations = optionalInvocationFinder.getInvocations(astNode);
 		
-		return isPresentInvocations.stream()
+		return isPresentInvocations.parallelStream()
 				.map(this::getParentPrefixExpression)
 				.filter(Optional::isPresent)
 				.map(Optional::get)

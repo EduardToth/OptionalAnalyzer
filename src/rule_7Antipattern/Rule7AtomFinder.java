@@ -4,7 +4,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import org.eclipse.jdt.core.dom.ASTNode;
 import org.eclipse.jdt.core.dom.ASTVisitor;
@@ -26,6 +25,7 @@ public class Rule7AtomFinder{
 	public List<MRule7Atom> getMAtoms(ASTNode astNode) {
 		OptionalInvocationFinder optionalInvocationFinder = new OptionalInvocationFinder();
 		List<MethodInvocation> isPresentInvocationGroup = optionalInvocationFinder.getInvocations(astNode);
+		
 		return collectRule7Antipatterns(isPresentInvocationGroup);
 	}
 
@@ -36,17 +36,24 @@ public class Rule7AtomFinder{
 				.map(ToolBoxForIfStatementAnalysis::getIfStatement)
 				.filter(this::isThereSameMethodInvokedInThenElseBlocks)
 				.filter(this::isCyclomaticComplexityForBothOne)
+				.filter(this::areStatementsComposedBySingleAction)
 				.map(Rule7Atom::getInstance)
 				.filter(Optional::isPresent)
 				.map(Optional::get)
 				.map(Factory.getInstance()::createMRule7Atom)
 				.collect(Collectors.toList());
 	}
+	
+	private boolean areStatementsComposedBySingleAction(IfStatement ifStatement) {
+		return ToolBoxForIfStatementAnalysis.isStatementComposedByASimgleAction(ifStatement.getThenStatement()) &&
+				ToolBoxForIfStatementAnalysis.isStatementComposedByASimgleAction(ifStatement.getElseStatement());
+	}
 
 	private boolean isCyclomaticComplexityForBothOne(IfStatement ifStatement) {
-		return Stream.of(Pair.with(ifStatement.getThenStatement(), ifStatement.getElseStatement()))
+		return Optional.of(Pair.with(ifStatement.getThenStatement(), ifStatement.getElseStatement()))
 				.filter(pair -> pair.getValue0() != null && pair.getValue1() != null)
-				.allMatch(this::isCyclomaticComplexityForBothOne);
+				.map(this::isCyclomaticComplexityForBothOne)
+				.orElse(false);
 	}
 	
 	private boolean isCyclomaticComplexityForBothOne(Pair<Statement,Statement> statementPair) {
@@ -62,12 +69,12 @@ public class Rule7AtomFinder{
 			return false;
 		}
 
-		final List<MethodInvocation> methodInvocationsForTheStatement = getMethodInvocationFromStatement(thenStatement);
+		final List<MethodInvocation> methodInvocationsForThenStatement = getMethodInvocationFromStatement(thenStatement);
 		final List<MethodInvocation> methodInvocationsForElseStatement = getMethodInvocationFromStatement(elseStatement);
 
-		return methodInvocationsForElseStatement.stream()
-				.filter(inv -> doesListContainMethodInvocation(methodInvocationsForTheStatement, inv))
-				.findFirst()
+		return methodInvocationsForElseStatement.parallelStream()
+				.filter(inv -> doesListContainMethodInvocation(methodInvocationsForThenStatement, inv))
+				.findAny()
 				.isPresent();
 	}
 

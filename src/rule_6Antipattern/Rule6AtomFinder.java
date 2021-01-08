@@ -1,5 +1,6 @@
 package rule_6Antipattern;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -18,10 +19,16 @@ import optionalanalizer.metamodel.entity.MRule6Atom;
 import optionalanalizer.metamodel.factory.Factory;
 import utilities.OptionalInvocationFinder;
 import utilities.ToolBoxForIfStatementAnalysis;
-import utilities.Unit;
+import utilities.UtilityClass;
 
 public class Rule6AtomFinder{
 	
+	private String f() throws IOException {
+		Optional<String> o = Optional.empty();
+		
+		return o.orElseThrow(IOException::new);
+	}
+
 	public List<MRule6Atom> getMAtoms(ASTNode astNode) {
 		return getAtoms(astNode)
 				.stream()
@@ -35,19 +42,26 @@ public class Rule6AtomFinder{
 	private List<IfStatement> getAtoms(ASTNode astNode) {
 		OptionalInvocationFinder optionalInvocationFinder = new OptionalInvocationFinder();
 		List<MethodInvocation> invocations = optionalInvocationFinder.getInvocations(astNode);
+
 		return collectAntipatterns(invocations);
 	}
 
 	private List<IfStatement> collectAntipatterns(List<MethodInvocation> invocations) {
-		final Unit<String> invocatorName = new Unit<>(null);
 
-		return invocations.stream()
-				.peek(inv -> ToolBoxForIfStatementAnalysis.setInvocatorName(inv, invocatorName))
-				.filter(el -> invocatorName.getValue0() != null)
-				.filter(ToolBoxForIfStatementAnalysis::isSuperParentIfStatement)
-				.map(ToolBoxForIfStatementAnalysis::getIfStatement)
-				.filter(ifStatement -> isAntipattern(ifStatement, invocatorName.getValue0()))
+		return invocations.parallelStream()
+				.map(inv -> Pair.with(inv, UtilityClass.getInvocatorName(inv).orElse("")))
+				.filter(invocationAndInvocatorName -> !invocationAndInvocatorName.getValue1().equals(""))
+				.filter(invocationAndInvocatorName 
+						-> ToolBoxForIfStatementAnalysis.isSuperParentIfStatement(invocationAndInvocatorName.getValue0()))
+				.map(invocationAndInvocatorName 
+						-> Pair.with(ToolBoxForIfStatementAnalysis.getIfStatement(invocationAndInvocatorName.getValue0()),
+								invocationAndInvocatorName.getValue1()))
+				.filter(ifStatementAndInvocatorName 
+						-> isAntipattern(ifStatementAndInvocatorName.getValue0(),
+								ifStatementAndInvocatorName.getValue1()))
+				.map(ifStatementAndInvocatorName -> ifStatementAndInvocatorName.getValue0())
 				.collect(Collectors.toList());
+
 	}
 
 	private  boolean isAntipattern(IfStatement ifStatement, String invocatorName) {
@@ -58,9 +72,11 @@ public class Rule6AtomFinder{
 		}
 
 		return false;
+		
 	}
 
 	private boolean isAntipattern(Statement statementForThen, Statement statementForElse, String invocatorName) {
+
 		return ToolBoxForIfStatementAnalysis.getCyclomaticComplexity(statementForThen) == 1
 				&& ToolBoxForIfStatementAnalysis.getCyclomaticComplexity(statementForElse) == 1
 				&& ToolBoxForIfStatementAnalysis.isStatementComposedByASimgleAction(statementForThen)
@@ -73,28 +89,32 @@ public class Rule6AtomFinder{
 
 	private boolean containsGetFromOptional(Statement statement, String invocatorName) {
 		Optional<ReturnStatement> returnStatement = ToolBoxForIfStatementAnalysis.getReturnStatement(statement);
+
 		
-		return returnStatement.map(retStm -> ToolBoxForIfStatementAnalysis.containsGetFromOptional(retStm, invocatorName))
+		return returnStatement
+				.map(retStm -> ToolBoxForIfStatementAnalysis.containsGetFromOptional(retStm, invocatorName))
 				.orElse(false);
 	}
 
 	private boolean containsExceptionDifferentFromNoSuchElementException(Statement statement) {
 		final AtomicBoolean contains = new AtomicBoolean(false);
-		
+
 		statement.accept(new ASTVisitor() {
 
 			@Override
 			public boolean visit(ThrowStatement throwStatement) {
+				
+				System.out.println("Throw statement: " + throwStatement.toString());
 				String typeName = "";
 				try {
 					typeName = throwStatement.getExpression().resolveTypeBinding().getQualifiedName();
 				}catch(NullPointerException npe) {}
-				
+
 				contains.set(!typeName.equals("java.util.NoSuchElementException"));
 				return super.visit(throwStatement);
 			}
 		});
-		
+
 		return contains.get();
 	}
 }

@@ -51,10 +51,11 @@ public class Rule10AtomFinder {
 
 	private  boolean isAntipattern(IfStatement ifStatement, String invocatorName) {
 		
-		return Stream.of(Pair.with(ifStatement.getThenStatement(), ifStatement.getElseStatement()))
+		return Optional.of(Pair.with(ifStatement.getThenStatement(), ifStatement.getElseStatement()))
 				.filter(pair -> pair.getValue0() != null && pair.getValue1() != null)
 				.filter(this::bothOfThemContainReturnStatement)
-				.allMatch(pair -> isAntipattern(pair.getValue0(), pair.getValue1(), invocatorName));
+				.map(pair -> isAntipattern(pair.getValue0(), pair.getValue1(), invocatorName))
+				.orElse(false);
 	}
 
 	private boolean bothOfThemContainReturnStatement(Pair<Statement, Statement> statementPair) {

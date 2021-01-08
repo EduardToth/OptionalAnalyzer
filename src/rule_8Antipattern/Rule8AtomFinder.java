@@ -32,7 +32,7 @@ public class Rule8AtomFinder{
 	private List<IfStatement> getAtoms(ASTNode astNode) {
 		OptionalInvocationFinder optionalInvocationFinder = new OptionalInvocationFinder();
 		List<MethodInvocation> invocations = optionalInvocationFinder.getInvocations(astNode);
-		
+
 		return collectAntipatterns(invocations);
 	}
 
@@ -49,16 +49,17 @@ public class Rule8AtomFinder{
 	}
 
 	private  boolean isAntipattern(IfStatement ifStatement, String invocatorName) {
-		
-		 return Stream.of(Pair.with(ifStatement.getThenStatement(), ifStatement.getElseStatement()))
+
+		return Optional.of(Pair.with(ifStatement.getThenStatement(), ifStatement.getElseStatement()))
 				.filter(this::containsOnlyThenBlock)
 				.map(Pair::getValue0)
-				.allMatch(thenStatement -> isAntipattern(thenStatement, invocatorName));
-
+				.filter(thenStatement -> isAntipattern(thenStatement, invocatorName))
+				.map(thenStatement -> true)
+				.orElse(false);
 	}
-	
+
 	private boolean containsOnlyThenBlock(Pair<Statement, Statement> statementPair) {
-		return  statementPair.getValue0() != null && (statementPair.getValue1() == null);
+		return  statementPair.getValue0() != null && statementPair.getValue1() == null;
 	}
 
 

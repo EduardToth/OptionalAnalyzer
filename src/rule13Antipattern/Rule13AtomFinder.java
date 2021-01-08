@@ -16,16 +16,8 @@ import utilities.UtilityClass;
 public class Rule13AtomFinder {
 
 	public List<MRule13Atom> getMAtoms(ASTNode astNode) {
-		System.out.println(getFieldDeclarations(astNode).stream()
-				.filter(this::isFieldDeclarationOfTypeOptional)
-				.map(Rule13Atom::getInstance)
-				.filter(Optional::isPresent)
-				.map(Optional::get)
-				.map(Factory.getInstance()::createMRule13Atom)
-				.collect(Collectors.toList()));
-		
-		
-		return getFieldDeclarations(astNode).stream()
+		return getFieldDeclarations(astNode)
+				.parallelStream()
 				.filter(this::isFieldDeclarationOfTypeOptional)
 				.map(Rule13Atom::getInstance)
 				.filter(Optional::isPresent)

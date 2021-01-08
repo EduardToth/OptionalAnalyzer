@@ -32,8 +32,7 @@ public class Rule1AtomFinder{
 			public boolean visit(Assignment assignment) {
 
 				if(isAssignmentAnOptionalAssignedToNull(assignment)) {			
-					Rule1Atom.getInstance(assignment)
-					.ifPresent(atom -> antipatterns.add(atom));
+					Rule1Atom.getInstance(assignment).ifPresent(atom -> antipatterns.add(atom));
 				}
 				return super.visit( assignment );
 			}
@@ -59,11 +58,9 @@ public class Rule1AtomFinder{
 	}
 
 	private boolean isAssignmentAnOptionalAssignedToNull(Assignment assignment) {
-		if(assignment.getLeftHandSide().
-				resolveTypeBinding() == null) {
+		if(assignment.getLeftHandSide().resolveTypeBinding() == null) {
 			return false;
 		}
-		Object value =  assignment.getRightHandSide().resolveConstantExpressionValue();
 
 		String typeName = "";
 		try {
@@ -71,7 +68,7 @@ public class Rule1AtomFinder{
 					resolveTypeBinding().getQualifiedName();
 		} catch(NullPointerException npe) {}
 		return UtilityClass.isTypeOptional(typeName)
-				&& value == null;
+				&& assignment.toString().matches(".*= *null *;?");
 	}
 
 }
