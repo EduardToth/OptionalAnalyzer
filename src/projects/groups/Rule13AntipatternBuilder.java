@@ -25,7 +25,6 @@ public class Rule13AntipatternBuilder implements IRelationBuilder<MRule13Atom, M
 				.collect(Collectors.toList());
 		 
 		 group.addAll(atoms);
-		 
 		 return group;
 	}
 }

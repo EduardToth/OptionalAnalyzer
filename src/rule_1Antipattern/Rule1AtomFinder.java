@@ -17,7 +17,7 @@ import utilities.UtilityClass;
 public class Rule1AtomFinder{
 
 	public List<MRule1Atom> getMAtoms(ASTNode astNode) {
-
+		
 		return getAtoms(astNode).stream()
 				.map(Factory.getInstance()::createMRule1Atom)
 				.collect(Collectors.toList());
@@ -70,5 +70,4 @@ public class Rule1AtomFinder{
 		return UtilityClass.isTypeOptional(typeName)
 				&& assignment.toString().matches(".*= *null *;?");
 	}
-
 }

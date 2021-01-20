@@ -3,6 +3,7 @@ package launcher;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.ui.IStartup;
+import org.eclipse.ui.internal.WorkingSet;
 
 import FullAnalysis.Analysis;
 import optionalanalizer.metamodel.factory.Factory;
@@ -11,6 +12,7 @@ import ro.lrg.insider.view.ToolRegistration.XEntityConverter;
 import ro.lrg.xcore.metametamodel.XEntity;
 import rule10Antipattern.Rule10Atom;
 import rule12Antipattern.Rule12Atom;
+import rule13Antipattern.Rule13Atom;
 import rule14Antipattern.Rule14Atom;
 import rule15Antipattern.Rule15Atom;
 import rule16Antipattern.Rule16Atom;
@@ -30,6 +32,7 @@ import rule_6Antipattern.Rule6Atom;
 import rule_7Antipattern.Rule7Atom;
 import rule_8Antipattern.Rule8Atom;
 import rule_9Antipattern.Rule9Atom;
+import uncategorizedIsPresentUsage.UncategorizedIsPresentAtom;
 
 import org.eclipse.core.internal.resources.Project;
 import org.eclipse.core.runtime.CoreException;
@@ -64,6 +67,8 @@ public class Startup1 implements IStartup {
 							return Factory.getInstance().createMRule10Atom((Rule10Atom)element);
 						} else if(element instanceof Rule12Atom) {
 							return Factory.getInstance().createMRule12Atom((Rule12Atom)element);
+						} else if(element instanceof Rule13Atom) {
+							return Factory.getInstance().createMRule13Atom((Rule13Atom)element);
 						} else if(element instanceof Rule14Atom) {
 							return Factory.getInstance().createMRule14Atom((Rule14Atom)element);
 						} else if(element instanceof Rule15Atom) {
@@ -90,11 +95,15 @@ public class Startup1 implements IStartup {
 							return Factory.getInstance().createMProject((IJavaProject)element);
 						} else if(element instanceof Analysis) {
 							return Factory.getInstance().createMAnalysis((Analysis)element);
+						}  else if(element instanceof UncategorizedIsPresentAtom) {
+							return Factory.getInstance().createMUncategorizedIsPresentAtom((UncategorizedIsPresentAtom)element);
+						}  else if(element instanceof WorkingSet) {
+							return Factory.getInstance().createMWorkingSet((WorkingSet)element);
 						} 
-
+						System.out.println("-----------> " + element.getClass());
 						return null;
 					}
 				}
-			);
+				);
 	}
 }

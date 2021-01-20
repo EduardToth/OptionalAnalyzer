@@ -71,6 +71,4 @@ public class GetNrOfClasses implements IPropertyComputer<Integer, MProject>{
 		});
 		return nrOfTypeDeclarations.get();
 	}
-
-
 }

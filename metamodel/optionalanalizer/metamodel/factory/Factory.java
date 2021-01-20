@@ -21,6 +21,14 @@ public class Factory {
         }
         return (MRule9Atom)instance;
     }
+   public MWorkingSet createMWorkingSet(java.lang.Object obj) {
+       XEntity instance = lruCache_.get(obj);
+        if (null == instance) {
+           instance = new MWorkingSetImpl(obj);
+           lruCache_.put(obj, instance);
+        }
+        return (MWorkingSet)instance;
+    }
    public MRule19Atom createMRule19Atom(java.lang.Object obj) {
        XEntity instance = lruCache_.get(obj);
         if (null == instance) {
@@ -180,6 +188,14 @@ public class Factory {
            lruCache_.put(obj, instance);
         }
         return (MRule10Atom)instance;
+    }
+   public MUncategorizedIsPresentAtom createMUncategorizedIsPresentAtom(java.lang.Object obj) {
+       XEntity instance = lruCache_.get(obj);
+        if (null == instance) {
+           instance = new MUncategorizedIsPresentAtomImpl(obj);
+           lruCache_.put(obj, instance);
+        }
+        return (MUncategorizedIsPresentAtom)instance;
     }
    public MRule14Atom createMRule14Atom(java.lang.Object obj) {
        XEntity instance = lruCache_.get(obj);

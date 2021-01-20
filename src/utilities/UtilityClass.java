@@ -109,7 +109,11 @@ public class UtilityClass {
 			return new String[ 0 ];
 		}
 
+		try {
 		return typeName.substring(startIndex + 1, endIndex).split(", *");
+		} catch(IndexOutOfBoundsException indexOutOfBoundsException) {
+			return new String[ 0 ];
+		}
 	}
 
 	private static boolean hasGenericTypeInside(List<String> listOfTypes, String typeName) {

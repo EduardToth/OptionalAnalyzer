@@ -14,6 +14,7 @@ import optionalanalizer.metamodel.entity.MAnalysis;
 import optionalanalizer.metamodel.entity.MCompilationUnit;
 import optionalanalizer.metamodel.entity.MRule10Atom;
 import optionalanalizer.metamodel.entity.MRule12Atom;
+import optionalanalizer.metamodel.entity.MRule13Atom;
 import optionalanalizer.metamodel.entity.MRule14Atom;
 import optionalanalizer.metamodel.entity.MRule15Atom;
 import optionalanalizer.metamodel.entity.MRule16Atom;
@@ -33,6 +34,7 @@ import optionalanalizer.metamodel.entity.MRule6Atom;
 import optionalanalizer.metamodel.entity.MRule7Atom;
 import optionalanalizer.metamodel.entity.MRule8Atom;
 import optionalanalizer.metamodel.entity.MRule9Atom;
+import optionalanalizer.metamodel.entity.MUncategorizedIsPresentAtom;
 import optionalanalizer.metamodel.factory.Factory;
 import ro.lrg.xcore.metametamodel.Group;
 import ro.lrg.xcore.metametamodel.IRelationBuilder;
@@ -54,10 +56,10 @@ public class GroupBuilder implements IRelationBuilder<MAnalysis, MCompilationUni
 				.collect(Collectors.toList());
 		
 
-		Group<MAnalysis> res_group = new Group<MAnalysis>();
-		res_group.addAll(removeDuplicates(result));
+		Group<MAnalysis> resGroup = new Group<MAnalysis>();
+		resGroup.addAll(removeDuplicates(result));
 
-		return res_group;
+		return resGroup;
 	}
 
 	private Pair<String, String> convertInEssentialInfo(Object atom) {
@@ -92,6 +94,8 @@ public class GroupBuilder implements IRelationBuilder<MAnalysis, MCompilationUni
 			return ((MRule10Atom)xEntity).getUnderlyingObject();
 		}else if(xEntity instanceof MRule12Atom) {
 			return ((MRule12Atom)xEntity).getUnderlyingObject();
+		}else if(xEntity instanceof MRule13Atom) {
+			return ((MRule13Atom)xEntity).getUnderlyingObject();
 		}else if(xEntity instanceof MRule14Atom) {
 			return ((MRule14Atom)xEntity).getUnderlyingObject();
 		}else if(xEntity instanceof MRule15Atom) {
@@ -112,6 +116,8 @@ public class GroupBuilder implements IRelationBuilder<MAnalysis, MCompilationUni
 			return ((MRule25Atom)xEntity).getUnderlyingObject();
 		}else if(xEntity instanceof MRule26Atom) {
 			return ((MRule26Atom)xEntity).getUnderlyingObject();
+		}else if(xEntity instanceof MUncategorizedIsPresentAtom) {
+			return ((MUncategorizedIsPresentAtom)xEntity).getUnderlyingObject();
 		}
 		return null;
 	}
@@ -128,6 +134,7 @@ public class GroupBuilder implements IRelationBuilder<MAnalysis, MCompilationUni
 				arg0.rule_9AntipatternBuilder(),
 				arg0.rule10AntipatternBuilder(),
 				arg0.rule12AntipatternBuilder(),
+				arg0.rule13AntipatternBuilder(),
 				arg0.rule14AntipatternBuilder(),
 				arg0.rule15AntipatternBuilder(),
 				arg0.rule16AntipatternBuilder(),
@@ -137,7 +144,8 @@ public class GroupBuilder implements IRelationBuilder<MAnalysis, MCompilationUni
 				arg0.rule20AntipatternBuilder(),
 				arg0.rule21AntipatternBuilder(),
 				arg0.rule25AntipatternBuilder(),
-				arg0.rule26AntipatternBuilder()
+				arg0.rule26AntipatternBuilder(),
+				arg0.uncategorizedIsPresentInvocationBasedAntipatternBuilder()
 				).flatMap(group -> group.getElements().stream());
 	}
 	
