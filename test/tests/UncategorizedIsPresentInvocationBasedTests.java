@@ -34,5 +34,4 @@ public class UncategorizedIsPresentInvocationBasedTests extends TestBaseClass{
 	public void test() {
 		super.test();
 	}
-
 }

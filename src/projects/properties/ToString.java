@@ -1,6 +1,5 @@
 package projects.properties;
 
-import org.eclipse.core.resources.IProject;
 import org.eclipse.jdt.core.IJavaProject;
 
 import optionalanalizer.metamodel.entity.MProject;

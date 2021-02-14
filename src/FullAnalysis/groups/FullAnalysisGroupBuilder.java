@@ -42,7 +42,7 @@ import ro.lrg.xcore.metametamodel.RelationBuilder;
 import ro.lrg.xcore.metametamodel.XEntity;
 
 @RelationBuilder
-public class GroupBuilder implements IRelationBuilder<MAnalysis, MCompilationUnit>{
+public class FullAnalysisGroupBuilder implements IRelationBuilder<MAnalysis, MCompilationUnit>{
 
 	@Override
 	public Group<MAnalysis> buildGroup(MCompilationUnit arg0) {
@@ -51,7 +51,7 @@ public class GroupBuilder implements IRelationBuilder<MAnalysis, MCompilationUni
 				.map(this::getUnderLyingObject)
 				.map(this::convertInEssentialInfo)
 				.map(pair -> new Analysis(pair.getValue0(), pair.getValue1()))
-				.map(analysis -> Factory.getInstance().createMAnalysis(analysis))
+				.map(Factory.getInstance()::createMAnalysis)
 				.distinct()
 				.collect(Collectors.toList());
 		

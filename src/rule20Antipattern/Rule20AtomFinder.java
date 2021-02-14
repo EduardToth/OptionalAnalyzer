@@ -36,10 +36,12 @@ public class Rule20AtomFinder {
 		String typeName2 = "";
 		
 		try {
-			typeName2 = variableDeclarationFragment.resolveBinding().getType().getQualifiedName();
-		}catch(NullPointerException npe) {
-			
-		}
+			typeName2 = variableDeclarationFragment
+					.resolveBinding()
+					.getType()
+					.getQualifiedName();
+		}catch(NullPointerException npe) {}
+		
 		typeName.setAt0(typeName2);
 	}
 

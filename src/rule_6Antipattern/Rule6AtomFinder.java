@@ -1,6 +1,5 @@
 package rule_6Antipattern;
 
-import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -21,13 +20,7 @@ import utilities.OptionalInvocationFinder;
 import utilities.ToolBoxForIfStatementAnalysis;
 import utilities.UtilityClass;
 
-public class Rule6AtomFinder{
-	
-	private String f() throws IOException {
-		Optional<String> o = Optional.empty();
-		
-		return o.orElseThrow(IOException::new);
-	}
+public class Rule6AtomFinder {
 
 	public List<MRule6Atom> getMAtoms(ASTNode astNode) {
 		return getAtoms(astNode)
@@ -48,20 +41,25 @@ public class Rule6AtomFinder{
 
 	private List<IfStatement> collectAntipatterns(List<MethodInvocation> invocations) {
 
-		return invocations.parallelStream()
-				.map(inv -> Pair.with(inv, UtilityClass.getInvocatorName(inv).orElse("")))
-				.filter(invocationAndInvocatorName -> !invocationAndInvocatorName.getValue1().equals(""))
-				.filter(invocationAndInvocatorName 
-						-> ToolBoxForIfStatementAnalysis.isSuperParentIfStatement(invocationAndInvocatorName.getValue0()))
-				.map(invocationAndInvocatorName 
-						-> Pair.with(ToolBoxForIfStatementAnalysis.getIfStatement(invocationAndInvocatorName.getValue0()),
-								invocationAndInvocatorName.getValue1()))
-				.filter(ifStatementAndInvocatorName 
-						-> isAntipattern(ifStatementAndInvocatorName.getValue0(),
-								ifStatementAndInvocatorName.getValue1()))
-				.map(ifStatementAndInvocatorName -> ifStatementAndInvocatorName.getValue0())
+		return invocations.stream()
+				.map(this::getWrapperIfStatementIfThereIsAntipatternThere)
+				.filter(Optional::isPresent)
+				.map(Optional::get)
 				.collect(Collectors.toList());
 
+	}
+	
+	private Optional<IfStatement> getWrapperIfStatementIfThereIsAntipatternThere(MethodInvocation methodInvocation) {
+		String invocatorName = UtilityClass.getInvocatorName(methodInvocation).orElse("");
+		IfStatement ifStatement = null;
+		if(ToolBoxForIfStatementAnalysis.isSuperParentIfStatement(methodInvocation)) {
+			ifStatement = ToolBoxForIfStatementAnalysis.getIfStatement(methodInvocation);
+			if(!isAntipattern(ifStatement, invocatorName)) {
+				ifStatement = null;
+			}
+		}
+		
+		return Optional.ofNullable(ifStatement);
 	}
 
 	private  boolean isAntipattern(IfStatement ifStatement, String invocatorName) {
@@ -104,7 +102,6 @@ public class Rule6AtomFinder{
 			@Override
 			public boolean visit(ThrowStatement throwStatement) {
 				
-				System.out.println("Throw statement: " + throwStatement.toString());
 				String typeName = "";
 				try {
 					typeName = throwStatement.getExpression().resolveTypeBinding().getQualifiedName();

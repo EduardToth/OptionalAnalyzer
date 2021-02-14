@@ -1,5 +1,6 @@
 package utilities;
 
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
@@ -35,34 +36,34 @@ public class ToolBoxForIfStatementAnalysis {
 
 		return Optional.ofNullable(unit.getValue0());
 	}
-	
+
 
 	public static void setInvocatorName(MethodInvocation invocation, Unit<String> invocatorName) {
 		invocatorName.setAt0( UtilityClass.getInvocatorName(invocation).orElse(""));
 	}
 
-	
-	
+
+
 	public static IfStatement getIfStatement(MethodInvocation methodInvocation) {
 		ASTNode astNode = methodInvocation.getParent();
-		
+
 		if(astNode instanceof IfStatement) {
 			return (IfStatement)astNode;
 		}
-		
+
 		return (IfStatement)astNode.getParent();
 	}
-	
+
 	public static boolean isSuperParentIfStatement(MethodInvocation methodInvocation) {
 		return ToolBoxForIfStatementAnalysis.isParentIfStatement(methodInvocation) ||
 				(ToolBoxForIfStatementAnalysis.isParentNotStatement(methodInvocation) &&
-				ToolBoxForIfStatementAnalysis.isParentIfStatement(methodInvocation.getParent()));
- 	}
+						ToolBoxForIfStatementAnalysis.isParentIfStatement(methodInvocation.getParent()));
+	}
 
 	private static boolean isParentIfStatement(ASTNode astNode) {
 		return astNode.getParent() instanceof IfStatement;
 	}
-	
+
 	public static boolean isParentNotStatement(MethodInvocation methodInvocation) {
 		return methodInvocation.getParent() instanceof PrefixExpression &&
 				((PrefixExpression)methodInvocation.getParent()).getOperator() == PrefixExpression.Operator.NOT;
@@ -76,7 +77,7 @@ public class ToolBoxForIfStatementAnalysis {
 
 		return stringContext.substring(0, startIndex) + stringContext.substring(endIndex);
 	}
-	
+
 	public static Optional<ThrowStatement> getThrowStatement(Statement statement) {
 		final Unit<ThrowStatement> unit = new Unit<>(null);
 		statement.accept(new ASTVisitor() {
@@ -90,13 +91,13 @@ public class ToolBoxForIfStatementAnalysis {
 
 		return Optional.ofNullable(unit.getValue0());
 	}
-	
+
 	public static boolean containsGetFromOptional(ASTNode astNode, String invocatorName) {
 		VerifiedGetVisitor verifiedGetVisitor = new VerifiedGetVisitor(invocatorName);
 		astNode.accept(verifiedGetVisitor);
 		return verifiedGetVisitor.properGetInvocationFound();
 	}
-	
+
 	public static boolean statementDoesNotContainNonConsumerElements(Statement statement) {
 		/*
 		 * Does not contain return statements, throw statements or assignment to outer variables
@@ -105,7 +106,7 @@ public class ToolBoxForIfStatementAnalysis {
 				!getThrowStatement(statement).isPresent() &&
 				!thereAreModifiersToOuterVariables(statement);
 	}
-	
+
 	public static boolean statementDoesNotContainNonConsumerElementsExceptReturnStatements(Statement statement) {
 		/*
 		 * Does not contain return statements, throw statements or assignment to outer variables
@@ -114,7 +115,7 @@ public class ToolBoxForIfStatementAnalysis {
 				!getThrowStatement(statement).isPresent() &&
 				!thereAreModifiersToOuterVariables(statement);
 	}
-	
+
 	private static boolean thereAreModifiersToOuterVariables(Statement statement) {
 		final List<String> variableNames = getAllDeclaredvariablesInside(statement);
 		Unit<Boolean> thereAre = new Unit<>(false);
@@ -128,26 +129,26 @@ public class ToolBoxForIfStatementAnalysis {
 				}
 				return super.visit(assignment);
 			}
-			
+
 			@Override
 			public boolean visit(PrefixExpression prefixExpression) {
-				
+
 				PrefixExpression.Operator operator = prefixExpression.getOperator();
 				boolean thereIsAProblem = (operator == PrefixExpression.Operator.INCREMENT ||
 						operator == PrefixExpression.Operator.DECREMENT) &&
-				!variableNames.contains(prefixExpression.getOperand().toString());
+						!variableNames.contains(prefixExpression.getOperand().toString());
 				if(thereIsAProblem) {
 					thereAre.setAt0(true);
 				}
 				return super.visit(prefixExpression);
 			}
-			
+
 			@Override
 			public boolean visit(PostfixExpression postfixExpression) {
-			PostfixExpression.Operator operator = postfixExpression.getOperator();
+				PostfixExpression.Operator operator = postfixExpression.getOperator();
 				boolean thereIsAProblem = (operator == PostfixExpression.Operator.INCREMENT ||
 						operator == PostfixExpression.Operator.DECREMENT) &&
-				!variableNames.contains(postfixExpression.getOperand().toString());
+						!variableNames.contains(postfixExpression.getOperand().toString());
 				if(thereIsAProblem) {
 					thereAre.setAt0(true);
 				}
@@ -170,7 +171,7 @@ public class ToolBoxForIfStatementAnalysis {
 		});
 		return variableNames;
 	}
-	
+
 	public static String removeWhiteSpaces(String str) {
 
 		String result = "";
@@ -190,7 +191,7 @@ public class ToolBoxForIfStatementAnalysis {
 
 		return stringForm.equals("{}");
 	}
-	
+
 	public static boolean containsMethodInvocation(ReturnStatement returnStatement) {
 		String stringExpression = returnStatement.getExpression().toString();
 		return stringExpression.matches(".*\\(.*\\).*");
@@ -224,8 +225,18 @@ public class ToolBoxForIfStatementAnalysis {
 
 		return cyclomaticComplexity.get();
 	}
-	
+
 	public static boolean isStatementComposedByASimgleAction(Statement statement) {
-		return statement.toString().indexOf(";") == statement.toString().lastIndexOf(";");
+		String str = statement.toString();
+		str = removeStringFromInside(str);
+		return str.indexOf(";") == str.lastIndexOf(";");
+	}
+
+	private static String removeStringFromInside(String str) {
+		String regEx = "\".*\"";
+		return Arrays.asList(str.split(regEx))
+				.stream()
+				.reduce((str1, str2) -> str1 + str2)
+				.orElse("");
 	}
 }

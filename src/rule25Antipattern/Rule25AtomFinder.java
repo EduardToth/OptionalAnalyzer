@@ -22,7 +22,7 @@ public class Rule25AtomFinder {
 		return infixExpressions.stream()
 				.filter(this::isFine)
 				.map(Rule25Atom::getInstance)
-				.filter(Optional::isPresent)
+				.filter( Optional::isPresent)
 				.map(Optional::get)
 				.map(Factory.getInstance()::createMRule25Atom)
 				.collect(Collectors.toList());

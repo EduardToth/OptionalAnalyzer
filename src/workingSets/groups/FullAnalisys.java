@@ -20,12 +20,11 @@ public class FullAnalisys implements IRelationBuilder<MAnalysis, MWorkingSet>{
 
 	@Override
 	public Group<MAnalysis> buildGroup(MWorkingSet arg0) {
-
-	
 		
 		List<Analysis> analyses = arg0.getComponentProjects()
 				.getElements()
-				.stream()
+				.parallelStream()
+				.unordered()
 				.map(MProject::fullAnalysis)
 				.map(Group::getElements)
 				.flatMap(List::stream)

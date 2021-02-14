@@ -69,14 +69,6 @@ public class Factory {
         }
         return (MRule3Atom)instance;
     }
-   public MRule7Atom createMRule7Atom(java.lang.Object obj) {
-       XEntity instance = lruCache_.get(obj);
-        if (null == instance) {
-           instance = new MRule7AtomImpl(obj);
-           lruCache_.put(obj, instance);
-        }
-        return (MRule7Atom)instance;
-    }
    public MRule12Atom createMRule12Atom(java.lang.Object obj) {
        XEntity instance = lruCache_.get(obj);
         if (null == instance) {
@@ -84,6 +76,14 @@ public class Factory {
            lruCache_.put(obj, instance);
         }
         return (MRule12Atom)instance;
+    }
+   public MRule7Atom createMRule7Atom(java.lang.Object obj) {
+       XEntity instance = lruCache_.get(obj);
+        if (null == instance) {
+           instance = new MRule7AtomImpl(obj);
+           lruCache_.put(obj, instance);
+        }
+        return (MRule7Atom)instance;
     }
    public MAnalysis createMAnalysis(java.lang.Object obj) {
        XEntity instance = lruCache_.get(obj);
@@ -149,6 +149,14 @@ public class Factory {
         }
         return (MRule6Atom)instance;
     }
+   public MPackage createMPackage(java.lang.Object obj) {
+       XEntity instance = lruCache_.get(obj);
+        if (null == instance) {
+           instance = new MPackageImpl(obj);
+           lruCache_.put(obj, instance);
+        }
+        return (MPackage)instance;
+    }
    public MRule1Atom createMRule1Atom(java.lang.Object obj) {
        XEntity instance = lruCache_.get(obj);
         if (null == instance) {
@@ -189,14 +197,6 @@ public class Factory {
         }
         return (MRule10Atom)instance;
     }
-   public MUncategorizedIsPresentAtom createMUncategorizedIsPresentAtom(java.lang.Object obj) {
-       XEntity instance = lruCache_.get(obj);
-        if (null == instance) {
-           instance = new MUncategorizedIsPresentAtomImpl(obj);
-           lruCache_.put(obj, instance);
-        }
-        return (MUncategorizedIsPresentAtom)instance;
-    }
    public MRule14Atom createMRule14Atom(java.lang.Object obj) {
        XEntity instance = lruCache_.get(obj);
         if (null == instance) {
@@ -204,6 +204,14 @@ public class Factory {
            lruCache_.put(obj, instance);
         }
         return (MRule14Atom)instance;
+    }
+   public MUncategorizedIsPresentAtom createMUncategorizedIsPresentAtom(java.lang.Object obj) {
+       XEntity instance = lruCache_.get(obj);
+        if (null == instance) {
+           instance = new MUncategorizedIsPresentAtomImpl(obj);
+           lruCache_.put(obj, instance);
+        }
+        return (MUncategorizedIsPresentAtom)instance;
     }
    public MRule8Atom createMRule8Atom(java.lang.Object obj) {
        XEntity instance = lruCache_.get(obj);

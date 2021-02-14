@@ -99,6 +99,7 @@ public class Rule5AtomFinder {
 				return super.visit(throwStatement);
 			}
 		});
+		
 		return contains.get();
 	}
 }

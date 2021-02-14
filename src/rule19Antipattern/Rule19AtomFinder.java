@@ -32,7 +32,6 @@ public class Rule19AtomFinder {
 		List<MethodInvocation> badInvocationsForOptionalOfNullable = getBadInvocationsForOptionalOfNullable(ofNullableGroup);
 
 		return Stream.of(badInvocationsForOptionalOf, badInvocationsForOptionalOfNullable)
-				.parallel()
 				.flatMap(Collection::stream)
 				.map(Rule19Atom::getInstance)
 				.filter(Optional::isPresent)

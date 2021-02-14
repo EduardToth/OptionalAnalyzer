@@ -18,7 +18,8 @@ public class Rule_6AntipatternBuilder implements IRelationBuilder<MRule6Atom, MW
 		Group<MRule6Atom> group = new Group<>();
 
 		 List<MRule6Atom> atoms = arg0.getComponentProjects()
-				.getElements().stream()
+				.getElements()
+				.stream()
 				.map(MProject::rule_6AntipatternBuilder)
 				.map(Group::getElements)
 				.flatMap(List::stream)

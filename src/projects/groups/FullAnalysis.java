@@ -23,9 +23,8 @@ public class FullAnalysis implements IRelationBuilder<MAnalysis, MProject>{
 
 		List<MAnalysis> result = arg0.compilationUnitBuilder()
 				.getElements()
-				.parallelStream()
-				.unordered()
-				.map(MCompilationUnit::groupBuilder)
+				.stream()
+				.map(MCompilationUnit::fullAnalysisGroupBuilder)
 				.map(Group::getElements)
 				.flatMap(List::stream)
 				.collect(Collectors.toList());

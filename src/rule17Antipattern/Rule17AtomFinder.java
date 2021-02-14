@@ -30,6 +30,8 @@ public class Rule17AtomFinder {
 				.map(Optional::get)
 				.map(Factory.getInstance()::createMRule17Atom)
 				.collect(Collectors.toList());
+		
+		 
 	}
 	
 	private String getTypeName(MethodDeclaration methodDeclaration) {

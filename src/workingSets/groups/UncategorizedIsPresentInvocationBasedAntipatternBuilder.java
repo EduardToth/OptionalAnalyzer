@@ -19,7 +19,8 @@ implements IRelationBuilder<MUncategorizedIsPresentAtom, MWorkingSet>{
 		Group<MUncategorizedIsPresentAtom> group = new Group<>();
 
 		 List<MUncategorizedIsPresentAtom> atoms = arg0.getComponentProjects()
-				.getElements().stream()
+				.getElements()
+				.stream()
 				.map(MProject::uncategorizedIsPresentInvocationBasedAntipatternBuilder)
 				.map(Group::getElements)
 				.flatMap(List::stream)
@@ -29,5 +30,4 @@ implements IRelationBuilder<MUncategorizedIsPresentAtom, MWorkingSet>{
 		 
 		 return group;
 	}
-
 }

@@ -2,6 +2,8 @@ package launcher;
 
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.IJavaProject;
+import org.eclipse.jdt.core.IPackageFragment;
+import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.ui.IStartup;
 import org.eclipse.ui.internal.WorkingSet;
 
@@ -99,6 +101,15 @@ public class Startup1 implements IStartup {
 							return Factory.getInstance().createMUncategorizedIsPresentAtom((UncategorizedIsPresentAtom)element);
 						}  else if(element instanceof WorkingSet) {
 							return Factory.getInstance().createMWorkingSet((WorkingSet)element);
+						}  else if(element instanceof IPackageFragment) {
+							return Factory.getInstance().createMPackage((IPackageFragment)element);
+						}  else if(element instanceof Project) {
+							try {
+								IJavaProject javaPoject = JavaCore.create((Project)element);
+								return Factory.getInstance().createMProject(javaPoject);
+							} catch(Exception exception) {
+								exception.printStackTrace();
+							}
 						} 
 						System.out.println("-----------> " + element.getClass());
 						return null;

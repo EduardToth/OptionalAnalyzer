@@ -23,7 +23,7 @@ public class Rule13AntipatternBuilder implements IRelationBuilder<MRule13Atom, M
 				.map(Group::getElements)
 				.flatMap(List::stream)
 				.collect(Collectors.toList());
-		 System.out.println(">>>>>>>>>>>>>>>>>>>>>>> " + atoms);
+		 
 		 group.addAll(atoms);
 		 
 		 return group;
