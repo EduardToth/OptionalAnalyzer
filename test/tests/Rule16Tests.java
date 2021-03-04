@@ -23,7 +23,7 @@ public class Rule16Tests extends TestBaseClass{
 	protected List<Atom> getAtoms() {
 		Group<MRule16Atom> group = getMCompilationUnit().rule16AntipatternBuilder();
 		
-		return group.getElements().parallelStream()
+		return group.getElements().stream()
 			.map(mAtom -> (Atom)mAtom.getUnderlyingObject())
 			.collect(Collectors.toList());
 	}

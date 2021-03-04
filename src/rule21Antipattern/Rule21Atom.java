@@ -13,6 +13,8 @@ public class Rule21Atom extends Atom{
 	public Rule21Atom(ASTNode wrappedElement) throws ASTNodeDoesNotBelongHere {
 		super(wrappedElement);
 	}
+	
+	
 
 	@Override
 	protected boolean belongs(ASTNode wrappedElement) {

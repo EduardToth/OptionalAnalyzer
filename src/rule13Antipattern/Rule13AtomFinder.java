@@ -17,7 +17,7 @@ public class Rule13AtomFinder {
 
 	public List<MRule13Atom> getMAtoms(ASTNode astNode) {
 		return getFieldDeclarations(astNode)
-				.parallelStream()
+				.stream()
 				.filter(this::isFieldDeclarationOfTypeOptional)
 				.map(Rule13Atom::getInstance)
 				.filter(Optional::isPresent)

@@ -55,6 +55,7 @@ public class Rule8AtomFinder{
 				.filter(thenStatement -> isAntipattern(thenStatement, invocatorName))
 				.map(thenStatement -> true)
 				.orElse(false);
+		
 	}
 
 	private boolean containsOnlyThenBlock(Pair<Statement, Statement> statementPair) {

@@ -73,10 +73,8 @@ public class Rule18AtomFinder {
 		String[] genericTypes = UtilityClass.getGenericTypes(typeName);
 
 		boolean containsOptional = Arrays.asList(genericTypes).stream()
-				.filter(this::isRule18Antipattern)
-				.findAny()
-				.isPresent();
-
+				.anyMatch(this::isRule18Antipattern);
+			
 		return containsOptional;
 	}
 

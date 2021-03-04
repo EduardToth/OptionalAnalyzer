@@ -20,7 +20,7 @@ public class Rule12AtomFinder {
 		OptionalInvocationFinder optionalInvocationFinder = new OptionalInvocationFinder();
 		List<MethodInvocation> ofNullableList = optionalInvocationFinder.getInvocations(astNode, "ofNullable");
 		
-		return ofNullableList.parallelStream()
+		return ofNullableList.stream()
 				.filter(this::respectsThePattern)
 				.map(MethodInvocation::getParent)
 				.filter(MethodInvocation.class::isInstance)

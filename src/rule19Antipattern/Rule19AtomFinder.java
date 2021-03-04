@@ -67,9 +67,8 @@ public class Rule19AtomFinder {
 			InfixExpression infixExpression = (InfixExpression)argument;
 			List<Expression> operands = getOperands(infixExpression);
 			isArgumentAnOperantionOfLiterals = !operands.stream()
-					.filter(expr -> !isLiteral(expr))
-					.findAny()
-					.isPresent();
+					.anyMatch(expr -> !isLiteral(expr));
+				
 		}
 
 		return isArgumentAnOperantionOfLiterals;

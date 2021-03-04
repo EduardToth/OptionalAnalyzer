@@ -9,6 +9,7 @@ import utilities.ASTNodeDoesNotBelongHere;
 import utilities.Atom;
 
 public class Rule3Atom extends Atom {
+	
 
 	private Rule3Atom(ASTNode atom) throws ASTNodeDoesNotBelongHere {
 		super(atom);

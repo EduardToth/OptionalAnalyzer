@@ -54,7 +54,7 @@ public class Rule9AtomFinder{
 
 	private List<IfStatement> collectAntipatterns(List<MethodInvocation> invocations) {
 
-		return invocations.parallelStream()
+		return invocations.stream()
 				.map(inv -> Pair.with(inv, UtilityClass.getInvocatorName(inv).orElse("")))
 				.filter(invocationAndInvocatorName 
 						-> !invocationAndInvocatorName.getValue1().equals(""))
@@ -74,10 +74,13 @@ public class Rule9AtomFinder{
 
 	private  boolean isAntipattern(IfStatement ifStatement, String invocatorName) {
 
-		return Optional.of(Pair.with(ifStatement.getThenStatement(), ifStatement.getElseStatement()))
-				.filter(pair -> pair.getValue0() != null && pair.getValue1() != null)
-				.map(pair -> isAntipattern(pair.getValue0(), pair.getValue1(), invocatorName))
-				.orElse(false);
+		Optional<Statement> thenStatement = Optional.ofNullable(ifStatement.getThenStatement());
+		Optional<Statement> elseStatement = Optional.ofNullable(ifStatement.getElseStatement());
+
+		return thenStatement.flatMap(
+						thenStm -> elseStatement.map(elseStm -> isAntipattern(thenStm, elseStm, invocatorName))
+				).orElse(false);
+		
 	}
 
 	private boolean isAntipattern(Statement thenStatement, Statement elseStatement, String invocatorName) {

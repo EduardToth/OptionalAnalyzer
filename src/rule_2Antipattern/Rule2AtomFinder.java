@@ -46,11 +46,10 @@ public class Rule2AtomFinder{
 
 	private boolean isTheSecondRulesAntipattern(MethodInvocation methodInvocation) {
 
-		String invocatorName = UtilityClass
+		return UtilityClass
 				.getInvocatorName(methodInvocation)
-				.orElse(null);
-
-		return verifyInParents(methodInvocation, invocatorName);
+				.map(invocatorName -> verifyInParents(methodInvocation, invocatorName))
+				.orElse(false);
 	}
 
 	private boolean verifyInParents(MethodInvocation methodInvocation, String invocatorName) {
@@ -61,12 +60,12 @@ public class Rule2AtomFinder{
 					&& containsIsPresentInvocationForTheVariable(((IfStatement) astNode).getExpression(), invocatorName)) {
 				return false;
 			}
-			
+
 			if(astNode instanceof WhileStatement 
 					&& containsIsPresentInvocationForTheVariable(((WhileStatement) astNode).getExpression(), invocatorName)) {
 				return false;
 			}
-			
+
 			if(astNode instanceof ForStatement 
 					&& ((ForStatement) astNode).getExpression() != null 
 					&& containsIsPresentInvocationForTheVariable(((ForStatement) astNode).getExpression(), invocatorName)) {

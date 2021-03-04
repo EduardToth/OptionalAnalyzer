@@ -12,10 +12,10 @@ public class GetNrOfClasses implements IPropertyComputer<Integer, MWorkingSet>{
 	public Integer compute(MWorkingSet arg0) {
 		return arg0.getComponentProjects()
 				.getElements()
-				.parallelStream()
-				.unordered()
+				.stream()
 				.map(MProject::getNrOfClasses)
 				.reduce(Integer::sum)
 				.orElse(0);
+		
 	}
 }

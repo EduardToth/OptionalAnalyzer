@@ -1,9 +1,6 @@
 package FullAnalysis.groups;
 
-import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -51,13 +48,13 @@ public class FullAnalysisGroupBuilder implements IRelationBuilder<MAnalysis, MCo
 				.map(this::getUnderLyingObject)
 				.map(this::convertInEssentialInfo)
 				.map(pair -> new Analysis(pair.getValue0(), pair.getValue1()))
-				.map(Factory.getInstance()::createMAnalysis)
 				.distinct()
+				.map(Factory.getInstance()::createMAnalysis)
 				.collect(Collectors.toList());
 		
 
 		Group<MAnalysis> resGroup = new Group<MAnalysis>();
-		resGroup.addAll(removeDuplicates(result));
+		resGroup.addAll(result);
 
 		return resGroup;
 	}
@@ -148,22 +145,4 @@ public class FullAnalysisGroupBuilder implements IRelationBuilder<MAnalysis, MCo
 				arg0.uncategorizedIsPresentInvocationBasedAntipatternBuilder()
 				).flatMap(group -> group.getElements().stream());
 	}
-	
-	private List<MAnalysis> removeDuplicates(List<MAnalysis> list) {
-		Set<String> ruleNames = new HashSet<>();
-		List<Analysis> newList = new ArrayList<>();
-		
-		for(MAnalysis mAnalysis : list) {
-			Analysis analysis = (Analysis) mAnalysis.getUnderlyingObject();
-			if(!ruleNames.contains(analysis.getRuleName())) {
-				newList.add(analysis);
-				ruleNames.add(analysis.getRuleName());
-			}
-		}
-		
-		return newList.stream()
-				.map(analysis -> Factory.getInstance().createMAnalysis(analysis))
-				.collect(Collectors.toList());
-	}
-
 }

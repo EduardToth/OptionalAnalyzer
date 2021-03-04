@@ -16,7 +16,7 @@ public class Rule16AtomFinder {
 	public List<MRule16Atom> getMAtoms(ASTNode astNode) {
 		List<MethodDeclaration> methodDeclarations = UtilityClass.getMethodDeclarations(astNode);
         
-		return methodDeclarations.parallelStream()
+		return methodDeclarations.stream()
 				.filter(decl -> !decl.isConstructor())
 				.filter(decl -> !UtilityClass.isSetter( decl ))
 				.filter(UtilityClass::containsAtLeastOneOptionalAsParameter)

@@ -32,16 +32,16 @@ public class Rule20AtomFinder {
 	}
 
 	private void setTypeName(final Unit<String> typeName, VariableDeclarationFragment variableDeclarationFragment) {
-		
+
 		String typeName2 = "";
-		
+
 		try {
 			typeName2 = variableDeclarationFragment
 					.resolveBinding()
 					.getType()
 					.getQualifiedName();
 		}catch(NullPointerException npe) {}
-		
+
 		typeName.setAt0(typeName2);
 	}
 
@@ -52,6 +52,7 @@ public class Rule20AtomFinder {
 
 			@Override
 			public boolean visit(VariableDeclarationFragment variableDeclarationFragment) {
+
 
 				variableDeclarations.add(variableDeclarationFragment);
 				return super.visit(variableDeclarationFragment);

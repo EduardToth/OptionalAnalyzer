@@ -53,9 +53,7 @@ public class Rule17AtomFinder {
 
 		return Arrays.asList(chosenTypes)
 				.stream()
-				.filter(UtilityClass::isCollectionType)
-				.findAny()
-				.isPresent();
+				.anyMatch(UtilityClass::isCollectionType);
 	}
 
 	private boolean isArrayTypeInside(String typeName) {

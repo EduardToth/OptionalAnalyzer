@@ -10,6 +10,7 @@ import org.eclipse.jdt.core.dom.IfStatement;
 import org.eclipse.jdt.core.dom.MethodInvocation;
 import org.eclipse.jdt.core.dom.ReturnStatement;
 import org.eclipse.jdt.core.dom.Statement;
+import org.javatuples.Pair;
 
 import optionalanalizer.metamodel.entity.MRule4Atom;
 import optionalanalizer.metamodel.factory.Factory;
@@ -26,7 +27,7 @@ public class Rule4AtomFinder{
 				.map(Optional::get)
 				.map(Factory.getInstance()::createMRule4Atom)
 				.collect(Collectors.toList());
-		
+
 		List<MRule4Atom> returnStatementMAtoms = getProblematicReturnStatements(astNode)
 				.stream()
 				.map(Rule4Atom::getInstance)
@@ -34,7 +35,7 @@ public class Rule4AtomFinder{
 				.map(Optional::get)
 				.map(Factory.getInstance()::createMRule4Atom)
 				.collect(Collectors.toList());
-				
+
 		return Stream.of(ifStatementMAtoms, returnStatementMAtoms)
 				.flatMap(List::stream)
 				.collect(Collectors.toList());
@@ -51,7 +52,7 @@ public class Rule4AtomFinder{
 		OptionalInvocationFinder optionalInvocationFinder = new OptionalInvocationFinder();
 		List<MethodInvocation> orElseInvocations = optionalInvocationFinder.getInvocations(astNode, "orElse");
 
-		return orElseInvocations.parallelStream()
+		return orElseInvocations.stream()
 				.filter(methodInvocation -> methodInvocation.getParent() instanceof ReturnStatement)
 				.filter(methodInvocation -> isArgumentInvocation(methodInvocation.arguments()))
 				.map(methodInvocation -> (ReturnStatement)methodInvocation.getParent())
@@ -77,32 +78,49 @@ public class Rule4AtomFinder{
 				.collect(Collectors.toList());
 	}
 
+	private Optional<Pair<ReturnStatement, ReturnStatement>> getReturnStatements(Pair<Statement, Statement> statements) {
+
+		Statement thenStatement = statements.getValue0();
+		Statement elseStatement = statements.getValue1();
+		Optional<ReturnStatement> returnStatementForThen = ToolBoxForIfStatementAnalysis.getReturnStatement(thenStatement);
+		Optional<ReturnStatement> returnStatementForElse = ToolBoxForIfStatementAnalysis.getReturnStatement(elseStatement);
+
+		return returnStatementForThen.flatMap(returnStmForThen 
+				-> returnStatementForElse.map(returnStmForElse -> Pair.with(returnStmForThen, returnStmForElse)));
+
+	}
+
 
 	private  boolean isAntipattern(IfStatement ifStatement, String invocatorName) {
 		Optional<Statement> thenStatement = Optional.ofNullable(ifStatement.getThenStatement());
 		Optional<Statement> elseStatement = Optional.ofNullable(ifStatement.getElseStatement());
 
-
-		if(!thenStatement.isPresent() || !elseStatement.isPresent()) {
-			return false;
-		}
-
-		Optional<ReturnStatement> returnStatementForThen = ToolBoxForIfStatementAnalysis.getReturnStatement(thenStatement.get());
-		Optional<ReturnStatement> returnStatementForElse = ToolBoxForIfStatementAnalysis.getReturnStatement(elseStatement.get());
-
-		if(!returnStatementForElse.isPresent() || !returnStatementForThen.isPresent()) {
-			return false;
-		}
-
-		return ToolBoxForIfStatementAnalysis.getCyclomaticComplexity(thenStatement.get()) == 1 
-				&& ToolBoxForIfStatementAnalysis.getCyclomaticComplexity(elseStatement.get()) == 1 
-				&& isAntipattern(returnStatementForThen.get(), returnStatementForElse.get(), invocatorName)
-				&& ToolBoxForIfStatementAnalysis.isStatementComposedByASimgleAction(thenStatement.get())
-				&& ToolBoxForIfStatementAnalysis.isStatementComposedByASimgleAction(elseStatement.get());
-
+		return thenStatement.flatMap(thenStm -> elseStatement.map(elseStm -> Pair.with(thenStm, elseStm)))
+				.filter(this::isCyclomaticComplexityForBothOne)
+				.filter(this::areStatementsComposedByASingleAction)
+				.flatMap(this::getReturnStatements)
+				.map(returnStatementPair -> isAntipattern(returnStatementPair, invocatorName))
+				.orElse(false);
 	}
 
-	private boolean isAntipattern(ReturnStatement returnStatementForThen, ReturnStatement returnStatementForElse, String invocatorName) {
+	private boolean areStatementsComposedByASingleAction(Pair<Statement, Statement> statementPair) {
+		Statement thenStatement = statementPair.getValue0();
+		Statement elseStatement = statementPair.getValue1();
+
+		return ToolBoxForIfStatementAnalysis.isStatementComposedByASimgleAction(thenStatement)
+				&& ToolBoxForIfStatementAnalysis.isStatementComposedByASimgleAction(elseStatement);
+	}
+
+	private boolean isCyclomaticComplexityForBothOne(Pair<Statement, Statement> statementPair) {
+		Statement thenStatement = statementPair.getValue0();
+		Statement elseStatement = statementPair.getValue1();
+		return ToolBoxForIfStatementAnalysis.getCyclomaticComplexity(thenStatement) == 1 
+				&& ToolBoxForIfStatementAnalysis.getCyclomaticComplexity(elseStatement) == 1;
+	}
+
+	private boolean isAntipattern(Pair<ReturnStatement, ReturnStatement> returnStatementPair, String invocatorName) {
+		ReturnStatement returnStatementForThen = returnStatementPair.getValue0();
+		ReturnStatement returnStatementForElse = returnStatementPair.getValue1();
 		return ToolBoxForIfStatementAnalysis.containsGetFromOptional(returnStatementForThen, invocatorName)
 				&& ToolBoxForIfStatementAnalysis.containsMethodInvocation(returnStatementForElse)
 				|| ToolBoxForIfStatementAnalysis.containsGetFromOptional(returnStatementForElse, invocatorName)

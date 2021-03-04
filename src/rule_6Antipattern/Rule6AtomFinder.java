@@ -63,13 +63,14 @@ public class Rule6AtomFinder {
 	}
 
 	private  boolean isAntipattern(IfStatement ifStatement, String invocatorName) {
-		Pair<Statement, Statement> statementPair = Pair.with(ifStatement.getThenStatement(), ifStatement.getElseStatement());
 
-		if(statementPair.getValue0() != null && statementPair.getValue1() != null) {
-			return isAntipattern(statementPair.getValue0(), statementPair.getValue1(), invocatorName);
-		}
 
-		return false;
+		Optional<Statement> thenStatement = Optional.ofNullable(ifStatement.getThenStatement());
+		Optional<Statement> elseStatement = Optional.ofNullable(ifStatement.getElseStatement());
+
+		return thenStatement.flatMap(
+						thenStm -> elseStatement.map(elseStm -> isAntipattern(thenStm, elseStm, invocatorName))
+				).orElse(false);
 		
 	}
 

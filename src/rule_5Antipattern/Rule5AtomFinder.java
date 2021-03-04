@@ -12,7 +12,6 @@ import org.eclipse.jdt.core.dom.MethodInvocation;
 import org.eclipse.jdt.core.dom.ReturnStatement;
 import org.eclipse.jdt.core.dom.Statement;
 import org.eclipse.jdt.core.dom.ThrowStatement;
-import org.javatuples.Pair;
 
 import optionalanalizer.metamodel.entity.MRule5Atom;
 import optionalanalizer.metamodel.factory.Factory;
@@ -54,13 +53,13 @@ public class Rule5AtomFinder {
 
 
 	private  boolean isAntipattern(IfStatement ifStatement, String invocatorName) {
-		Pair<Statement, Statement> statementPair = Pair.with(ifStatement.getThenStatement(), ifStatement.getElseStatement());
-		
-		if(statementPair.getValue0() != null && statementPair.getValue1() != null) {
-			return isAntipattern(statementPair.getValue0(), statementPair.getValue1(), invocatorName);
-		}
-		
-		return false;
+
+		Optional<Statement> thenStatement = Optional.ofNullable(ifStatement.getThenStatement());
+		Optional<Statement> elseStatement = Optional.ofNullable(ifStatement.getElseStatement());
+
+		return thenStatement.flatMap(
+						thenStm -> elseStatement.map(elseStm -> isAntipattern(thenStm, elseStm, invocatorName))
+				).orElse(false);
 	}
 
 
@@ -79,7 +78,8 @@ public class Rule5AtomFinder {
 	private boolean containsGetFromOptional(Statement statement, String invocatorName) {
 		Optional<ReturnStatement> returnStatement = ToolBoxForIfStatementAnalysis.getReturnStatement(statement);
 
-		return returnStatement.map(retStm -> ToolBoxForIfStatementAnalysis.containsGetFromOptional(retStm, invocatorName))
+		return returnStatement
+				.map(retStm -> ToolBoxForIfStatementAnalysis.containsGetFromOptional(retStm, invocatorName))
 				.orElse(false);
 	}
 

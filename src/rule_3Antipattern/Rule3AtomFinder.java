@@ -47,28 +47,37 @@ public class Rule3AtomFinder{
 				.collect(Collectors.toList());
 	}
 
+	private boolean isCyclomaticComplexityForBothOne(Statement thenStatement, Statement elseStatement) {
+		return ToolBoxForIfStatementAnalysis.getCyclomaticComplexity(thenStatement) == 1 
+				&& ToolBoxForIfStatementAnalysis.getCyclomaticComplexity(elseStatement) == 1;
+	}
+
+	private boolean isStatementComposedByASingleActionBorBoth(Statement thenStatement, Statement elseStatement) {
+		return ToolBoxForIfStatementAnalysis.isStatementComposedByASimgleAction(thenStatement)
+				&& ToolBoxForIfStatementAnalysis.isStatementComposedByASimgleAction(elseStatement);
+	}
+
 
 	private  boolean isAntipattern(IfStatement ifStatement, String invocatorName) {
 		Optional<Statement> thenStatement = Optional.ofNullable(ifStatement.getThenStatement());
 		Optional<Statement> elseStatement = Optional.ofNullable(ifStatement.getElseStatement());
 
-		if(!thenStatement.isPresent() || !elseStatement.isPresent()) {
-			return false;
-		}
+		return thenStatement.flatMap(
+				thenStm -> elseStatement.filter(elseStm -> isCyclomaticComplexityForBothOne(thenStm, elseStm))
+										.filter(elseStm -> isStatementComposedByASingleActionBorBoth(thenStm, elseStm))
+										.map(elseStm -> isAntipattern(thenStm, elseStm,  invocatorName))
+				).orElse(false);
 
-		Optional<ReturnStatement> returnStatementForThen = ToolBoxForIfStatementAnalysis.getReturnStatement(thenStatement.get());
-		Optional<ReturnStatement> returnStatementForElse = ToolBoxForIfStatementAnalysis.getReturnStatement(elseStatement.get());
+	}
 
-		if(!returnStatementForElse.isPresent() || !returnStatementForThen.isPresent()) {
-			return false;
-		}
+	private boolean isAntipattern(Statement thenStatement, Statement elseStatement, String invocatorName) {
+		Optional<ReturnStatement> returnStatementForThen = ToolBoxForIfStatementAnalysis.getReturnStatement(thenStatement);
+		Optional<ReturnStatement> returnStatementForElse = ToolBoxForIfStatementAnalysis.getReturnStatement(elseStatement);
 
-		return ToolBoxForIfStatementAnalysis.getCyclomaticComplexity(thenStatement.get()) == 1 
-				&& ToolBoxForIfStatementAnalysis.getCyclomaticComplexity(elseStatement.get()) == 1 
-				&& isAntipattern(returnStatementForThen.get(), returnStatementForElse.get(), invocatorName)
-				&& ToolBoxForIfStatementAnalysis.isStatementComposedByASimgleAction(thenStatement.get())
-				&& ToolBoxForIfStatementAnalysis.isStatementComposedByASimgleAction(elseStatement.get());
-
+		return returnStatementForThen.flatMap(
+						retStmForThen -> returnStatementForElse.map(retStmForElse -> isAntipattern(retStmForThen, retStmForElse, invocatorName)
+								)
+				).orElse(false);
 	}
 
 
@@ -78,4 +87,5 @@ public class Rule3AtomFinder{
 				|| ToolBoxForIfStatementAnalysis.containsGetFromOptional(returnStatementForElse, invocatorName)
 				&& !ToolBoxForIfStatementAnalysis.containsMethodInvocation(returnStatementForThen);
 	}
+
 }

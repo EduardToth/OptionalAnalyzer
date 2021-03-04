@@ -19,6 +19,8 @@ public class Rule15Atom extends Atom{
 		return atom instanceof SingleVariableDeclaration;
 	}
 	
+	
+	
 	public static Optional<Rule15Atom> getInstance(ASTNode atom) {
 		Rule15Atom instance = null;
 		try {
