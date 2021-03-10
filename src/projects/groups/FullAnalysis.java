@@ -1,9 +1,7 @@
 package projects.groups;
 
-import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
+import java.util.Map.Entry;
 import java.util.stream.Collectors;
 
 import FullAnalysis.Analysis;
@@ -21,36 +19,26 @@ public class FullAnalysis implements IRelationBuilder<MAnalysis, MProject>{
 	@Override
 	public Group<MAnalysis> buildGroup(MProject arg0) {
 
-		List<MAnalysis> result = arg0.compilationUnitBuilder()
+		List<MAnalysis> result = arg0.compilationUnitDetector()
 				.getElements()
 				.stream()
-				.map(MCompilationUnit::fullAnalysisGroupBuilder)
+				.map(MCompilationUnit::fullAnalysis)
 				.map(Group::getElements)
 				.flatMap(List::stream)
+				.map(MAnalysis::getUnderlyingObject)
+				.filter(Analysis.class::isInstance)
+				.map(Analysis.class::cast)
+				.collect(Collectors.groupingBy(Analysis::getRuleName))
+				.entrySet()
+				.stream()
+				.map(Entry::getValue)
+				.map(equivalentElementsList -> equivalentElementsList.get( 0 ))
+				.map(Factory.getInstance()::createMAnalysis)
 				.collect(Collectors.toList());
-
+				
 		Group<MAnalysis> group = new Group<>();
-		group.addAll(removeDuplicates(result));
+		group.addAll(result);
 
 		return group;
-
 	}
-
-	private List<MAnalysis> removeDuplicates(List<MAnalysis> list) {
-		Set<String> ruleNames = new HashSet<>();
-		List<Analysis> newList = new ArrayList<>();
-
-		for(MAnalysis mAnalysis : list) {
-			Analysis analysis = (Analysis) mAnalysis.getUnderlyingObject();
-			if(!ruleNames.contains(analysis.getRuleName())) {
-				newList.add(analysis);
-				ruleNames.add(analysis.getRuleName());
-			}
-		}
-
-		return newList.stream()
-				.map(analysis -> Factory.getInstance().createMAnalysis(analysis))
-				.collect(Collectors.toList());
-	}
-
 }

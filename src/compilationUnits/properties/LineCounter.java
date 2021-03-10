@@ -12,7 +12,7 @@ import ro.lrg.xcore.metametamodel.IPropertyComputer;
 import ro.lrg.xcore.metametamodel.IRelationBuilder;
 import ro.lrg.xcore.metametamodel.PropertyComputer;
 import ro.lrg.xcore.metametamodel.RelationBuilder;
-import rule_1Antipattern.Rule1AtomFinder;
+import rule_1Antipattern.Rule1AntipatternFinder;
 import utilities.UtilityClass;
 
 

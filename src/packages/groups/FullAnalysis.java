@@ -21,10 +21,10 @@ public class FullAnalysis implements IRelationBuilder<MAnalysis, MPackage>{
 	@Override
 	public Group<MAnalysis> buildGroup(MPackage arg0) {
 
-		List<MAnalysis> result = arg0.compilationUnitBuilder()
+		List<MAnalysis> result = arg0.compilationUnitDetector()
 				.getElements()
 				.stream()
-				.map(MCompilationUnit::fullAnalysisGroupBuilder)
+				.map(MCompilationUnit::fullAnalysis)
 				.map(Group::getElements)
 				.flatMap(List::stream)
 				.collect(Collectors.toList());

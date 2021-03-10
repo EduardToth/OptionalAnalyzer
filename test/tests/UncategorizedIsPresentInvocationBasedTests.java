@@ -7,7 +7,7 @@ import org.junit.Test;
 
 import optionalanalizer.metamodel.entity.MUncategorizedIsPresentAtom;
 import ro.lrg.xcore.metametamodel.Group;
-import utilities.Atom;
+import utilities.Antipattern;
 
 public class UncategorizedIsPresentInvocationBasedTests extends TestBaseClass{
 
@@ -20,12 +20,12 @@ public class UncategorizedIsPresentInvocationBasedTests extends TestBaseClass{
 	}
 	
 	@Override
-	protected List<Atom> getAtoms() {
+	protected List<Antipattern> getAtoms() {
 		Group<MUncategorizedIsPresentAtom> group = getMCompilationUnit()
-				.uncategorizedIsPresentInvocationBasedAntipatternBuilder();
+				.uncategorizedIsPresentInvocationBasedAntipatternDetector();
 		
 		return group.getElements().stream()
-			.map(mAtom -> (Atom)mAtom.getUnderlyingObject())
+			.map(mAtom -> (Antipattern)mAtom.getUnderlyingObject())
 			.collect(Collectors.toList());
 	}
 	

@@ -9,79 +9,79 @@ public interface MProject extends ro.lrg.xcore.metametamodel.XEntity {
 	public java.lang.String toString();
 
 	@ro.lrg.xcore.metametamodel.ThisIsARelationBuilder
-	public ro.lrg.xcore.metametamodel.Group<MRule20Atom> rule20AntipatternBuilder();
+	public ro.lrg.xcore.metametamodel.Group<MRule18Atom> rule18AntipatternDetector();
 
 	@ro.lrg.xcore.metametamodel.ThisIsARelationBuilder
-	public ro.lrg.xcore.metametamodel.Group<MRule18Atom> rule18AntipatternBuilder();
+	public ro.lrg.xcore.metametamodel.Group<MRule3Atom> rule_3AntipatternDetector();
 
 	@ro.lrg.xcore.metametamodel.ThisIsARelationBuilder
-	public ro.lrg.xcore.metametamodel.Group<MRule8Atom> rule_8AntipatternBuilder();
+	public ro.lrg.xcore.metametamodel.Group<MRule14Atom> rule14AntipatternDetector();
 
 	@ro.lrg.xcore.metametamodel.ThisIsARelationBuilder
-	public ro.lrg.xcore.metametamodel.Group<MRule19Atom> rule19AntipatternBuilder();
+	public ro.lrg.xcore.metametamodel.Group<MRule10Atom> rule10AntipatternDetector();
 
 	@ro.lrg.xcore.metametamodel.ThisIsARelationBuilder
-	public ro.lrg.xcore.metametamodel.Group<MRule7Atom> rule_7AntipatternBuilder();
+	public ro.lrg.xcore.metametamodel.Group<MRule15Atom> rule15AntipatternDetector();
 
 	@ro.lrg.xcore.metametamodel.ThisIsARelationBuilder
-	public ro.lrg.xcore.metametamodel.Group<MRule6Atom> rule_6AntipatternBuilder();
+	public ro.lrg.xcore.metametamodel.Group<MRule17Atom> rule17AntipatternDetector();
 
 	@ro.lrg.xcore.metametamodel.ThisIsARelationBuilder
-	public ro.lrg.xcore.metametamodel.Group<MRule10Atom> rule10AntipatternBuilder();
+	public ro.lrg.xcore.metametamodel.Group<MRule19Atom> rule19AntipatternDetector();
 
 	@ro.lrg.xcore.metametamodel.ThisIsARelationBuilder
-	public ro.lrg.xcore.metametamodel.Group<MRule15Atom> rule15AntipatternBuilder();
-
-	@ro.lrg.xcore.metametamodel.ThisIsARelationBuilder
-	public ro.lrg.xcore.metametamodel.Group<MRule17Atom> rule17AntipatternBuilder();
-
-	@ro.lrg.xcore.metametamodel.ThisIsARelationBuilder
-	public ro.lrg.xcore.metametamodel.Group<MRule2Atom> rule_2AntipatternBuilder();
+	public ro.lrg.xcore.metametamodel.Group<MRule13Atom> rule13AntipatternDetector();
 
 	@ro.lrg.xcore.metametamodel.ThisIsARelationBuilder
 	public ro.lrg.xcore.metametamodel.Group<MAnalysis> fullAnalysis();
 
 	@ro.lrg.xcore.metametamodel.ThisIsARelationBuilder
-	public ro.lrg.xcore.metametamodel.Group<MRule9Atom> rule_9AntipatternBuilder();
+	public ro.lrg.xcore.metametamodel.Group<MRule26Atom> rule26AntipatternDetector();
 
 	@ro.lrg.xcore.metametamodel.ThisIsARelationBuilder
-	public ro.lrg.xcore.metametamodel.Group<MRule3Atom> rule_3AntipatternBuilder();
+	public ro.lrg.xcore.metametamodel.Group<MRule20Atom> rule20AntipatternDetector();
 
 	@ro.lrg.xcore.metametamodel.ThisIsARelationBuilder
-	public ro.lrg.xcore.metametamodel.Group<MRule26Atom> rule26AntipatternBuilder();
+	public ro.lrg.xcore.metametamodel.Group<MRule21Atom> rule21AntipatternDetector();
 
 	@ro.lrg.xcore.metametamodel.ThisIsARelationBuilder
-	public ro.lrg.xcore.metametamodel.Group<MUncategorizedIsPresentAtom> uncategorizedIsPresentInvocationBasedAntipatternBuilder();
+	public ro.lrg.xcore.metametamodel.Group<MCompilationUnit> compilationUnitDetector();
 
 	@ro.lrg.xcore.metametamodel.ThisIsARelationBuilder
-	public ro.lrg.xcore.metametamodel.Group<MRule13Atom> rule13AntipatternBuilder();
+	public ro.lrg.xcore.metametamodel.Group<MRule25Atom> rule25AntipatternDetector();
 
 	@ro.lrg.xcore.metametamodel.ThisIsARelationBuilder
-	public ro.lrg.xcore.metametamodel.Group<MRule25Atom> rule25AntipatternBuilder();
+	public ro.lrg.xcore.metametamodel.Group<MRule16Atom> rule16AntipatternDetector();
 
 	@ro.lrg.xcore.metametamodel.ThisIsARelationBuilder
-	public ro.lrg.xcore.metametamodel.Group<MRule12Atom> rule12AntipatternBuilder();
+	public ro.lrg.xcore.metametamodel.Group<MRule1Atom> rule_1AntipatternDetector();
 
 	@ro.lrg.xcore.metametamodel.ThisIsARelationBuilder
-	public ro.lrg.xcore.metametamodel.Group<MRule4Atom> rule_4AntipatternBuilder();
+	public ro.lrg.xcore.metametamodel.Group<MRule5Atom> rule_5AntipatternDetector();
 
 	@ro.lrg.xcore.metametamodel.ThisIsARelationBuilder
-	public ro.lrg.xcore.metametamodel.Group<MRule14Atom> rule14AntipatternBuilder();
+	public ro.lrg.xcore.metametamodel.Group<MRule12Atom> rule12AntipatternDetector();
 
 	@ro.lrg.xcore.metametamodel.ThisIsARelationBuilder
-	public ro.lrg.xcore.metametamodel.Group<MRule16Atom> rule16AntipatternBuilder();
+	public ro.lrg.xcore.metametamodel.Group<MUncategorizedIsPresentAtom> uncategorizedIsPresentInvocationBasedAntipatternDetector();
 
 	@ro.lrg.xcore.metametamodel.ThisIsARelationBuilder
-	public ro.lrg.xcore.metametamodel.Group<MCompilationUnit> compilationUnitBuilder();
+	public ro.lrg.xcore.metametamodel.Group<MRule2Atom> rule_2AntipatternDetector();
 
 	@ro.lrg.xcore.metametamodel.ThisIsARelationBuilder
-	public ro.lrg.xcore.metametamodel.Group<MRule5Atom> rule_5AntipatternBuilder();
+	public ro.lrg.xcore.metametamodel.Group<MRule4Atom> rule_4AntipatternDetector();
 
 	@ro.lrg.xcore.metametamodel.ThisIsARelationBuilder
-	public ro.lrg.xcore.metametamodel.Group<MRule1Atom> rule_1AntipatternBuilder();
+	public ro.lrg.xcore.metametamodel.Group<MRule6Atom> rule_6AntipatternDetector();
 
 	@ro.lrg.xcore.metametamodel.ThisIsARelationBuilder
-	public ro.lrg.xcore.metametamodel.Group<MRule21Atom> rule21AntipatternBuilder();
+	public ro.lrg.xcore.metametamodel.Group<MRule9Atom> rule_9AntipatternDetector();
+
+	@ro.lrg.xcore.metametamodel.ThisIsARelationBuilder
+	public ro.lrg.xcore.metametamodel.Group<MRule7Atom> rule_7AntipatternDetector();
+
+	@ro.lrg.xcore.metametamodel.ThisIsARelationBuilder
+	public ro.lrg.xcore.metametamodel.Group<MRule8Atom> rule_8AntipatternDetector();
 
 	java.lang.Object getUnderlyingObject();
 }

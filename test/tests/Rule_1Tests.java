@@ -8,7 +8,7 @@ import java.util.stream.Collectors;
 
 import optionalanalizer.metamodel.entity.MRule1Atom;
 import ro.lrg.xcore.metametamodel.Group;
-import utilities.Atom;
+import utilities.Antipattern;
 
 
 public class Rule_1Tests extends TestBaseClass{
@@ -22,12 +22,12 @@ public class Rule_1Tests extends TestBaseClass{
 	}
 
 	@Override
-	protected List<Atom> getAtoms() {
-		Group<MRule1Atom> group = getMCompilationUnit().rule_1AntipatternBuilder();
+	protected List<Antipattern> getAtoms() {
+		Group<MRule1Atom> group = getMCompilationUnit().rule_1AntipatternDetector();
 
 		return group.getElements()
 				.stream()
-				.map(mAtom -> (Atom)mAtom.getUnderlyingObject())
+				.map(mAtom -> (Antipattern)mAtom.getUnderlyingObject())
 				.collect(Collectors.toList());
 	}
 

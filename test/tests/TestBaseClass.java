@@ -19,7 +19,7 @@ import org.junit.After;
 
 import optionalanalizer.metamodel.entity.MCompilationUnit;
 import optionalanalizer.metamodel.factory.Factory;
-import utilities.Atom;
+import utilities.Antipattern;
 import utilities.UtilityClass;
 
 public abstract class TestBaseClass {
@@ -137,7 +137,7 @@ public abstract class TestBaseClass {
 
 	private boolean passes(Map<Integer, Boolean> errorLineMap) throws TestingException {
 		CompilationUnit compilationUnit = UtilityClass.parse(iCompilationUnit);
-		List<Atom> atoms = getAtoms();
+		List<Antipattern> atoms = getAtoms();
 		System.out.println(atoms);
 
 		long nrOfAtomsFound =  atoms.stream()
@@ -155,7 +155,7 @@ public abstract class TestBaseClass {
 		return nrOfAtomsFound == this.nrOfProblemsTheTestShouldFind;
 	}
 
-	private List<Integer> getAllProblemLines(List<Atom> atoms) {
+	private List<Integer> getAllProblemLines(List<Antipattern> atoms) {
 		CompilationUnit compilationUnit = UtilityClass.parse(iCompilationUnit);
 
 		return atoms.stream()
@@ -163,7 +163,7 @@ public abstract class TestBaseClass {
 				.collect(Collectors.toList());
 	}
 
-	protected abstract List<Atom> getAtoms();
+	protected abstract List<Antipattern> getAtoms();
 
 	protected MCompilationUnit getMCompilationUnit() {
 		return Factory.getInstance().createMCompilationUnit(iCompilationUnit);

@@ -7,7 +7,7 @@ import org.junit.Test;
 
 import optionalanalizer.metamodel.entity.MRule10Atom;
 import ro.lrg.xcore.metametamodel.Group;
-import utilities.Atom;
+import utilities.Antipattern;
 
 public class Rule10Tests extends TestBaseClass{
 
@@ -20,11 +20,11 @@ public class Rule10Tests extends TestBaseClass{
 	}
 
 	@Override
-	protected List<Atom> getAtoms() {
-		Group<MRule10Atom> group = getMCompilationUnit().rule10AntipatternBuilder();
+	protected List<Antipattern> getAtoms() {
+		Group<MRule10Atom> group = getMCompilationUnit().rule10AntipatternDetector();
 		
 		return group.getElements().stream()
-			.map(mAtom -> (Atom)mAtom.getUnderlyingObject())
+			.map(mAtom -> (Antipattern)mAtom.getUnderlyingObject())
 			.collect(Collectors.toList());
 	}
 	
