@@ -18,8 +18,9 @@ public class Rule15AntipatternFinder {
         
 		return methodDeclarations.stream()
 				.filter(UtilityClass::isSetter)
-				.filter(UtilityClass::containsAtLeastOneOptionalAsParameter)
 				.map(UtilityClass::getFirstOptionalParameter)
+				.filter(Optional::isPresent)
+				.map(Optional::get)
 				.map(Rule15Antipattern::getInstance)
 				.filter(Optional::isPresent)
 				.map(Optional::get)

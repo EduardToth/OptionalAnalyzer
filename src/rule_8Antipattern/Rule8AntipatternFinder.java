@@ -8,7 +8,6 @@ import org.eclipse.jdt.core.dom.ASTNode;
 import org.eclipse.jdt.core.dom.IfStatement;
 import org.eclipse.jdt.core.dom.MethodInvocation;
 import org.eclipse.jdt.core.dom.Statement;
-import org.javatuples.Pair;
 
 import optionalanalizer.metamodel.entity.MRule8sAntipattern;
 import optionalanalizer.metamodel.factory.Factory;
@@ -49,19 +48,15 @@ public class Rule8AntipatternFinder{
 
 	private  boolean isAntipattern(IfStatement ifStatement, String invocatorName) {
 
-		return Optional.of(Pair.with(ifStatement.getThenStatement(), ifStatement.getElseStatement()))
-				.filter(this::containsOnlyThenBlock)
-				.map(Pair::getValue0)
-				.filter(thenStatement -> isAntipattern(thenStatement, invocatorName))
-				.map(thenStatement -> true)
-				.orElse(false);
-		
+		Statement thenStatement = ifStatement.getThenStatement();
+		Statement elseStatement = ifStatement.getElseStatement();
+
+		return containsOnlyThenBlock(thenStatement, elseStatement) && isAntipattern(thenStatement, invocatorName);
 	}
 
-	private boolean containsOnlyThenBlock(Pair<Statement, Statement> statementPair) {
-		return  statementPair.getValue0() != null && statementPair.getValue1() == null;
+	private boolean containsOnlyThenBlock(Statement thenStatement, Statement elseStatement) {
+		return  thenStatement != null && elseStatement == null;
 	}
-
 
 	private boolean isAntipattern(Statement statementForThen, String invocatorName) {
 		return ToolBoxForIfStatementAnalysis.getCyclomaticComplexity(statementForThen) == 1

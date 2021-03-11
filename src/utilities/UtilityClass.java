@@ -1,5 +1,6 @@
 package utilities;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
@@ -92,14 +93,14 @@ public class UtilityClass {
 		String[] genericArguments = getGenericTypes(typeName);
 
 		return Arrays.asList(genericArguments).stream()
-				.filter(genericArgument -> isTypeNamePresent(genericArgument, Libraries.badGenericTypesForOptional))
-		        .findAny()
-		        .isPresent();
+				.anyMatch(genericArgument 
+						-> isTypeNamePresent(genericArgument, Libraries.badGenericTypesForOptional));
 				
+
 	}
 
 	public static boolean hasOptionalTypeInside(String typeName) {
-			return hasGenericTypeInside(Libraries.optionalTypes, typeName);
+		return hasGenericTypeInside(Libraries.optionalTypes, typeName);
 
 	}
 
@@ -112,7 +113,7 @@ public class UtilityClass {
 		}
 
 		try {
-		return typeName.substring(startIndex + 1, endIndex).split(", *");
+			return typeName.substring(startIndex + 1, endIndex).split(", *");
 		} catch(IndexOutOfBoundsException indexOutOfBoundsException) {
 			return new String[ 0 ];
 		}
@@ -133,9 +134,7 @@ public class UtilityClass {
 
 		if(!contains) {
 			contains = genericTypes.stream()
-					.filter(type -> hasGenericTypeInside(listOfTypes, type))
-					.findAny()
-					.isPresent();
+					.anyMatch(type -> hasGenericTypeInside(listOfTypes, type));
 		}
 		return contains;
 	}
@@ -185,11 +184,10 @@ public class UtilityClass {
 		return parameters.stream()
 				.filter(UtilityClass::hasType)
 				.map(param -> param.getType().resolveBinding().getQualifiedName())
-				.filter(typeName -> utilities.UtilityClass.isTypeOptional(typeName))
-				.findFirst()
-				.isPresent();
+				.anyMatch(typeName -> utilities.UtilityClass.isTypeOptional(typeName));
+				
 	}
-	
+
 	private static boolean hasType(SingleVariableDeclaration singleVariableDeclaration) {
 		try {
 			singleVariableDeclaration.getType()
@@ -201,14 +199,14 @@ public class UtilityClass {
 		}
 	}
 
-	public static SingleVariableDeclaration getFirstOptionalParameter(MethodDeclaration methodDeclaration) {
+	public static Optional<SingleVariableDeclaration> getFirstOptionalParameter(MethodDeclaration methodDeclaration) {
 
 		List<SingleVariableDeclaration> parameters = methodDeclaration.parameters();
 
 		return parameters.stream()
 				.filter(UtilityClass::isParameterOfTypeOptional)
-				.findFirst()
-				.get();
+				.findFirst();
+				
 	}
 
 	public static boolean isParameterOfTypeOptional(SingleVariableDeclaration singleVariableDeclaration) {
@@ -218,19 +216,15 @@ public class UtilityClass {
 
 	public static boolean isSetter(MethodDeclaration methodDeclaration) {
 		Optional<TypeDeclaration> typeDeclaration = getTypeDeclaration(methodDeclaration);
-		if(!typeDeclaration.isPresent()) {
-			return false;
-		}
 
 		String methodName = methodDeclaration.getName().toString();
-		FieldDeclaration[] fields = typeDeclaration.get().getFields();
-
-		return Arrays.asList( fields ).stream()
+		return typeDeclaration
+				.map(TypeDeclaration::getFields)
+				.map(Arrays::asList)
+				.orElse(Collections.emptyList())
+				.stream()
 				.map(UtilityClass::createSetterName)
-				.filter(setterName -> setterName.equals(methodName))
-				.findAny()
-				.isPresent();
-
+				.anyMatch(setterName -> setterName.equals(methodName));
 
 	}
 
@@ -263,15 +257,15 @@ public class UtilityClass {
 
 		return Optional.ofNullable(typeDeclaration);
 	}
-	
+
 	public static Optional<String> getTypeName(Expression expression) {
 		return Optional.ofNullable(expression.resolveTypeBinding().getQualifiedName());
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	public static <T> Predicate<T> negatePredicate(Predicate<? super T> target) {
-        Objects.requireNonNull(target);
-        return (Predicate<T>)target.negate();
-    }
+		Objects.requireNonNull(target);
+		return (Predicate<T>)target.negate();
+	}
 
 }

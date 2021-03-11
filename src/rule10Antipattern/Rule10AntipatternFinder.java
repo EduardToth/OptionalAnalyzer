@@ -5,8 +5,11 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.eclipse.jdt.core.dom.ASTNode;
+import org.eclipse.jdt.core.dom.Expression;
+import org.eclipse.jdt.core.dom.ITypeBinding;
 import org.eclipse.jdt.core.dom.IfStatement;
 import org.eclipse.jdt.core.dom.MethodInvocation;
+import org.eclipse.jdt.core.dom.ReturnStatement;
 import org.eclipse.jdt.core.dom.Statement;
 import org.javatuples.Pair;
 
@@ -32,7 +35,7 @@ public class Rule10AntipatternFinder {
 	private List<IfStatement> getProblematicIfStatements(ASTNode astNode) {
 		OptionalInvocationFinder optionalInvocationFinder = new OptionalInvocationFinder();
 		List<MethodInvocation> invocations = optionalInvocationFinder.getInvocations(astNode);
-		
+
 		return getProblematicIfStatements(invocations);
 	}
 
@@ -49,17 +52,20 @@ public class Rule10AntipatternFinder {
 	}
 
 	private  boolean isAntipattern(IfStatement ifStatement, String invocatorName) {
-		
-		return Optional.of(Pair.with(ifStatement.getThenStatement(), ifStatement.getElseStatement()))
-				.filter(pair -> pair.getValue0() != null && pair.getValue1() != null)
-				.filter(this::bothOfThemContainReturnStatement)
-				.map(pair -> isAntipattern(pair.getValue0(), pair.getValue1(), invocatorName))
-				.orElse(false);
+
+		Optional<Statement> thenStatement = Optional.ofNullable(ifStatement.getThenStatement());
+		Optional<Statement> elseStatement = Optional.ofNullable(ifStatement.getElseStatement());
+
+		return thenStatement.flatMap(
+				thenStm -> elseStatement.filter(elseStm -> bothOfThemContainReturnStatement(thenStm, elseStm))
+				.map(elseStm -> isAntipattern(thenStm, elseStm, invocatorName))
+				).orElse( false );
+
 	}
 
-	private boolean bothOfThemContainReturnStatement(Pair<Statement, Statement> statementPair) {
-		return ToolBoxForIfStatementAnalysis.getReturnStatement(statementPair.getValue0()).isPresent()
-				&& ToolBoxForIfStatementAnalysis.getReturnStatement(statementPair.getValue1()).isPresent();
+	private boolean bothOfThemContainReturnStatement(Statement ifStatement, Statement elseStatement) {
+		return ToolBoxForIfStatementAnalysis.getReturnStatement(ifStatement).isPresent()
+				&& ToolBoxForIfStatementAnalysis.getReturnStatement(elseStatement).isPresent();
 	}
 
 	private boolean isAntipattern(Statement statementForThen, Statement statementForElse, String invocatorName) {
@@ -67,12 +73,13 @@ public class Rule10AntipatternFinder {
 		String typeName = "";
 		try {
 			typeName = ToolBoxForIfStatementAnalysis.getReturnStatement(statementForThen)
-					.get()
-					.getExpression()
-					.resolveTypeBinding()
-					.getQualifiedName();
+					.map(ReturnStatement::getExpression)
+					.map(Expression::resolveTypeBinding)
+					.map(ITypeBinding::getQualifiedName)
+					.orElse("");
+
 		}catch(NullPointerException npe) {}
-		
+
 		return 	ToolBoxForIfStatementAnalysis.getCyclomaticComplexity(statementForThen) == 1
 				&& ToolBoxForIfStatementAnalysis.getCyclomaticComplexity(statementForElse) == 1
 				&& ToolBoxForIfStatementAnalysis.isStatementComposedByASimgleAction(statementForThen)

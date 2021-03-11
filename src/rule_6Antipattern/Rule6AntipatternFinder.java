@@ -12,7 +12,6 @@ import org.eclipse.jdt.core.dom.MethodInvocation;
 import org.eclipse.jdt.core.dom.ReturnStatement;
 import org.eclipse.jdt.core.dom.Statement;
 import org.eclipse.jdt.core.dom.ThrowStatement;
-import org.javatuples.Pair;
 
 import optionalanalizer.metamodel.entity.MRule6sAntipattern;
 import optionalanalizer.metamodel.factory.Factory;
