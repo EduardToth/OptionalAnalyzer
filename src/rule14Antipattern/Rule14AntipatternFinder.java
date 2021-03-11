@@ -6,13 +6,13 @@ import java.util.stream.Collectors;
 import org.eclipse.jdt.core.dom.ASTNode;
 import org.eclipse.jdt.core.dom.MethodDeclaration;
 
-import optionalanalizer.metamodel.entity.MRule14Atom;
+import optionalanalizer.metamodel.entity.MRule14sAntipattern;
 import optionalanalizer.metamodel.factory.Factory;
 import utilities.UtilityClass;
 
 public class Rule14AntipatternFinder {
 
-	public List<MRule14Atom> getMAtoms(ASTNode astNode) {
+	public List<MRule14sAntipattern> getMAntipatterns(ASTNode astNode) {
 		List<MethodDeclaration> methodDeclarations = UtilityClass.getMethodDeclarations(astNode);
 
 		return methodDeclarations.stream()
@@ -22,7 +22,7 @@ public class Rule14AntipatternFinder {
 				.map(Rule14Antipattern::getInstance)
 				.filter(Optional::isPresent)
 				.map(Optional::get)
-				.map(Factory.getInstance()::createMRule14Atom)
+				.map(Factory.getInstance()::createMRule14sAntipattern)
 				.collect(Collectors.toList());
 	}
 }

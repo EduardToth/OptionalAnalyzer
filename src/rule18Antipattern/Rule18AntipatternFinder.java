@@ -10,20 +10,20 @@ import java.util.stream.Collectors;
 import org.eclipse.jdt.core.dom.ASTNode;
 import org.eclipse.jdt.core.dom.ASTVisitor;
 import org.eclipse.jdt.core.dom.SimpleName;
-import optionalanalizer.metamodel.entity.MRule18Atom;
+import optionalanalizer.metamodel.entity.MRule18sAntipattern;
 import optionalanalizer.metamodel.factory.Factory;
 import utilities.Unit;
 import utilities.UtilityClass;
 
 public class Rule18AntipatternFinder {
 
-	public List<MRule18Atom> getMAtoms(ASTNode astNode) {
+	public List<MRule18sAntipattern> getMAntipatterns(ASTNode astNode) {
 
 		List<SimpleName> simpleNames = getSimpleNames(astNode);
 
 		final Unit<String> typeName = new Unit<>(null);
 
-		List<Rule18Antipattern> atoms = simpleNames.stream()
+		List<Rule18Antipattern> antipatterns = simpleNames.stream()
 		.peek(simpleName -> typeName.setAt0(getTypeName(simpleName)))
 		.filter(el -> isRule18Antipattern(typeName.getValue0()))
 		.map(Rule18Antipattern::getInstance)
@@ -31,10 +31,10 @@ public class Rule18AntipatternFinder {
 		.map(Optional::get)
 		.collect(Collectors.toList());
 		
-		atoms = removeDuplicates(atoms);
+		antipatterns = removeDuplicates(antipatterns);
 		
-		return atoms.stream()
-				.map(Factory.getInstance()::createMRule18Atom)
+		return antipatterns.stream()
+				.map(Factory.getInstance()::createMRule18sAntipattern)
 				.collect(Collectors.toList());
 	}
 
@@ -78,14 +78,14 @@ public class Rule18AntipatternFinder {
 		return containsOptional;
 	}
 
-	private List<Rule18Antipattern> removeDuplicates(List<Rule18Antipattern> atoms) {
+	private List<Rule18Antipattern> removeDuplicates(List<Rule18Antipattern> antipatterns) {
 
 		Set<Integer> startPositions = new HashSet<>();
 		List<Rule18Antipattern> newList = new ArrayList<>();
-		for(Rule18Antipattern rule21Atom : atoms) {
-			if(!startPositions.contains(rule21Atom.getStartingPosition())) {
-				newList.add(rule21Atom);
-				startPositions.add(rule21Atom.getStartingPosition());
+		for(Rule18Antipattern rule21Antipattern : antipatterns) {
+			if(!startPositions.contains(rule21Antipattern.getStartingPosition())) {
+				newList.add(rule21Antipattern);
+				startPositions.add(rule21Antipattern.getStartingPosition());
 			}
 
 		}

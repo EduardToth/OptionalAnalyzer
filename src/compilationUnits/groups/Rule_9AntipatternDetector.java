@@ -7,7 +7,7 @@ import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 
 import optionalanalizer.metamodel.entity.MCompilationUnit;
-import optionalanalizer.metamodel.entity.MRule9Atom;
+import optionalanalizer.metamodel.entity.MRule9sAntipattern;
 import optionalanalizer.metamodel.factory.Factory;
 import ro.lrg.xcore.metametamodel.Group;
 import ro.lrg.xcore.metametamodel.IRelationBuilder;
@@ -20,16 +20,16 @@ import utilities.Antipattern;
 import utilities.UtilityClass;
 
 @RelationBuilder
-public class Rule_9AntipatternDetector implements IRelationBuilder<MRule9Atom, MCompilationUnit>{
+public class Rule_9AntipatternDetector implements IRelationBuilder<MRule9sAntipattern, MCompilationUnit>{
 
 	@Override
-	public Group<MRule9Atom> buildGroup(MCompilationUnit arg0) {
-		Rule9AntipatternFinder rule9AtomFinder = new Rule9AntipatternFinder();
-		Group<MRule9Atom> group = new Group<>();
+	public Group<MRule9sAntipattern> buildGroup(MCompilationUnit arg0) {
+		Rule9AntipatternFinder rule9AntipatternFinder = new Rule9AntipatternFinder();
+		Group<MRule9sAntipattern> group = new Group<>();
 		ICompilationUnit iCompilationUnit = (ICompilationUnit) arg0.getUnderlyingObject();
 		CompilationUnit compilationUnit = UtilityClass.parse(iCompilationUnit);
-		List<MRule9Atom> atoms = rule9AtomFinder.getMAtoms(compilationUnit);
-		group.addAll(atoms );
+		List<MRule9sAntipattern> antipatterns = rule9AntipatternFinder.getMAntipatterns(compilationUnit);
+		group.addAll(antipatterns );
 		
 		return group;
 	}
@@ -41,24 +41,24 @@ public class Rule_9AntipatternDetector implements IRelationBuilder<MRule9Atom, M
 	 * combined with the rule 7 antipattern would be a nightmare, so I decided to make a compromise and filter the result
 	 * using the rule 7 antipattern.
 	 */
-	private List<MRule9Atom> filterResult(List<MRule9Atom> rawAtoms, CompilationUnit compilationUnit) {
-		Rule7AntipatternFinder rule7AtomFinder = new Rule7AntipatternFinder();
-		List<? extends Antipattern> rule7List = rule7AtomFinder.getMAtoms(compilationUnit)
+	private List<MRule9sAntipattern> filterResult(List<MRule9sAntipattern> rawAntipattern, CompilationUnit compilationUnit) {
+		Rule7AntipatternFinder rule7AntipatternFinder = new Rule7AntipatternFinder();
+		List<? extends Antipattern> rule7List = rule7AntipatternFinder.getMAntipatterns(compilationUnit)
 				.stream()
-				.map(atom -> (Rule7Antipattern)atom.getUnderlyingObject())
+				.map(antipattern -> (Rule7Antipattern)antipattern.getUnderlyingObject())
 				.collect(Collectors.toList());
 		
 		System.out.println(rule7List);
 		
-		List<? extends Antipattern> rule9List = rawAtoms.stream()
-				.map(atom -> (Rule9Antipattern)atom.getUnderlyingObject())
+		List<? extends Antipattern> rule9List = rawAntipattern.stream()
+				.map(antipattern -> (Rule9Antipattern)antipattern.getUnderlyingObject())
 				.collect(Collectors.toList());
 		System.out.println(rule9List);
 		
 		rule9List.removeAll(rule9List);
 	
 		return rule9List.stream()
-				.map(atom -> Factory.getInstance().createMRule9Atom(atom))
+				.map(antipattern -> Factory.getInstance().createMRule9sAntipattern(antipattern))
 				.collect(Collectors.toList());
 	}
 }

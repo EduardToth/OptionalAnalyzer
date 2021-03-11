@@ -14,13 +14,13 @@ import utilities.UtilityClass;
 
 public class Rule18Antipattern extends Antipattern {
 
-	public Rule18Antipattern(ASTNode atom) throws ASTNodeDoesNotBelongHere {
-		super(atom);
+	public Rule18Antipattern(ASTNode astNode) throws ASTNodeDoesNotBelongHere {
+		super(astNode);
 	}
 
 	@Override
-	protected boolean belongs(ASTNode atom) {
-		return atom instanceof SimpleName;
+	protected boolean belongs(ASTNode astNode) {
+		return astNode instanceof SimpleName;
 	}
 
 	@Override
@@ -54,10 +54,10 @@ public class Rule18Antipattern extends Antipattern {
 				astNode.getLength());
 	}
 
-	public static Optional<Rule18Antipattern> getInstance(ASTNode atom) {
+	public static Optional<Rule18Antipattern> getInstance(ASTNode astNode) {
 		Rule18Antipattern instance = null;
 		try {
-			instance =  new Rule18Antipattern(atom);
+			instance =  new Rule18Antipattern(astNode);
 		} catch (ASTNodeDoesNotBelongHere e) {
 			e.printStackTrace();
 		}

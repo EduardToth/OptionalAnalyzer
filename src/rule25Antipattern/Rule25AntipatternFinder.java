@@ -11,12 +11,12 @@ import org.eclipse.jdt.core.dom.Expression;
 import org.eclipse.jdt.core.dom.InfixExpression;
 import org.eclipse.jdt.core.dom.InfixExpression.Operator;
 
-import optionalanalizer.metamodel.entity.MRule25Atom;
+import optionalanalizer.metamodel.entity.MRule25sAntipattern;
 import optionalanalizer.metamodel.factory.Factory;
 import utilities.UtilityClass;
 
 public class Rule25AntipatternFinder {
-	public List<MRule25Atom> getMAtoms(ASTNode astNode) {
+	public List<MRule25sAntipattern> getMAntipatterns(ASTNode astNode) {
 		final List<InfixExpression> infixExpressions = getAllInfixExpressions(astNode);
 
 		return infixExpressions.stream()
@@ -24,7 +24,7 @@ public class Rule25AntipatternFinder {
 				.map(Rule25Antipattern::getInstance)
 				.filter( Optional::isPresent)
 				.map(Optional::get)
-				.map(Factory.getInstance()::createMRule25Atom)
+				.map(Factory.getInstance()::createMRule25sAntipattern)
 				.collect(Collectors.toList());
 	}
 

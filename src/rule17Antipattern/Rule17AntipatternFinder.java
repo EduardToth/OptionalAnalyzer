@@ -8,14 +8,14 @@ import java.util.stream.Collectors;
 import org.eclipse.jdt.core.dom.ASTNode;
 import org.eclipse.jdt.core.dom.MethodDeclaration;
 
-import optionalanalizer.metamodel.entity.MRule17Atom;
+import optionalanalizer.metamodel.entity.MRule17sAntipattern;
 import optionalanalizer.metamodel.factory.Factory;
 import utilities.Unit;
 import utilities.UtilityClass;
 
 public class Rule17AntipatternFinder {
 
-	public List<MRule17Atom> getMAtoms(ASTNode astNode) {
+	public List<MRule17sAntipattern> getMAntipatterns(ASTNode astNode) {
 		
 		List<MethodDeclaration> methodDeclarations = UtilityClass.getMethodDeclarations(astNode);
 		final Unit<MethodDeclaration> currentMethodDeclaration = new Unit<>(null);
@@ -28,7 +28,7 @@ public class Rule17AntipatternFinder {
 				.map(el -> Rule17Antipattern.getInstance(currentMethodDeclaration.getValue0()))
 				.filter(Optional::isPresent)
 				.map(Optional::get)
-				.map(Factory.getInstance()::createMRule17Atom)
+				.map(Factory.getInstance()::createMRule17sAntipattern)
 				.collect(Collectors.toList());
 		
 		 

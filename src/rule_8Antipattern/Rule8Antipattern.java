@@ -9,19 +9,19 @@ import utilities.Antipattern;
 
 public class Rule8Antipattern extends Antipattern {
 
-	public Rule8Antipattern(ASTNode atom) throws ASTNodeDoesNotBelongHere {
-		super(atom);
+	public Rule8Antipattern(ASTNode antipattern) throws ASTNodeDoesNotBelongHere {
+		super(antipattern);
 	}
 
 	@Override
-	protected boolean belongs(ASTNode atom) {
-		return atom instanceof IfStatement;
+	protected boolean belongs(ASTNode antipattern) {
+		return antipattern instanceof IfStatement;
 	}
 	
-	public static Optional<Rule8Antipattern> getInstance(ASTNode atom) {
+	public static Optional<Rule8Antipattern> getInstance(ASTNode antipattern) {
 		Rule8Antipattern instance = null;
 		try {
-			instance =  new Rule8Antipattern(atom);
+			instance =  new Rule8Antipattern(antipattern);
 		} catch (ASTNodeDoesNotBelongHere e) {
 			e.printStackTrace();
 		}

@@ -11,20 +11,20 @@ import utilities.Antipattern;
 public class Rule17Antipattern extends Antipattern {
 
 
-	public Rule17Antipattern(ASTNode atom) throws ASTNodeDoesNotBelongHere {
-		super(atom);
+	public Rule17Antipattern(ASTNode astNode) throws ASTNodeDoesNotBelongHere {
+		super(astNode);
 
 	}
 
 	@Override
-	protected boolean belongs(ASTNode atom) {
-		return atom instanceof MethodDeclaration;
+	protected boolean belongs(ASTNode astNode) {
+		return astNode instanceof MethodDeclaration;
 	}
 	
-	public static Optional<Rule17Antipattern> getInstance(ASTNode atom) {
+	public static Optional<Rule17Antipattern> getInstance(ASTNode astNode) {
 		Rule17Antipattern instance = null;
 		try {
-			instance =  new Rule17Antipattern(atom);
+			instance =  new Rule17Antipattern(astNode);
 		} catch (ASTNodeDoesNotBelongHere e) {
 			e.printStackTrace();
 		}

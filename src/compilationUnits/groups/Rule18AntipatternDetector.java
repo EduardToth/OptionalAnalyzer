@@ -6,7 +6,7 @@ import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 
 import optionalanalizer.metamodel.entity.MCompilationUnit;
-import optionalanalizer.metamodel.entity.MRule18Atom;
+import optionalanalizer.metamodel.entity.MRule18sAntipattern;
 import ro.lrg.xcore.metametamodel.Group;
 import ro.lrg.xcore.metametamodel.IRelationBuilder;
 import ro.lrg.xcore.metametamodel.RelationBuilder;
@@ -15,16 +15,16 @@ import utilities.UtilityClass;
 
 
 @RelationBuilder
-public class Rule18AntipatternDetector  implements IRelationBuilder<MRule18Atom, MCompilationUnit>{
+public class Rule18AntipatternDetector  implements IRelationBuilder<MRule18sAntipattern, MCompilationUnit>{
 
 	@Override
-	public Group<MRule18Atom> buildGroup(MCompilationUnit arg0) {
+	public Group<MRule18sAntipattern> buildGroup(MCompilationUnit arg0) {
 		ICompilationUnit iCompilationUnit = (ICompilationUnit) arg0.getUnderlyingObject();
-		Rule18AntipatternFinder rule18AtomFinder = new Rule18AntipatternFinder();
+		Rule18AntipatternFinder rule18AntipatternFinder = new Rule18AntipatternFinder();
 		CompilationUnit compilationUnit = UtilityClass.parse(iCompilationUnit);
-		List<MRule18Atom> atoms = rule18AtomFinder.getMAtoms(compilationUnit);
-		Group<MRule18Atom> group = new Group<>();
-		group.addAll(atoms);
+		List<MRule18sAntipattern> antipatterns = rule18AntipatternFinder.getMAntipatterns(compilationUnit);
+		Group<MRule18sAntipattern> group = new Group<>();
+		group.addAll(antipatterns);
 		return group;
 	}
 }

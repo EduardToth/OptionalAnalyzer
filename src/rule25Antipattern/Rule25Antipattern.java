@@ -17,10 +17,10 @@ public class Rule25Antipattern extends Antipattern {
 		return wrappedElement instanceof InfixExpression;
 	}
 	
-	public static Optional<Rule25Antipattern> getInstance(ASTNode atom) {
+	public static Optional<Rule25Antipattern> getInstance(ASTNode astNode) {
 		Rule25Antipattern instance = null;
 		try {
-			instance =  new Rule25Antipattern(atom);
+			instance =  new Rule25Antipattern(astNode);
 		} catch (ASTNodeDoesNotBelongHere e) {
 			e.printStackTrace();
 		}

@@ -8,7 +8,7 @@ import org.eclipse.jdt.core.dom.ASTNode;
 import org.eclipse.jdt.core.dom.MethodDeclaration;
 import org.eclipse.jdt.core.dom.MethodInvocation;
 
-import optionalanalizer.metamodel.entity.MRule12Atom;
+import optionalanalizer.metamodel.entity.MRule12sAntipattern;
 import optionalanalizer.metamodel.factory.Factory;
 import utilities.OptionalInvocationFinder;
 
@@ -16,7 +16,7 @@ public class Rule12AntipatternFinder {
 
 	private final String matchingRegEx = ".*\\.ofNullable\\(.*\\)\\.(orElse\\(.*\\)|orElseGet\\(.*\\))";
 
-	public List<MRule12Atom> getMAtoms(ASTNode astNode) {
+	public List<MRule12sAntipattern> getMAntipatterns(ASTNode astNode) {
 		OptionalInvocationFinder optionalInvocationFinder = new OptionalInvocationFinder();
 		List<MethodInvocation> ofNullableList = optionalInvocationFinder.getInvocations(astNode, "ofNullable");
 		
@@ -27,7 +27,7 @@ public class Rule12AntipatternFinder {
 				.map(Rule12Antipattern::getInstance)
 				.filter(Optional::isPresent)
 				.map(Optional::get)
-				.map(Factory.getInstance()::createMRule12Atom)
+				.map(Factory.getInstance()::createMRule12sAntipattern)
 				.collect(Collectors.toList());
 		
 	}

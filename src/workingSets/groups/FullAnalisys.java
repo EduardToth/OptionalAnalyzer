@@ -19,7 +19,7 @@ public class FullAnalisys implements IRelationBuilder<MAnalysis, MWorkingSet>{
 	@Override
 	public Group<MAnalysis> buildGroup(MWorkingSet arg0) {
 
-		List<MAnalysis> atoms = arg0.getComponentProjects()
+		List<MAnalysis> antipatterns = arg0.getComponentProjects()
 				.getElements()
 				.stream()
 				.map(MProject::fullAnalysis)
@@ -38,7 +38,7 @@ public class FullAnalisys implements IRelationBuilder<MAnalysis, MWorkingSet>{
 
 
 		Group<MAnalysis> analysisGroup = new Group<>();
-		analysisGroup.addAll(atoms);
+		analysisGroup.addAll(antipatterns);
 		
 		return analysisGroup;
 	}

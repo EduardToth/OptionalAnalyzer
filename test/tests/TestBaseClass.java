@@ -137,33 +137,33 @@ public abstract class TestBaseClass {
 
 	private boolean passes(Map<Integer, Boolean> errorLineMap) throws TestingException {
 		CompilationUnit compilationUnit = UtilityClass.parse(iCompilationUnit);
-		List<Antipattern> atoms = getAtoms();
-		System.out.println(atoms);
+		List<Antipattern> antipatterns = getAntipatterns();
+		System.out.println(antipatterns);
 
-		long nrOfAtomsFound =  atoms.stream()
-				.map(atom -> compilationUnit.getLineNumber(atom.getWrappedElement().getStartPosition()))
+		long nrOfAntipatternsFound =  antipatterns.stream()
+				.map(antipattern -> compilationUnit.getLineNumber(antipattern.getWrappedElement().getStartPosition()))
 				.filter(lineNr -> errorLineMap.containsKey(lineNr))
 				.peek(lineNr -> errorLineMap.replace(lineNr, true))
 				.count();
 
-		if(nrOfAtomsFound > this.nrOfProblemsTheTestShouldFind) {
-			List<Integer> problemLinesFound = getAllProblemLines(atoms);
+		if(nrOfAntipatternsFound > this.nrOfProblemsTheTestShouldFind) {
+			List<Integer> problemLinesFound = getAllProblemLines(antipatterns);
 			problemLinesFound.removeAll(Arrays.asList(linesWithProblems));
 			throw new TestingException("more problems found at the following lines: " );
 		}
 
-		return nrOfAtomsFound == this.nrOfProblemsTheTestShouldFind;
+		return nrOfAntipatternsFound == this.nrOfProblemsTheTestShouldFind;
 	}
 
-	private List<Integer> getAllProblemLines(List<Antipattern> atoms) {
+	private List<Integer> getAllProblemLines(List<Antipattern> antipatterns) {
 		CompilationUnit compilationUnit = UtilityClass.parse(iCompilationUnit);
 
-		return atoms.stream()
-				.map(atom -> compilationUnit.getLineNumber(atom.getWrappedElement().getStartPosition()))
+		return antipatterns.stream()
+				.map(antipattern -> compilationUnit.getLineNumber(antipattern.getWrappedElement().getStartPosition()))
 				.collect(Collectors.toList());
 	}
 
-	protected abstract List<Antipattern> getAtoms();
+	protected abstract List<Antipattern> getAntipatterns();
 
 	protected MCompilationUnit getMCompilationUnit() {
 		return Factory.getInstance().createMCompilationUnit(iCompilationUnit);

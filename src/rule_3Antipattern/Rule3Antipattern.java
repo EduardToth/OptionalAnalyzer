@@ -11,20 +11,20 @@ import utilities.Antipattern;
 public class Rule3Antipattern extends Antipattern {
 	
 
-	private Rule3Antipattern(ASTNode atom) throws ASTNodeDoesNotBelongHere {
-		super(atom);
+	private Rule3Antipattern(ASTNode antipattern) throws ASTNodeDoesNotBelongHere {
+		super(antipattern);
 	}
 
 	@Override
-	protected boolean belongs(ASTNode atom) {
-		return atom instanceof IfStatement;
+	protected boolean belongs(ASTNode antipattern) {
+		return antipattern instanceof IfStatement;
 	}
 	
 	
-	public static Optional<Rule3Antipattern> getInstance(ASTNode atom) {
+	public static Optional<Rule3Antipattern> getInstance(ASTNode antipattern) {
 		Rule3Antipattern instance = null;
 		try {
-			instance =  new Rule3Antipattern(atom);
+			instance =  new Rule3Antipattern(antipattern);
 		} catch (ASTNodeDoesNotBelongHere e) {
 			e.printStackTrace();
 		}

@@ -10,7 +10,7 @@ import org.eclipse.jdt.core.dom.MethodInvocation;
 import org.eclipse.jdt.core.dom.Statement;
 import org.javatuples.Pair;
 
-import optionalanalizer.metamodel.entity.MRule8Atom;
+import optionalanalizer.metamodel.entity.MRule8sAntipattern;
 import optionalanalizer.metamodel.factory.Factory;
 import utilities.OptionalInvocationFinder;
 import utilities.ToolBoxForIfStatementAnalysis;
@@ -18,17 +18,17 @@ import utilities.Unit;
 
 public class Rule8AntipatternFinder{
 
-	public List<MRule8Atom> getMAtoms(ASTNode astNode) {
+	public List<MRule8sAntipattern> getMAntipatterns(ASTNode astNode) {
 
-		return getAtoms(astNode).stream()
+		return getAntipatterns(astNode).stream()
 				.map(Rule8Antipattern::getInstance)
 				.filter(Optional::isPresent)
 				.map(Optional::get)
-				.map(Factory.getInstance()::createMRule8Atom)
+				.map(Factory.getInstance()::createMRule8sAntipattern)
 				.collect(Collectors.toList());
 	}
 
-	private List<IfStatement> getAtoms(ASTNode astNode) {
+	private List<IfStatement> getAntipatterns(ASTNode astNode) {
 		OptionalInvocationFinder optionalInvocationFinder = new OptionalInvocationFinder();
 		List<MethodInvocation> invocations = optionalInvocationFinder.getInvocations(astNode);
 

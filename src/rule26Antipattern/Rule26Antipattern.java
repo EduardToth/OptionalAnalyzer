@@ -15,14 +15,14 @@ public class Rule26Antipattern extends Antipattern {
 	}
 
 	@Override
-	protected boolean belongs(ASTNode atom) {
-		return atom instanceof PrefixExpression;
+	protected boolean belongs(ASTNode astNode) {
+		return astNode instanceof PrefixExpression;
 	}
 	
-	public static Optional<Rule26Antipattern> getInstance(ASTNode atom) {
+	public static Optional<Rule26Antipattern> getInstance(ASTNode astNode) {
 		Rule26Antipattern instance = null;
 		try {
-			instance =  new Rule26Antipattern(atom);
+			instance =  new Rule26Antipattern(astNode);
 		} catch (ASTNodeDoesNotBelongHere e) {
 			e.printStackTrace();
 		}

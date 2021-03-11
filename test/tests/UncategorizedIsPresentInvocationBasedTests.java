@@ -5,7 +5,7 @@ import java.util.stream.Collectors;
 
 import org.junit.Test;
 
-import optionalanalizer.metamodel.entity.MUncategorizedIsPresentAtom;
+import optionalanalizer.metamodel.entity.MUncategorizedIsPresentPossibleAntipattern;
 import ro.lrg.xcore.metametamodel.Group;
 import utilities.Antipattern;
 
@@ -20,12 +20,12 @@ public class UncategorizedIsPresentInvocationBasedTests extends TestBaseClass{
 	}
 	
 	@Override
-	protected List<Antipattern> getAtoms() {
-		Group<MUncategorizedIsPresentAtom> group = getMCompilationUnit()
+	protected List<Antipattern> getAntipatterns() {
+		Group<MUncategorizedIsPresentPossibleAntipattern> group = getMCompilationUnit()
 				.uncategorizedIsPresentInvocationBasedAntipatternDetector();
 		
 		return group.getElements().stream()
-			.map(mAtom -> (Antipattern)mAtom.getUnderlyingObject())
+			.map(mAntipattern -> (Antipattern)mAntipattern.getUnderlyingObject())
 			.collect(Collectors.toList());
 	}
 	

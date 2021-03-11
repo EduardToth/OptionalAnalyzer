@@ -13,26 +13,26 @@ import org.eclipse.jdt.core.dom.ReturnStatement;
 import org.eclipse.jdt.core.dom.Statement;
 import org.eclipse.jdt.core.dom.ThrowStatement;
 
-import optionalanalizer.metamodel.entity.MRule5Atom;
+import optionalanalizer.metamodel.entity.MRule5sAntipattern;
 import optionalanalizer.metamodel.factory.Factory;
 import utilities.OptionalInvocationFinder;
 import utilities.ToolBoxForIfStatementAnalysis;
 import utilities.Unit;
 
 public class Rule5AntipatternFinder {
-	public List<MRule5Atom> getMAtoms(ASTNode astNode) {
+	public List<MRule5sAntipattern> getMAntipatterns(ASTNode astNode) {
 		
-		return getAtoms(astNode)
+		return getAntipatterns(astNode)
 				.stream()
 				.map(Rule5Antipattern::getInstance)
 				.filter(Optional::isPresent)
 				.map(Optional::get)
-				.map(Factory.getInstance()::createMRule5Atom)
+				.map(Factory.getInstance()::createMRule5sAntipattern)
 				.collect(Collectors.toList());
 		
 	}
 
-	private List<IfStatement> getAtoms(ASTNode astNode) {
+	private List<IfStatement> getAntipatterns(ASTNode astNode) {
 		OptionalInvocationFinder optionalInvocationFinder = new OptionalInvocationFinder();
 		List<MethodInvocation> invocations = optionalInvocationFinder.getInvocations(astNode);
 

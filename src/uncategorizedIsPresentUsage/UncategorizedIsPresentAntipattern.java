@@ -20,10 +20,10 @@ public class UncategorizedIsPresentAntipattern extends Antipattern {
 		return wrappedElement instanceof MethodInvocation;
 	}
 	
-	public static Optional<UncategorizedIsPresentAntipattern> getInstance(ASTNode atom) {
+	public static Optional<UncategorizedIsPresentAntipattern> getInstance(ASTNode antipattern) {
 		UncategorizedIsPresentAntipattern instance = null;
 		try {
-			instance =  new UncategorizedIsPresentAntipattern(atom);
+			instance =  new UncategorizedIsPresentAntipattern(antipattern);
 		} catch (ASTNodeDoesNotBelongHere e) {
 			e.printStackTrace();
 		}

@@ -5,26 +5,26 @@ import java.util.stream.Collectors;
 
 import optionalanalizer.metamodel.entity.MCompilationUnit;
 import optionalanalizer.metamodel.entity.MProject;
-import optionalanalizer.metamodel.entity.MRule18Atom;
+import optionalanalizer.metamodel.entity.MRule18sAntipattern;
 import ro.lrg.xcore.metametamodel.Group;
 import ro.lrg.xcore.metametamodel.IRelationBuilder;
 import ro.lrg.xcore.metametamodel.RelationBuilder;
 
 @RelationBuilder
-public class Rule18AntipatternDetector implements IRelationBuilder<MRule18Atom, MProject>{
+public class Rule18AntipatternDetector implements IRelationBuilder<MRule18sAntipattern, MProject>{
 
 	@Override
-	public Group<MRule18Atom> buildGroup(MProject arg0) {
-		Group<MRule18Atom> group = new Group<>();
+	public Group<MRule18sAntipattern> buildGroup(MProject arg0) {
+		Group<MRule18sAntipattern> group = new Group<>();
 
-		 List<MRule18Atom> atoms = arg0.compilationUnitDetector()
+		 List<MRule18sAntipattern> antipatterns = arg0.compilationUnitDetector()
 				.getElements().stream()
 				.map(MCompilationUnit::rule18AntipatternDetector)
 				.map(Group::getElements)
 				.flatMap(List::stream)
 				.collect(Collectors.toList());
 		 
-		 group.addAll(atoms);
+		 group.addAll(antipatterns);
 		 
 		 return group;
 	}

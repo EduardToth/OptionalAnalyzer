@@ -9,13 +9,13 @@ import org.eclipse.jdt.core.dom.ASTNode;
 import org.eclipse.jdt.core.dom.ASTVisitor;
 import org.eclipse.jdt.core.dom.VariableDeclarationFragment;
 
-import optionalanalizer.metamodel.entity.MRule20Atom;
+import optionalanalizer.metamodel.entity.MRule20sAntipattern;
 import optionalanalizer.metamodel.factory.Factory;
 import utilities.Unit;
 import utilities.UtilityClass;
 
 public class Rule20AntipatternFinder {
-	public List<MRule20Atom> getMAtoms(ASTNode astNode) {
+	public List<MRule20sAntipattern> getMAntipatterns(ASTNode astNode) {
 
 		final List<VariableDeclarationFragment> variableDeclarations = getVariableDeclarations(astNode);
 
@@ -27,7 +27,7 @@ public class Rule20AntipatternFinder {
 				.map(Rule20Antipattern::getInstance)
 				.filter(Optional::isPresent)
 				.map(Optional::get)
-				.map(Factory.getInstance()::createMRule20Atom)
+				.map(Factory.getInstance()::createMRule20sAntipattern)
 				.collect(Collectors.toList());
 	}
 

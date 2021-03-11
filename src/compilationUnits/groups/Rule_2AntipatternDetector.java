@@ -8,7 +8,7 @@ import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 
 import optionalanalizer.metamodel.entity.MCompilationUnit;
-import optionalanalizer.metamodel.entity.MRule2Atom;
+import optionalanalizer.metamodel.entity.MRule2sAntipattern;
 import optionalanalizer.metamodel.factory.Factory;
 import ro.lrg.xcore.metametamodel.Group;
 import ro.lrg.xcore.metametamodel.IRelationBuilder;
@@ -18,17 +18,17 @@ import rule_2Antipattern.Rule2AntipatternFinder;
 import utilities.UtilityClass;
 
 @RelationBuilder
-public class Rule_2AntipatternDetector  implements IRelationBuilder<MRule2Atom, MCompilationUnit>{
+public class Rule_2AntipatternDetector  implements IRelationBuilder<MRule2sAntipattern, MCompilationUnit>{
 
 	@Override
-	public Group<MRule2Atom> buildGroup(MCompilationUnit arg0) {
-		Rule2AntipatternFinder rule2AtomFinder = new Rule2AntipatternFinder();
-		Group<MRule2Atom> group = new Group<>();
+	public Group<MRule2sAntipattern> buildGroup(MCompilationUnit arg0) {
+		Rule2AntipatternFinder rule2AntipatternFinder = new Rule2AntipatternFinder();
+		Group<MRule2sAntipattern> group = new Group<>();
 		ICompilationUnit iCompilationUnit = (ICompilationUnit) arg0.getUnderlyingObject();
 		CompilationUnit compilationUnit = UtilityClass.parse(iCompilationUnit);
-		List<MRule2Atom> atoms = rule2AtomFinder.getMAtoms(compilationUnit);
+		List<MRule2sAntipattern> antipatterns = rule2AntipatternFinder.getMAntipatterns(compilationUnit);
 		
-		group.addAll(atoms);
+		group.addAll(antipatterns);
 
 		return group;
 	}

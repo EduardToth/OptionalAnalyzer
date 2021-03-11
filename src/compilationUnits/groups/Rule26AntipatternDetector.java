@@ -6,7 +6,7 @@ import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 
 import optionalanalizer.metamodel.entity.MCompilationUnit;
-import optionalanalizer.metamodel.entity.MRule26Atom;
+import optionalanalizer.metamodel.entity.MRule26sAntipattern;
 import ro.lrg.xcore.metametamodel.Group;
 import ro.lrg.xcore.metametamodel.IRelationBuilder;
 import ro.lrg.xcore.metametamodel.RelationBuilder;
@@ -14,17 +14,17 @@ import rule26Antipattern.Rule26AntipatternFinder;
 import utilities.UtilityClass;
 
 @RelationBuilder
-public class Rule26AntipatternDetector implements IRelationBuilder<MRule26Atom, MCompilationUnit>{
+public class Rule26AntipatternDetector implements IRelationBuilder<MRule26sAntipattern, MCompilationUnit>{
 
 	@Override
-	public Group<MRule26Atom> buildGroup(MCompilationUnit arg0) {
-		Rule26AntipatternFinder rule26AtomFinder = new Rule26AntipatternFinder();
-		Group<MRule26Atom> group = new Group<>();
+	public Group<MRule26sAntipattern> buildGroup(MCompilationUnit arg0) {
+		Rule26AntipatternFinder rule26AntipatternFinder = new Rule26AntipatternFinder();
+		Group<MRule26sAntipattern> group = new Group<>();
 		ICompilationUnit iCompilationUnit = (ICompilationUnit) arg0.getUnderlyingObject();
 		CompilationUnit compilationUnit = UtilityClass.parse(iCompilationUnit);
-		List<MRule26Atom> atoms = rule26AtomFinder.getMAtoms(compilationUnit);
+		List<MRule26sAntipattern> antipatterns = rule26AntipatternFinder.getMAntipatterns(compilationUnit);
 		
-		group.addAll(atoms);
+		group.addAll(antipatterns);
 
 		return group;
 	}

@@ -19,10 +19,10 @@ public class Rule21Antipattern extends Antipattern{
 		return wrappedElement instanceof MethodInvocation;
 	}
 	
-	public static Optional<Rule21Antipattern> getInstance(ASTNode atom) {
+	public static Optional<Rule21Antipattern> getInstance(ASTNode astNode) {
 		Rule21Antipattern instance = null;
 		try {
-			instance =  new Rule21Antipattern(atom);
+			instance =  new Rule21Antipattern(astNode);
 		} catch (ASTNodeDoesNotBelongHere e) {
 			e.printStackTrace();
 		}

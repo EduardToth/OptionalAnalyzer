@@ -13,24 +13,24 @@ import org.eclipse.jdt.core.dom.MethodDeclaration;
 import org.eclipse.jdt.core.dom.MethodInvocation;
 import org.eclipse.jdt.core.dom.WhileStatement;
 
-import optionalanalizer.metamodel.entity.MRule2Atom;
+import optionalanalizer.metamodel.entity.MRule2sAntipattern;
 import optionalanalizer.metamodel.factory.Factory;
 import utilities.OptionalInvocationFinder;
 import utilities.UtilityClass;
 
 public class Rule2AntipatternFinder{
 
-	public List<MRule2Atom> getMAtoms(ASTNode astNode) {
-		return getAtoms(astNode)
+	public List<MRule2sAntipattern> getMAntipatterns(ASTNode astNode) {
+		return getAntipatterns(astNode)
 				.stream()
 				.map(Rule2Antipattern::getInstance)
 				.filter(Optional::isPresent)
 				.map(Optional::get)
-				.map(Factory.getInstance()::createMRule2Atom)
+				.map(Factory.getInstance()::createMRule2sAntipattern)
 				.collect(Collectors.toList());
 	}
 
-	private List<MethodInvocation> getAtoms(ASTNode astNode) {
+	private List<MethodInvocation> getAntipatterns(ASTNode astNode) {
 		OptionalInvocationFinder optionalInvocationFinder = new OptionalInvocationFinder();
 		List<MethodInvocation> simpleGetInvocations = optionalInvocationFinder.getInvocations(astNode, "get");
 		List<MethodInvocation> getAsIntInvocations = optionalInvocationFinder.getInvocations(astNode, "getAsInt");

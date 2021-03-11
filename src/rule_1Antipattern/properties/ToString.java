@@ -1,14 +1,14 @@
 package rule_1Antipattern.properties;
 
-import optionalanalizer.metamodel.entity.MRule1Atom;
+import optionalanalizer.metamodel.entity.MRule1sAntipattern;
 import ro.lrg.xcore.metametamodel.IPropertyComputer;
 import ro.lrg.xcore.metametamodel.PropertyComputer;
 
 @PropertyComputer
-public class ToString implements IPropertyComputer<String, MRule1Atom>{
+public class ToString implements IPropertyComputer<String, MRule1sAntipattern>{
 
 	@Override
-	public String compute(MRule1Atom arg0) {
+	public String compute(MRule1sAntipattern arg0) {
 		return arg0.getUnderlyingObject().toString();
 	}
 

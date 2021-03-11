@@ -9,20 +9,20 @@ import org.eclipse.jdt.core.dom.ASTNode;
 import org.eclipse.jdt.core.dom.ASTVisitor;
 import org.eclipse.jdt.core.dom.FieldDeclaration;
 
-import optionalanalizer.metamodel.entity.MRule13Atom;
+import optionalanalizer.metamodel.entity.MRule13sAntipattern;
 import optionalanalizer.metamodel.factory.Factory;
 import utilities.UtilityClass;
 
 public class Rule13AntipatternFinder {
 
-	public List<MRule13Atom> getMAtoms(ASTNode astNode) {
+	public List<MRule13sAntipattern> getMAntipatterns(ASTNode astNode) {
 		return getFieldDeclarations(astNode)
 				.stream()
 				.filter(this::isFieldDeclarationOfTypeOptional)
 				.map(Rule13Antipattern::getInstance)
 				.filter(Optional::isPresent)
 				.map(Optional::get)
-				.map(Factory.getInstance()::createMRule13Atom)
+				.map(Factory.getInstance()::createMRule13sAntipattern)
 				.collect(Collectors.toList());
 	}
 

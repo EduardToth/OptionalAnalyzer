@@ -10,14 +10,14 @@ import java.util.stream.Collectors;
 import org.eclipse.jdt.core.dom.ASTNode;
 import org.eclipse.jdt.core.dom.MethodInvocation;
 
-import optionalanalizer.metamodel.entity.MRule21Atom;
+import optionalanalizer.metamodel.entity.MRule21sAntipattern;
 import optionalanalizer.metamodel.factory.Factory;
 import utilities.Antipattern;
 import utilities.OptionalInvocationFinder;
 
 public class Rule21AntipatternFinder {
 
-	public List<MRule21Atom> getMAtoms(ASTNode astNode) {
+	public List<MRule21sAntipattern> getMAntipatterns(ASTNode astNode) {
 		OptionalInvocationFinder optionalInvocationFinder = new OptionalInvocationFinder();
 		List<MethodInvocation> equalsInvocationsFromOptional = optionalInvocationFinder.getInvocations(astNode, "get");
 
@@ -34,7 +34,7 @@ public class Rule21AntipatternFinder {
 				.map(Entry::getValue)
 				.map(myList -> myList.get( 0 ))
 				//distinct
-				.map(Factory.getInstance()::createMRule21Atom)
+				.map(Factory.getInstance()::createMRule21sAntipattern)
 				.collect(Collectors.toList());
 	}
 

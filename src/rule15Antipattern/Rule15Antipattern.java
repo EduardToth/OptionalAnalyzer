@@ -10,21 +10,21 @@ import utilities.Antipattern;
 
 public class Rule15Antipattern extends Antipattern{
 
-	public Rule15Antipattern(ASTNode atom) throws ASTNodeDoesNotBelongHere {
-		super(atom);
+	public Rule15Antipattern(ASTNode astNode) throws ASTNodeDoesNotBelongHere {
+		super(astNode);
 	}
 
 	@Override
-	protected boolean belongs(ASTNode atom) {
-		return atom instanceof SingleVariableDeclaration;
+	protected boolean belongs(ASTNode astNode) {
+		return astNode instanceof SingleVariableDeclaration;
 	}
 	
 	
 	
-	public static Optional<Rule15Antipattern> getInstance(ASTNode atom) {
+	public static Optional<Rule15Antipattern> getInstance(ASTNode astNode) {
 		Rule15Antipattern instance = null;
 		try {
-			instance =  new Rule15Antipattern(atom);
+			instance =  new Rule15Antipattern(astNode);
 		} catch (ASTNodeDoesNotBelongHere e) {
 			e.printStackTrace();
 		}

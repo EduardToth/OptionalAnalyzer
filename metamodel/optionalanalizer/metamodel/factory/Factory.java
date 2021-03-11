@@ -13,13 +13,13 @@ public class Factory {
        lruCache_.setCapacity(capacity);
    }
    public void clearCache() {lruCache_.clear();}
-   public MRule9Atom createMRule9Atom(java.lang.Object obj) {
+   public MUncategorizedIsPresentPossibleAntipattern createMUncategorizedIsPresentPossibleAntipattern(java.lang.Object obj) {
        XEntity instance = lruCache_.get(obj);
         if (null == instance) {
-           instance = new MRule9AtomImpl(obj);
+           instance = new MUncategorizedIsPresentPossibleAntipatternImpl(obj);
            lruCache_.put(obj, instance);
         }
-        return (MRule9Atom)instance;
+        return (MUncategorizedIsPresentPossibleAntipattern)instance;
     }
    public MWorkingSet createMWorkingSet(java.lang.Object obj) {
        XEntity instance = lruCache_.get(obj);
@@ -29,30 +29,6 @@ public class Factory {
         }
         return (MWorkingSet)instance;
     }
-   public MRule19Atom createMRule19Atom(java.lang.Object obj) {
-       XEntity instance = lruCache_.get(obj);
-        if (null == instance) {
-           instance = new MRule19AtomImpl(obj);
-           lruCache_.put(obj, instance);
-        }
-        return (MRule19Atom)instance;
-    }
-   public MRule13Atom createMRule13Atom(java.lang.Object obj) {
-       XEntity instance = lruCache_.get(obj);
-        if (null == instance) {
-           instance = new MRule13AtomImpl(obj);
-           lruCache_.put(obj, instance);
-        }
-        return (MRule13Atom)instance;
-    }
-   public MRule26Atom createMRule26Atom(java.lang.Object obj) {
-       XEntity instance = lruCache_.get(obj);
-        if (null == instance) {
-           instance = new MRule26AtomImpl(obj);
-           lruCache_.put(obj, instance);
-        }
-        return (MRule26Atom)instance;
-    }
    public MProject createMProject(java.lang.Object obj) {
        XEntity instance = lruCache_.get(obj);
         if (null == instance) {
@@ -60,30 +36,6 @@ public class Factory {
            lruCache_.put(obj, instance);
         }
         return (MProject)instance;
-    }
-   public MRule3Atom createMRule3Atom(java.lang.Object obj) {
-       XEntity instance = lruCache_.get(obj);
-        if (null == instance) {
-           instance = new MRule3AtomImpl(obj);
-           lruCache_.put(obj, instance);
-        }
-        return (MRule3Atom)instance;
-    }
-   public MRule12Atom createMRule12Atom(java.lang.Object obj) {
-       XEntity instance = lruCache_.get(obj);
-        if (null == instance) {
-           instance = new MRule12AtomImpl(obj);
-           lruCache_.put(obj, instance);
-        }
-        return (MRule12Atom)instance;
-    }
-   public MRule7Atom createMRule7Atom(java.lang.Object obj) {
-       XEntity instance = lruCache_.get(obj);
-        if (null == instance) {
-           instance = new MRule7AtomImpl(obj);
-           lruCache_.put(obj, instance);
-        }
-        return (MRule7Atom)instance;
     }
    public MAnalysis createMAnalysis(java.lang.Object obj) {
        XEntity instance = lruCache_.get(obj);
@@ -93,37 +45,13 @@ public class Factory {
         }
         return (MAnalysis)instance;
     }
-   public MRule21Atom createMRule21Atom(java.lang.Object obj) {
+   public MRule10sAntipattern createMRule10sAntipattern(java.lang.Object obj) {
        XEntity instance = lruCache_.get(obj);
         if (null == instance) {
-           instance = new MRule21AtomImpl(obj);
+           instance = new MRule10sAntipatternImpl(obj);
            lruCache_.put(obj, instance);
         }
-        return (MRule21Atom)instance;
-    }
-   public MRule20Atom createMRule20Atom(java.lang.Object obj) {
-       XEntity instance = lruCache_.get(obj);
-        if (null == instance) {
-           instance = new MRule20AtomImpl(obj);
-           lruCache_.put(obj, instance);
-        }
-        return (MRule20Atom)instance;
-    }
-   public MRule25Atom createMRule25Atom(java.lang.Object obj) {
-       XEntity instance = lruCache_.get(obj);
-        if (null == instance) {
-           instance = new MRule25AtomImpl(obj);
-           lruCache_.put(obj, instance);
-        }
-        return (MRule25Atom)instance;
-    }
-   public MRule2Atom createMRule2Atom(java.lang.Object obj) {
-       XEntity instance = lruCache_.get(obj);
-        if (null == instance) {
-           instance = new MRule2AtomImpl(obj);
-           lruCache_.put(obj, instance);
-        }
-        return (MRule2Atom)instance;
+        return (MRule10sAntipattern)instance;
     }
    public MCompilationUnit createMCompilationUnit(java.lang.Object obj) {
        XEntity instance = lruCache_.get(obj);
@@ -133,29 +61,29 @@ public class Factory {
         }
         return (MCompilationUnit)instance;
     }
-   public MRule16Atom createMRule16Atom(java.lang.Object obj) {
+   public MRule1sAntipattern createMRule1sAntipattern(java.lang.Object obj) {
        XEntity instance = lruCache_.get(obj);
         if (null == instance) {
-           instance = new MRule16AtomImpl(obj);
+           instance = new MRule1sAntipatternImpl(obj);
            lruCache_.put(obj, instance);
         }
-        return (MRule16Atom)instance;
+        return (MRule1sAntipattern)instance;
     }
-   public MRule6Atom createMRule6Atom(java.lang.Object obj) {
+   public MRule20sAntipattern createMRule20sAntipattern(java.lang.Object obj) {
        XEntity instance = lruCache_.get(obj);
         if (null == instance) {
-           instance = new MRule6AtomImpl(obj);
+           instance = new MRule20sAntipatternImpl(obj);
            lruCache_.put(obj, instance);
         }
-        return (MRule6Atom)instance;
+        return (MRule20sAntipattern)instance;
     }
-   public MRule1Atom createMRule1Atom(java.lang.Object obj) {
+   public MRule12sAntipattern createMRule12sAntipattern(java.lang.Object obj) {
        XEntity instance = lruCache_.get(obj);
         if (null == instance) {
-           instance = new MRule1AtomImpl(obj);
+           instance = new MRule12sAntipatternImpl(obj);
            lruCache_.put(obj, instance);
         }
-        return (MRule1Atom)instance;
+        return (MRule12sAntipattern)instance;
     }
    public MPackage createMPackage(java.lang.Object obj) {
        XEntity instance = lruCache_.get(obj);
@@ -165,76 +93,148 @@ public class Factory {
         }
         return (MPackage)instance;
     }
-   public MRule15Atom createMRule15Atom(java.lang.Object obj) {
+   public MRule4sAntipattern createMRule4sAntipattern(java.lang.Object obj) {
        XEntity instance = lruCache_.get(obj);
         if (null == instance) {
-           instance = new MRule15AtomImpl(obj);
+           instance = new MRule4sAntipatternImpl(obj);
            lruCache_.put(obj, instance);
         }
-        return (MRule15Atom)instance;
+        return (MRule4sAntipattern)instance;
     }
-   public MRule5Atom createMRule5Atom(java.lang.Object obj) {
+   public MRule3sAntipattern createMRule3sAntipattern(java.lang.Object obj) {
        XEntity instance = lruCache_.get(obj);
         if (null == instance) {
-           instance = new MRule5AtomImpl(obj);
+           instance = new MRule3sAntipatternImpl(obj);
            lruCache_.put(obj, instance);
         }
-        return (MRule5Atom)instance;
+        return (MRule3sAntipattern)instance;
     }
-   public MRule17Atom createMRule17Atom(java.lang.Object obj) {
+   public MRule21sAntipattern createMRule21sAntipattern(java.lang.Object obj) {
        XEntity instance = lruCache_.get(obj);
         if (null == instance) {
-           instance = new MRule17AtomImpl(obj);
+           instance = new MRule21sAntipatternImpl(obj);
            lruCache_.put(obj, instance);
         }
-        return (MRule17Atom)instance;
+        return (MRule21sAntipattern)instance;
     }
-   public MRule10Atom createMRule10Atom(java.lang.Object obj) {
+   public MRule6sAntipattern createMRule6sAntipattern(java.lang.Object obj) {
        XEntity instance = lruCache_.get(obj);
         if (null == instance) {
-           instance = new MRule10AtomImpl(obj);
+           instance = new MRule6sAntipatternImpl(obj);
            lruCache_.put(obj, instance);
         }
-        return (MRule10Atom)instance;
+        return (MRule6sAntipattern)instance;
     }
-   public MUncategorizedIsPresentAtom createMUncategorizedIsPresentAtom(java.lang.Object obj) {
+   public MRule2sAntipattern createMRule2sAntipattern(java.lang.Object obj) {
        XEntity instance = lruCache_.get(obj);
         if (null == instance) {
-           instance = new MUncategorizedIsPresentAtomImpl(obj);
+           instance = new MRule2sAntipatternImpl(obj);
            lruCache_.put(obj, instance);
         }
-        return (MUncategorizedIsPresentAtom)instance;
+        return (MRule2sAntipattern)instance;
     }
-   public MRule14Atom createMRule14Atom(java.lang.Object obj) {
+   public MRule15sAntipattern createMRule15sAntipattern(java.lang.Object obj) {
        XEntity instance = lruCache_.get(obj);
         if (null == instance) {
-           instance = new MRule14AtomImpl(obj);
+           instance = new MRule15sAntipatternImpl(obj);
            lruCache_.put(obj, instance);
         }
-        return (MRule14Atom)instance;
+        return (MRule15sAntipattern)instance;
     }
-   public MRule8Atom createMRule8Atom(java.lang.Object obj) {
+   public MRule26sAntipattern createMRule26sAntipattern(java.lang.Object obj) {
        XEntity instance = lruCache_.get(obj);
         if (null == instance) {
-           instance = new MRule8AtomImpl(obj);
+           instance = new MRule26sAntipatternImpl(obj);
            lruCache_.put(obj, instance);
         }
-        return (MRule8Atom)instance;
+        return (MRule26sAntipattern)instance;
     }
-   public MRule18Atom createMRule18Atom(java.lang.Object obj) {
+   public MRule25sAntipattern createMRule25sAntipattern(java.lang.Object obj) {
        XEntity instance = lruCache_.get(obj);
         if (null == instance) {
-           instance = new MRule18AtomImpl(obj);
+           instance = new MRule25sAntipatternImpl(obj);
            lruCache_.put(obj, instance);
         }
-        return (MRule18Atom)instance;
+        return (MRule25sAntipattern)instance;
     }
-   public MRule4Atom createMRule4Atom(java.lang.Object obj) {
+   public MRule14sAntipattern createMRule14sAntipattern(java.lang.Object obj) {
        XEntity instance = lruCache_.get(obj);
         if (null == instance) {
-           instance = new MRule4AtomImpl(obj);
+           instance = new MRule14sAntipatternImpl(obj);
            lruCache_.put(obj, instance);
         }
-        return (MRule4Atom)instance;
+        return (MRule14sAntipattern)instance;
+    }
+   public MRule5sAntipattern createMRule5sAntipattern(java.lang.Object obj) {
+       XEntity instance = lruCache_.get(obj);
+        if (null == instance) {
+           instance = new MRule5sAntipatternImpl(obj);
+           lruCache_.put(obj, instance);
+        }
+        return (MRule5sAntipattern)instance;
+    }
+   public MRule13sAntipattern createMRule13sAntipattern(java.lang.Object obj) {
+       XEntity instance = lruCache_.get(obj);
+        if (null == instance) {
+           instance = new MRule13sAntipatternImpl(obj);
+           lruCache_.put(obj, instance);
+        }
+        return (MRule13sAntipattern)instance;
+    }
+   public MRule19sAntipattern createMRule19sAntipattern(java.lang.Object obj) {
+       XEntity instance = lruCache_.get(obj);
+        if (null == instance) {
+           instance = new MRule19sAntipatternImpl(obj);
+           lruCache_.put(obj, instance);
+        }
+        return (MRule19sAntipattern)instance;
+    }
+   public MRule16sAntipattern createMRule16sAntipattern(java.lang.Object obj) {
+       XEntity instance = lruCache_.get(obj);
+        if (null == instance) {
+           instance = new MRule16sAntipatternImpl(obj);
+           lruCache_.put(obj, instance);
+        }
+        return (MRule16sAntipattern)instance;
+    }
+   public MRule7sAntipattern createMRule7sAntipattern(java.lang.Object obj) {
+       XEntity instance = lruCache_.get(obj);
+        if (null == instance) {
+           instance = new MRule7sAntipatternImpl(obj);
+           lruCache_.put(obj, instance);
+        }
+        return (MRule7sAntipattern)instance;
+    }
+   public MRule8sAntipattern createMRule8sAntipattern(java.lang.Object obj) {
+       XEntity instance = lruCache_.get(obj);
+        if (null == instance) {
+           instance = new MRule8sAntipatternImpl(obj);
+           lruCache_.put(obj, instance);
+        }
+        return (MRule8sAntipattern)instance;
+    }
+   public MRule18sAntipattern createMRule18sAntipattern(java.lang.Object obj) {
+       XEntity instance = lruCache_.get(obj);
+        if (null == instance) {
+           instance = new MRule18sAntipatternImpl(obj);
+           lruCache_.put(obj, instance);
+        }
+        return (MRule18sAntipattern)instance;
+    }
+   public MRule9sAntipattern createMRule9sAntipattern(java.lang.Object obj) {
+       XEntity instance = lruCache_.get(obj);
+        if (null == instance) {
+           instance = new MRule9sAntipatternImpl(obj);
+           lruCache_.put(obj, instance);
+        }
+        return (MRule9sAntipattern)instance;
+    }
+   public MRule17sAntipattern createMRule17sAntipattern(java.lang.Object obj) {
+       XEntity instance = lruCache_.get(obj);
+        if (null == instance) {
+           instance = new MRule17sAntipatternImpl(obj);
+           lruCache_.put(obj, instance);
+        }
+        return (MRule17sAntipattern)instance;
     }
 }

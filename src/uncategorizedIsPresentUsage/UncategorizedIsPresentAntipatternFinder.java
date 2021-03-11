@@ -15,16 +15,16 @@ import org.eclipse.jdt.core.dom.PrefixExpression;
 import org.javatuples.Pair;
 
 import optionalanalizer.metamodel.entity.MCompilationUnit;
-import optionalanalizer.metamodel.entity.MRule10Atom;
-import optionalanalizer.metamodel.entity.MRule26Atom;
-import optionalanalizer.metamodel.entity.MRule3Atom;
-import optionalanalizer.metamodel.entity.MRule4Atom;
-import optionalanalizer.metamodel.entity.MRule5Atom;
-import optionalanalizer.metamodel.entity.MRule6Atom;
-import optionalanalizer.metamodel.entity.MRule7Atom;
-import optionalanalizer.metamodel.entity.MRule8Atom;
-import optionalanalizer.metamodel.entity.MRule9Atom;
-import optionalanalizer.metamodel.entity.MUncategorizedIsPresentAtom;
+import optionalanalizer.metamodel.entity.MRule10sAntipattern;
+import optionalanalizer.metamodel.entity.MRule26sAntipattern;
+import optionalanalizer.metamodel.entity.MRule3sAntipattern;
+import optionalanalizer.metamodel.entity.MRule4sAntipattern;
+import optionalanalizer.metamodel.entity.MRule5sAntipattern;
+import optionalanalizer.metamodel.entity.MRule6sAntipattern;
+import optionalanalizer.metamodel.entity.MRule7sAntipattern;
+import optionalanalizer.metamodel.entity.MRule8sAntipattern;
+import optionalanalizer.metamodel.entity.MRule9sAntipattern;
+import optionalanalizer.metamodel.entity.MUncategorizedIsPresentPossibleAntipattern;
 import optionalanalizer.metamodel.factory.Factory;
 import rule26Antipattern.Rule26Antipattern;
 import utilities.Antipattern;
@@ -36,10 +36,10 @@ public class UncategorizedIsPresentAntipatternFinder {
 
 	private final OptionalInvocationFinder optionalInvocationFinder = new OptionalInvocationFinder();
 
-	public List<MUncategorizedIsPresentAtom> getMAtoms(MCompilationUnit mCompilationUnit) {
+	public List<MUncategorizedIsPresentPossibleAntipattern> getMAntipatterns(MCompilationUnit mCompilationUnit) {
 
-		List<Stream<Object>> isPresentInvocationBasedMAtomStreamList = getIsPresentInvocationBasedCategorizedAtoms(mCompilationUnit);
-		Set<MethodInvocation> categorizedIsPresentInvocations = getCenzoredIsPresentAtoms(isPresentInvocationBasedMAtomStreamList);
+		List<Stream<Object>> isPresentInvocationBasedMAntipatternStreamList = getIsPresentInvocationBasedCategorizedAntipatterns(mCompilationUnit);
+		Set<MethodInvocation> categorizedIsPresentInvocations = getCenzoredIsPresentAntipatterns(isPresentInvocationBasedMAntipatternStreamList);
 		categorizedIsPresentInvocations.addAll(getRule26BaseIsPresentInvocation(mCompilationUnit));
 		ICompilationUnit iCompilationUnit = (ICompilationUnit) mCompilationUnit.getUnderlyingObject();
 		CompilationUnit compilationUnit = UtilityClass.parse(iCompilationUnit);
@@ -50,7 +50,7 @@ public class UncategorizedIsPresentAntipatternFinder {
 				.map(UncategorizedIsPresentAntipattern::getInstance)
 				.filter(Optional::isPresent)
 				.map(Optional::get)
-				.map(Factory.getInstance()::createMUncategorizedIsPresentAtom)
+				.map(Factory.getInstance()::createMUncategorizedIsPresentPossibleAntipattern)
 				.collect(Collectors.toList());
 	}
 	
@@ -58,7 +58,7 @@ public class UncategorizedIsPresentAntipatternFinder {
 		return mCompilationUnit.rule26AntipatternDetector()
 				.getElements()
 				.stream()
-				.map(MRule26Atom::getUnderlyingObject)
+				.map(MRule26sAntipattern::getUnderlyingObject)
 				.filter(Rule26Antipattern.class::isInstance)
 				.map(Rule26Antipattern.class::cast)
 				.map(Rule26Antipattern::getWrappedElement)
@@ -70,34 +70,34 @@ public class UncategorizedIsPresentAntipatternFinder {
 				.collect(Collectors.toSet());
 	}
 
-	private List<Stream<Object>> getIsPresentInvocationBasedCategorizedAtoms(MCompilationUnit mCompilationUnit) {
-		List<Stream<Object>> isPresentInvocationBasedMAtomStreamList = new LinkedList<>();
+	private List<Stream<Object>> getIsPresentInvocationBasedCategorizedAntipatterns(MCompilationUnit mCompilationUnit) {
+		List<Stream<Object>> isPresentInvocationBasedMAntipatternStreamList = new LinkedList<>();
 
-		isPresentInvocationBasedMAtomStreamList
-		.add(mCompilationUnit.rule_3AntipatternDetector().getElements().stream().map(MRule3Atom::getUnderlyingObject));
-		isPresentInvocationBasedMAtomStreamList
-		.add(mCompilationUnit.rule_4AntipatternDetector().getElements().stream().map(MRule4Atom::getUnderlyingObject));
-		isPresentInvocationBasedMAtomStreamList
-		.add(mCompilationUnit.rule_5AntipatternDetector().getElements().stream().map(MRule5Atom::getUnderlyingObject));
-		isPresentInvocationBasedMAtomStreamList
-		.add(mCompilationUnit.rule_6AntipatternDetector().getElements().stream().map(MRule6Atom::getUnderlyingObject));
-		isPresentInvocationBasedMAtomStreamList
-		.add(mCompilationUnit.rule_7AntipatternDetector().getElements().stream().map(MRule7Atom::getUnderlyingObject));
-		isPresentInvocationBasedMAtomStreamList
-		.add(mCompilationUnit.rule_8AntipatternDetector().getElements().stream().map(MRule8Atom::getUnderlyingObject));
-		isPresentInvocationBasedMAtomStreamList
-		.add(mCompilationUnit.rule_9AntipatternDetector().getElements().stream().map(MRule9Atom::getUnderlyingObject));
-		isPresentInvocationBasedMAtomStreamList
-		.add(mCompilationUnit.rule10AntipatternDetector().getElements().stream().map(MRule10Atom::getUnderlyingObject));
+		isPresentInvocationBasedMAntipatternStreamList
+		.add(mCompilationUnit.rule_3AntipatternDetector().getElements().stream().map(MRule3sAntipattern::getUnderlyingObject));
+		isPresentInvocationBasedMAntipatternStreamList
+		.add(mCompilationUnit.rule_4AntipatternDetector().getElements().stream().map(MRule4sAntipattern::getUnderlyingObject));
+		isPresentInvocationBasedMAntipatternStreamList
+		.add(mCompilationUnit.rule_5AntipatternDetector().getElements().stream().map(MRule5sAntipattern::getUnderlyingObject));
+		isPresentInvocationBasedMAntipatternStreamList
+		.add(mCompilationUnit.rule_6AntipatternDetector().getElements().stream().map(MRule6sAntipattern::getUnderlyingObject));
+		isPresentInvocationBasedMAntipatternStreamList
+		.add(mCompilationUnit.rule_7AntipatternDetector().getElements().stream().map(MRule7sAntipattern::getUnderlyingObject));
+		isPresentInvocationBasedMAntipatternStreamList
+		.add(mCompilationUnit.rule_8AntipatternDetector().getElements().stream().map(MRule8sAntipattern::getUnderlyingObject));
+		isPresentInvocationBasedMAntipatternStreamList
+		.add(mCompilationUnit.rule_9AntipatternDetector().getElements().stream().map(MRule9sAntipattern::getUnderlyingObject));
+		isPresentInvocationBasedMAntipatternStreamList
+		.add(mCompilationUnit.rule10AntipatternDetector().getElements().stream().map(MRule10sAntipattern::getUnderlyingObject));
 	
 
-		return isPresentInvocationBasedMAtomStreamList;
+		return isPresentInvocationBasedMAntipatternStreamList;
 	}
 
 
-	Set<MethodInvocation> getCenzoredIsPresentAtoms(List<Stream<Object>> isPresentInvocationBasedMAtomSets) {
+	Set<MethodInvocation> getCenzoredIsPresentAntipatterns(List<Stream<Object>> isPresentInvocationBasedMAntipatternSets) {
 
-		return isPresentInvocationBasedMAtomSets
+		return isPresentInvocationBasedMAntipatternSets
 				.stream()
 				.flatMap(stream -> stream)
 				.filter(Antipattern.class::isInstance)

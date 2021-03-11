@@ -9,21 +9,21 @@ import org.eclipse.jdt.core.dom.ASTVisitor;
 import org.eclipse.jdt.core.dom.Assignment;
 import org.eclipse.jdt.core.dom.VariableDeclarationFragment;
 
-import optionalanalizer.metamodel.entity.MRule1Atom;
+import optionalanalizer.metamodel.entity.MRule1sAntipattern;
 import optionalanalizer.metamodel.factory.Factory;
 
 import utilities.UtilityClass;
 
 public class Rule1AntipatternFinder{
 
-	public List<MRule1Atom> getMAtoms(ASTNode astNode) {
+	public List<MRule1sAntipattern> getMAntipatterns(ASTNode astNode) {
 		
-		return getAtoms(astNode).stream()
-				.map(Factory.getInstance()::createMRule1Atom)
+		return getAntipatterns(astNode).stream()
+				.map(Factory.getInstance()::createMRule1sAntipattern)
 				.collect(Collectors.toList());
 	}
 
-	private List<Rule1Antipattern> getAtoms(ASTNode astNode) {
+	private List<Rule1Antipattern> getAntipatterns(ASTNode astNode) {
 		List<Rule1Antipattern> antipatterns = new LinkedList<>();
 
 		astNode.accept(new ASTVisitor() {
@@ -32,7 +32,7 @@ public class Rule1AntipatternFinder{
 			public boolean visit(Assignment assignment) {
 
 				if(isAssignmentAnOptionalAssignedToNull(assignment)) {			
-					Rule1Antipattern.getInstance(assignment).ifPresent(atom -> antipatterns.add(atom));
+					Rule1Antipattern.getInstance(assignment).ifPresent(antipattern -> antipatterns.add(antipattern));
 				}
 				return super.visit( assignment );
 			}
@@ -48,7 +48,7 @@ public class Rule1AntipatternFinder{
 					if(UtilityClass.isTypeOptional(typeName)
 							&& declaration.getInitializer().toString().equals("null")) {
 						Rule1Antipattern.getInstance(declaration)
-						.ifPresent(atom -> antipatterns.add(atom));
+						.ifPresent(antipattern -> antipatterns.add(antipattern));
 					}
 				}
 				return super.visit(declaration);

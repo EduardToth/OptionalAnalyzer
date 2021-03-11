@@ -10,7 +10,7 @@ import org.eclipse.jdt.core.dom.MethodInvocation;
 import org.eclipse.jdt.core.dom.Statement;
 import org.javatuples.Pair;
 
-import optionalanalizer.metamodel.entity.MRule9Atom;
+import optionalanalizer.metamodel.entity.MRule9sAntipattern;
 import optionalanalizer.metamodel.factory.Factory;
 import rule_7Antipattern.Rule7Antipattern;
 import rule_7Antipattern.Rule7AntipatternFinder;
@@ -21,34 +21,34 @@ import utilities.UtilityClass;
 
 public class Rule9AntipatternFinder{
 
-	public List<MRule9Atom> getMAtoms(ASTNode astNode) {
+	public List<MRule9sAntipattern> getMAntipatterns(ASTNode astNode) {
 
-		List<? extends Antipattern> rule7Atoms = getRule7Atoms(astNode);
-		List<? extends Antipattern> rule9Atoms =  getAtoms(astNode).stream()
+		List<? extends Antipattern> rule7Antipatterns = getRule7Antipatterns(astNode);
+		List<? extends Antipattern> rule9Antipatterns =  getAntipatterns(astNode).stream()
 				.map(Rule9Antipattern::getInstance)
 				.filter(Optional::isPresent)
 				.map(Optional::get)
 				.collect(Collectors.toList());
 
-		rule9Atoms.removeAll(rule7Atoms);
+		rule9Antipatterns.removeAll(rule7Antipatterns);
 
-		return rule9Atoms.stream()
-				.map(Factory.getInstance()::createMRule9Atom)
+		return rule9Antipatterns.stream()
+				.map(Factory.getInstance()::createMRule9sAntipattern)
 				.collect(Collectors.toList());
 	}
 
-	private List<IfStatement> getAtoms(ASTNode astNode) {
+	private List<IfStatement> getAntipatterns(ASTNode astNode) {
 		OptionalInvocationFinder optionalInvocationFinder = new OptionalInvocationFinder();
 		List<MethodInvocation> invocations = optionalInvocationFinder.getInvocations(astNode);
 
 		return collectAntipatterns(invocations);
 	}
 
-	private List<Rule7Antipattern> getRule7Atoms(ASTNode astNode) {
-		Rule7AntipatternFinder rule7AtomFinder = new Rule7AntipatternFinder();
+	private List<Rule7Antipattern> getRule7Antipatterns(ASTNode astNode) {
+		Rule7AntipatternFinder rule7AntipatternFinder = new Rule7AntipatternFinder();
 
-		return rule7AtomFinder.getMAtoms(astNode).stream()
-				.map(mAtom -> (Rule7Antipattern)mAtom.getUnderlyingObject())
+		return rule7AntipatternFinder.getMAntipatterns(astNode).stream()
+				.map(mAntipattern -> (Rule7Antipattern)mAntipattern.getUnderlyingObject())
 				.collect(Collectors.toList());
 	}
 

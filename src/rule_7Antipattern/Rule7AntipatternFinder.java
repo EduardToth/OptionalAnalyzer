@@ -13,7 +13,7 @@ import org.eclipse.jdt.core.dom.MethodInvocation;
 import org.eclipse.jdt.core.dom.Statement;
 import org.javatuples.Pair;
 
-import optionalanalizer.metamodel.entity.MRule7Atom;
+import optionalanalizer.metamodel.entity.MRule7sAntipattern;
 import optionalanalizer.metamodel.factory.Factory;
 import utilities.OptionalInvocationFinder;
 import utilities.ToolBoxForIfStatementAnalysis;
@@ -22,14 +22,14 @@ import utilities.UtilityClass;
 public class Rule7AntipatternFinder{
 
 
-	public List<MRule7Atom> getMAtoms(ASTNode astNode) {
+	public List<MRule7sAntipattern> getMAntipatterns(ASTNode astNode) {
 		OptionalInvocationFinder optionalInvocationFinder = new OptionalInvocationFinder();
 		List<MethodInvocation> isPresentInvocationGroup = optionalInvocationFinder.getInvocations(astNode);
 		
 		return collectRule7Antipatterns(isPresentInvocationGroup);
 	}
 
-	private List<MRule7Atom> collectRule7Antipatterns(List<MethodInvocation> isPresentList) {
+	private List<MRule7sAntipattern> collectRule7Antipatterns(List<MethodInvocation> isPresentList) {
 
 		return isPresentList.stream()
 				.filter(ToolBoxForIfStatementAnalysis::isSuperParentIfStatement)
@@ -40,7 +40,7 @@ public class Rule7AntipatternFinder{
 				.map(Rule7Antipattern::getInstance)
 				.filter(Optional::isPresent)
 				.map(Optional::get)
-				.map(Factory.getInstance()::createMRule7Atom)
+				.map(Factory.getInstance()::createMRule7sAntipattern)
 				.collect(Collectors.toList());
 	}
 	

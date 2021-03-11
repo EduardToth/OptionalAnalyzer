@@ -3,7 +3,7 @@ package compilationUnits.groups;
 import java.util.List;
 
 import optionalanalizer.metamodel.entity.MCompilationUnit;
-import optionalanalizer.metamodel.entity.MUncategorizedIsPresentAtom;
+import optionalanalizer.metamodel.entity.MUncategorizedIsPresentPossibleAntipattern;
 import ro.lrg.xcore.metametamodel.Group;
 import ro.lrg.xcore.metametamodel.IRelationBuilder;
 import ro.lrg.xcore.metametamodel.RelationBuilder;
@@ -11,16 +11,16 @@ import uncategorizedIsPresentUsage.UncategorizedIsPresentAntipatternFinder;
 
 @RelationBuilder
 public class UncategorizedIsPresentInvocationBasedAntipatternDetector 
-implements IRelationBuilder<MUncategorizedIsPresentAtom, MCompilationUnit>{
+implements IRelationBuilder<MUncategorizedIsPresentPossibleAntipattern, MCompilationUnit>{
 
 	@Override
-	public Group<MUncategorizedIsPresentAtom> buildGroup(MCompilationUnit arg0) {
+	public Group<MUncategorizedIsPresentPossibleAntipattern> buildGroup(MCompilationUnit arg0) {
 		MCompilationUnit mCompilationUnit = arg0;
-		UncategorizedIsPresentAntipatternFinder uncategorizedIsPresentAtomFinder = new UncategorizedIsPresentAntipatternFinder();
-		Group<MUncategorizedIsPresentAtom> group = new Group<>();
-		List<MUncategorizedIsPresentAtom> atoms = uncategorizedIsPresentAtomFinder.getMAtoms(mCompilationUnit);
+		UncategorizedIsPresentAntipatternFinder uncategorizedIsPresentAntipatternFinder = new UncategorizedIsPresentAntipatternFinder();
+		Group<MUncategorizedIsPresentPossibleAntipattern> group = new Group<>();
+		List<MUncategorizedIsPresentPossibleAntipattern> antipatterns = uncategorizedIsPresentAntipatternFinder.getMAntipatterns(mCompilationUnit);
 		
-		group.addAll(atoms);
+		group.addAll(antipatterns);
 
 		return group;
 	}

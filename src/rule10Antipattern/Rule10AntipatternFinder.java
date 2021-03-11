@@ -10,7 +10,7 @@ import org.eclipse.jdt.core.dom.MethodInvocation;
 import org.eclipse.jdt.core.dom.Statement;
 import org.javatuples.Pair;
 
-import optionalanalizer.metamodel.entity.MRule10Atom;
+import optionalanalizer.metamodel.entity.MRule10sAntipattern;
 import optionalanalizer.metamodel.factory.Factory;
 import utilities.OptionalInvocationFinder;
 import utilities.ToolBoxForIfStatementAnalysis;
@@ -18,13 +18,13 @@ import utilities.Unit;
 import utilities.UtilityClass;
 
 public class Rule10AntipatternFinder {
-	public List<MRule10Atom> getMAtoms(ASTNode astNode) {
+	public List<MRule10sAntipattern> getMAntipatterns(ASTNode astNode) {
 
 		return  getProblematicIfStatements(astNode).stream()
 				.map(Rule10Antipattern::getInstance)
 				.filter(Optional::isPresent)
 				.map(Optional::get)
-				.map(Factory.getInstance()::createMRule10Atom)
+				.map(Factory.getInstance()::createMRule10sAntipattern)
 				.collect(Collectors.toList());
 
 	}

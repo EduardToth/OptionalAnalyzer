@@ -18,13 +18,13 @@ import org.eclipse.jdt.core.dom.NumberLiteral;
 import org.eclipse.jdt.core.dom.StringLiteral;
 import org.eclipse.jdt.core.dom.TypeLiteral;
 
-import optionalanalizer.metamodel.entity.MRule19Atom;
+import optionalanalizer.metamodel.entity.MRule19sAntipattern;
 import optionalanalizer.metamodel.factory.Factory;
 import utilities.OptionalInvocationFinder;
 
 public class Rule19AntipatternFinder {
 
-	public List<MRule19Atom> getMAtoms(ASTNode astNode) {
+	public List<MRule19sAntipattern> getMAntipatterns(ASTNode astNode) {
 		OptionalInvocationFinder optionalInvocationFinder = new OptionalInvocationFinder();
 		List<MethodInvocation> ofGroup = optionalInvocationFinder.getInvocations(astNode, "of");
 		List<MethodInvocation> ofNullableGroup = optionalInvocationFinder.getInvocations(astNode, "ofNullable");
@@ -36,7 +36,7 @@ public class Rule19AntipatternFinder {
 				.map(Rule19Antipattern::getInstance)
 				.filter(Optional::isPresent)
 				.map(Optional::get)
-				.map(Factory.getInstance()::createMRule19Atom)
+				.map(Factory.getInstance()::createMRule19sAntipattern)
                 .collect(Collectors.toList());
 	}
 

@@ -1,15 +1,15 @@
 package uncategorizedIsPresentUsage.properties;
 
 
-import optionalanalizer.metamodel.entity.MUncategorizedIsPresentAtom;
+import optionalanalizer.metamodel.entity.MUncategorizedIsPresentPossibleAntipattern;
 import ro.lrg.xcore.metametamodel.IPropertyComputer;
 import ro.lrg.xcore.metametamodel.PropertyComputer;
 
 @PropertyComputer
-public class ToString implements IPropertyComputer<String, MUncategorizedIsPresentAtom>{
+public class ToString implements IPropertyComputer<String, MUncategorizedIsPresentPossibleAntipattern>{
 
 	@Override
-	public String compute(MUncategorizedIsPresentAtom arg0) {
+	public String compute(MUncategorizedIsPresentPossibleAntipattern arg0) {
 		return arg0.getUnderlyingObject().toString();
 	}
 

@@ -12,37 +12,37 @@ import org.eclipse.jdt.core.dom.ReturnStatement;
 import org.eclipse.jdt.core.dom.Statement;
 import org.javatuples.Pair;
 
-import optionalanalizer.metamodel.entity.MRule4Atom;
+import optionalanalizer.metamodel.entity.MRule4sAntipattern;
 import optionalanalizer.metamodel.factory.Factory;
 import utilities.OptionalInvocationFinder;
 import utilities.ToolBoxForIfStatementAnalysis;
 import utilities.Unit;
 
 public class Rule4AntipatternFinder{
-	public List<MRule4Atom> getMAtoms(ASTNode astNode) {
-		List<MRule4Atom> ifStatementMAtoms = getAtoms(astNode)
+	public List<MRule4sAntipattern> getMAntipatterns(ASTNode astNode) {
+		List<MRule4sAntipattern> ifStatementMAntipatterns = getAntipatterns(astNode)
 				.stream()
 				.map(Rule4Antipattern::getInstance)
 				.filter(Optional::isPresent)
 				.map(Optional::get)
-				.map(Factory.getInstance()::createMRule4Atom)
+				.map(Factory.getInstance()::createMRule4sAntipattern)
 				.collect(Collectors.toList());
 
-		List<MRule4Atom> returnStatementMAtoms = getProblematicReturnStatements(astNode)
+		List<MRule4sAntipattern> returnStatementMAntipatterns = getProblematicReturnStatements(astNode)
 				.stream()
 				.map(Rule4Antipattern::getInstance)
 				.filter(Optional::isPresent)
 				.map(Optional::get)
-				.map(Factory.getInstance()::createMRule4Atom)
+				.map(Factory.getInstance()::createMRule4sAntipattern)
 				.collect(Collectors.toList());
 		
-		return Stream.of(ifStatementMAtoms, returnStatementMAtoms)
+		return Stream.of(ifStatementMAntipatterns, returnStatementMAntipatterns)
 				.flatMap(List::stream)
 				.collect(Collectors.toList());
 		
 	}
 
-	private List<IfStatement> getAtoms(ASTNode astNode) {
+	private List<IfStatement> getAntipatterns(ASTNode astNode) {
 		OptionalInvocationFinder optionalInvocationFinder = new OptionalInvocationFinder();
 		getProblematicReturnStatements(astNode);
 		List<MethodInvocation> invocations = optionalInvocationFinder.getInvocations(astNode);

@@ -14,7 +14,7 @@ import org.eclipse.jdt.core.dom.Statement;
 import org.eclipse.jdt.core.dom.ThrowStatement;
 import org.javatuples.Pair;
 
-import optionalanalizer.metamodel.entity.MRule6Atom;
+import optionalanalizer.metamodel.entity.MRule6sAntipattern;
 import optionalanalizer.metamodel.factory.Factory;
 import utilities.OptionalInvocationFinder;
 import utilities.ToolBoxForIfStatementAnalysis;
@@ -22,17 +22,17 @@ import utilities.UtilityClass;
 
 public class Rule6AntipatternFinder {
 
-	public List<MRule6Atom> getMAtoms(ASTNode astNode) {
-		return getAtoms(astNode)
+	public List<MRule6sAntipattern> getMAntipatterns(ASTNode astNode) {
+		return getAntipatterns(astNode)
 				.stream()
 				.map(Rule6Antipattern::getInstance)
 				.filter(Optional::isPresent)
 				.map(Optional::get)
-				.map(Factory.getInstance()::createMRule6Atom)
+				.map(Factory.getInstance()::createMRule6sAntipattern)
 				.collect(Collectors.toList());
 	}
 
-	private List<IfStatement> getAtoms(ASTNode astNode) {
+	private List<IfStatement> getAntipatterns(ASTNode astNode) {
 		OptionalInvocationFinder optionalInvocationFinder = new OptionalInvocationFinder();
 		List<MethodInvocation> invocations = optionalInvocationFinder.getInvocations(astNode);
 

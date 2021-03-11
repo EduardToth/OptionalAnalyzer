@@ -10,7 +10,7 @@ import org.eclipse.jdt.core.dom.MethodInvocation;
 import org.eclipse.jdt.core.dom.ReturnStatement;
 import org.eclipse.jdt.core.dom.Statement;
 
-import optionalanalizer.metamodel.entity.MRule3Atom;
+import optionalanalizer.metamodel.entity.MRule3sAntipattern;
 import optionalanalizer.metamodel.factory.Factory;
 import utilities.OptionalInvocationFinder;
 import utilities.ToolBoxForIfStatementAnalysis;
@@ -18,17 +18,17 @@ import utilities.Unit;
 
 public class Rule3AntipatternFinder{
 
-	public List<MRule3Atom> getMAtoms(ASTNode astNode) {
-		return getAtoms(astNode)
+	public List<MRule3sAntipattern> getMAntipatterns(ASTNode astNode) {
+		return getAntipatterns(astNode)
 				.stream()
 				.map(Rule3Antipattern::getInstance)
 				.filter(Optional::isPresent)
 				.map(Optional::get)
-				.map(Factory.getInstance()::createMRule3Atom)
+				.map(Factory.getInstance()::createMRule3sAntipattern)
 				.collect(Collectors.toList());
 	}
 
-	private List<IfStatement> getAtoms(ASTNode astNode) {
+	private List<IfStatement> getAntipatterns(ASTNode astNode) {
 		OptionalInvocationFinder optionalInvocationFinder = new OptionalInvocationFinder();
 		List<MethodInvocation> invocations = optionalInvocationFinder.getInvocations(astNode);
 

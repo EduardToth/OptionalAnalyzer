@@ -8,13 +8,13 @@ import org.eclipse.jdt.core.dom.ASTNode;
 import org.eclipse.jdt.core.dom.MethodInvocation;
 import org.eclipse.jdt.core.dom.PrefixExpression;
 
-import optionalanalizer.metamodel.entity.MRule26Atom;
+import optionalanalizer.metamodel.entity.MRule26sAntipattern;
 import optionalanalizer.metamodel.factory.Factory;
 import utilities.OptionalInvocationFinder;
 
 public class Rule26AntipatternFinder {
 	
-	public List<MRule26Atom> getMAtoms(ASTNode astNode) {
+	public List<MRule26sAntipattern> getMAntipatterns(ASTNode astNode) {
 		OptionalInvocationFinder optionalInvocationFinder = new OptionalInvocationFinder();
 		List<MethodInvocation> isPresentInvocations = optionalInvocationFinder.getInvocations(astNode);
 		
@@ -26,7 +26,7 @@ public class Rule26AntipatternFinder {
 				.map(Rule26Antipattern::getInstance)
 				.filter(Optional::isPresent)
 				.map(Optional::get)
-				.map(Factory.getInstance()::createMRule26Atom)
+				.map(Factory.getInstance()::createMRule26sAntipattern)
 				.collect(Collectors.toList());
 	} 
 
