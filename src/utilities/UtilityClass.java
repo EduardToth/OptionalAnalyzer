@@ -2,7 +2,9 @@ package utilities;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 import org.eclipse.jdt.core.ICompilationUnit;
@@ -265,5 +267,11 @@ public class UtilityClass {
 	public static Optional<String> getTypeName(Expression expression) {
 		return Optional.ofNullable(expression.resolveTypeBinding().getQualifiedName());
 	}
+	
+	@SuppressWarnings("unchecked")
+	public static <T> Predicate<T> negatePredicate(Predicate<? super T> target) {
+        Objects.requireNonNull(target);
+        return (Predicate<T>)target.negate();
+    }
 
 }

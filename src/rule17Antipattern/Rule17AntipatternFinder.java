@@ -3,7 +3,6 @@ package rule17Antipattern;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
-import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 import org.eclipse.jdt.core.dom.ASTNode;
@@ -23,7 +22,7 @@ public class Rule17AntipatternFinder {
 		
 		return methodDeclarations.stream()
 				.peek(currentMethodDeclaration::setAt0)
-				.filter(Predicate.not(MethodDeclaration::isConstructor))
+				.filter(UtilityClass.negatePredicate(MethodDeclaration::isConstructor))
 				.map(this::getTypeName)
 				.filter(this::isExpressionOfTypeOptionalContainingArrayOrCollection)
 				.map(el -> Rule17Antipattern.getInstance(currentMethodDeclaration.getValue0()))
