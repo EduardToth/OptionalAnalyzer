@@ -14,6 +14,7 @@ import optionalanalizer.metamodel.factory.Factory;
 import utilities.OptionalInvocationFinder;
 import utilities.ToolBoxForIfStatementAnalysis;
 import utilities.Unit;
+import utilities.UtilityClass;
 
 public class Rule8AntipatternFinder{
 
@@ -21,8 +22,7 @@ public class Rule8AntipatternFinder{
 
 		return getAntipatterns(astNode).stream()
 				.map(Rule8Antipattern::getInstance)
-				.filter(Optional::isPresent)
-				.map(Optional::get)
+				.flatMap(Optional::stream)
 				.map(Factory.getInstance()::createMRule8sAntipattern)
 				.collect(Collectors.toList());
 	}
@@ -35,15 +35,22 @@ public class Rule8AntipatternFinder{
 	}
 
 	private List<IfStatement> collectAntipatterns(List<MethodInvocation> invocations) {
-		final Unit<String> invocatorName = new Unit<>(null);
 
 		return invocations.stream()
-				.peek(inv -> ToolBoxForIfStatementAnalysis.setInvocatorName(inv, invocatorName))
-				.filter(el -> invocatorName.getValue0() != null)
-				.filter(ToolBoxForIfStatementAnalysis::isSuperParentIfStatement)
-				.map(ToolBoxForIfStatementAnalysis::getIfStatement)
-				.filter(ifStatement -> isAntipattern(ifStatement, invocatorName.getValue0()))
+				.map(this::getParentIfStatementIfProblematic)
+				.flatMap(Optional::stream)
 				.collect(Collectors.toList());
+	}
+	
+	private Optional<IfStatement> getParentIfStatementIfProblematic(MethodInvocation methodInvocation) {
+
+		if(ToolBoxForIfStatementAnalysis.isSuperParentIfStatement(methodInvocation)) {
+			final IfStatement ifStatement = ToolBoxForIfStatementAnalysis.getIfStatement(methodInvocation);
+			Optional<String> invocatorName = UtilityClass.getInvocatorName(methodInvocation);
+			return invocatorName.filter(invName -> isAntipattern(ifStatement, invName))
+					.map(invName -> ifStatement);
+		}
+		return Optional.empty();
 	}
 
 	private  boolean isAntipattern(IfStatement ifStatement, String invocatorName) {

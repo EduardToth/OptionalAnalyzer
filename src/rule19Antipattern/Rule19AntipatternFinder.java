@@ -34,8 +34,7 @@ public class Rule19AntipatternFinder {
 		return Stream.of(badInvocationsForOptionalOf, badInvocationsForOptionalOfNullable)
 				.flatMap(Collection::stream)
 				.map(Rule19Antipattern::getInstance)
-				.filter(Optional::isPresent)
-				.map(Optional::get)
+				.flatMap(Optional::stream)
 				.map(Factory.getInstance()::createMRule19sAntipattern)
                 .collect(Collectors.toList());
 	}

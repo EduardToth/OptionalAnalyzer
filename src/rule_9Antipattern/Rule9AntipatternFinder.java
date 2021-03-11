@@ -8,7 +8,6 @@ import org.eclipse.jdt.core.dom.ASTNode;
 import org.eclipse.jdt.core.dom.IfStatement;
 import org.eclipse.jdt.core.dom.MethodInvocation;
 import org.eclipse.jdt.core.dom.Statement;
-import org.javatuples.Pair;
 
 import optionalanalizer.metamodel.entity.MRule9sAntipattern;
 import optionalanalizer.metamodel.factory.Factory;
@@ -26,8 +25,7 @@ public class Rule9AntipatternFinder{
 		List<? extends Antipattern> rule7Antipatterns = getRule7Antipatterns(astNode);
 		List<? extends Antipattern> rule9Antipatterns =  getAntipatterns(astNode).stream()
 				.map(Rule9Antipattern::getInstance)
-				.filter(Optional::isPresent)
-				.map(Optional::get)
+				.flatMap(Optional::stream)
 				.collect(Collectors.toList());
 
 		rule9Antipatterns.removeAll(rule7Antipatterns);
@@ -55,21 +53,20 @@ public class Rule9AntipatternFinder{
 	private List<IfStatement> collectAntipatterns(List<MethodInvocation> invocations) {
 
 		return invocations.stream()
-				.map(inv -> Pair.with(inv, UtilityClass.getInvocatorName(inv).orElse("")))
-				.filter(invocationAndInvocatorName 
-						-> !invocationAndInvocatorName.getValue1().equals(""))
-				.filter(invocationAndInvocatorName 
-						-> ToolBoxForIfStatementAnalysis
-						.isSuperParentIfStatement(invocationAndInvocatorName.getValue0()))
-				.map(invocationAndInvocatorName 
-						-> Pair.with(ToolBoxForIfStatementAnalysis
-								.getIfStatement(invocationAndInvocatorName.getValue0()),
-								invocationAndInvocatorName.getValue1()))
-				.filter(ifStatementAndInvocatorName 
-						-> isAntipattern(ifStatementAndInvocatorName.getValue0(),
-								ifStatementAndInvocatorName.getValue1()))
-				.map(ifStatementAndInvocatorName -> ifStatementAndInvocatorName.getValue0())
+				.map(this::getParentIfStatementIfProblematic)
+				.flatMap(Optional::stream)
 				.collect(Collectors.toList());
+	}
+	
+	private Optional<IfStatement> getParentIfStatementIfProblematic(MethodInvocation methodInvocation) {
+
+		if(ToolBoxForIfStatementAnalysis.isSuperParentIfStatement(methodInvocation)) {
+			final IfStatement ifStatement = ToolBoxForIfStatementAnalysis.getIfStatement(methodInvocation);
+			Optional<String> invocatorName = UtilityClass.getInvocatorName(methodInvocation);
+			return invocatorName.filter(invName -> isAntipattern(ifStatement, invName))
+					.map(invName -> ifStatement);
+		}
+		return Optional.empty();
 	}
 
 	private  boolean isAntipattern(IfStatement ifStatement, String invocatorName) {

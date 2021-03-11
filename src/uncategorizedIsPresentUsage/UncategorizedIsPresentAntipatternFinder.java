@@ -48,8 +48,7 @@ public class UncategorizedIsPresentAntipatternFinder {
 		return isPresentMethodInvocations.stream()
 				.filter(methodInvocation -> !contains(categorizedIsPresentInvocations, methodInvocation))
 				.map(UncategorizedIsPresentAntipattern::getInstance)
-				.filter(Optional::isPresent)
-				.map(Optional::get)
+				.flatMap(Optional::stream)
 				.map(Factory.getInstance()::createMUncategorizedIsPresentPossibleAntipattern)
 				.collect(Collectors.toList());
 	}

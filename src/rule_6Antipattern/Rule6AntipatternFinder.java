@@ -25,8 +25,7 @@ public class Rule6AntipatternFinder {
 		return getAntipatterns(astNode)
 				.stream()
 				.map(Rule6Antipattern::getInstance)
-				.filter(Optional::isPresent)
-				.map(Optional::get)
+				.flatMap(Optional::stream)
 				.map(Factory.getInstance()::createMRule6sAntipattern)
 				.collect(Collectors.toList());
 	}
@@ -42,8 +41,7 @@ public class Rule6AntipatternFinder {
 
 		return invocations.stream()
 				.map(this::getWrapperIfStatementIfThereIsAntipatternThere)
-				.filter(Optional::isPresent)
-				.map(Optional::get)
+				.flatMap(Optional::stream)
 				.collect(Collectors.toList());
 
 	}
@@ -62,7 +60,6 @@ public class Rule6AntipatternFinder {
 	}
 
 	private  boolean isAntipattern(IfStatement ifStatement, String invocatorName) {
-
 
 		Optional<Statement> thenStatement = Optional.ofNullable(ifStatement.getThenStatement());
 		Optional<Statement> elseStatement = Optional.ofNullable(ifStatement.getElseStatement());

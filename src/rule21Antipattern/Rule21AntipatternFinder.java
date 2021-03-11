@@ -25,8 +25,7 @@ public class Rule21AntipatternFinder {
 				.map(this::getAntipatternOccurencies)
 				.flatMap(Collection::stream)
 				.map(Rule21Antipattern::getInstance)
-				.filter(Optional::isPresent)
-				.map(Optional::get)
+				.flatMap(Optional::stream)
 				//distinct
 				.collect(Collectors.groupingBy(Antipattern::getStartingPosition))
 				.entrySet()

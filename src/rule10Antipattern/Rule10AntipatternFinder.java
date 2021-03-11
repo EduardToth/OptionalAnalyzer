@@ -25,8 +25,7 @@ public class Rule10AntipatternFinder {
 
 		return  getProblematicIfStatements(astNode).stream()
 				.map(Rule10Antipattern::getInstance)
-				.filter(Optional::isPresent)
-				.map(Optional::get)
+				.flatMap(Optional::stream)
 				.map(Factory.getInstance()::createMRule10sAntipattern)
 				.collect(Collectors.toList());
 
@@ -40,15 +39,22 @@ public class Rule10AntipatternFinder {
 	}
 
 	private List<IfStatement> getProblematicIfStatements(List<MethodInvocation> invocations) {
-		final Unit<String> invocatorName = new Unit<>(null);
 
 		return invocations.stream()
-				.peek(inv -> ToolBoxForIfStatementAnalysis.setInvocatorName(inv, invocatorName))
-				.filter(el -> invocatorName.getValue0() != null)
-				.filter(ToolBoxForIfStatementAnalysis::isSuperParentIfStatement)
-				.map(ToolBoxForIfStatementAnalysis::getIfStatement)
-				.filter(ifStatement -> isAntipattern(ifStatement, invocatorName.getValue0()))
+				.map(this::getParentIfStatementIfProblematic)
+				.flatMap(Optional::stream)
 				.collect(Collectors.toList());
+	}
+	
+	private Optional<IfStatement> getParentIfStatementIfProblematic(MethodInvocation methodInvocation) {
+
+		if(ToolBoxForIfStatementAnalysis.isSuperParentIfStatement(methodInvocation)) {
+			final IfStatement ifStatement = ToolBoxForIfStatementAnalysis.getIfStatement(methodInvocation);
+			Optional<String> invocatorName = UtilityClass.getInvocatorName(methodInvocation);
+			return invocatorName.filter(invName -> isAntipattern(ifStatement, invName))
+					.map(invName -> ifStatement);
+		}
+		return Optional.empty();
 	}
 
 	private  boolean isAntipattern(IfStatement ifStatement, String invocatorName) {
@@ -58,7 +64,7 @@ public class Rule10AntipatternFinder {
 
 		return thenStatement.flatMap(
 				thenStm -> elseStatement.filter(elseStm -> bothOfThemContainReturnStatement(thenStm, elseStm))
-				.map(elseStm -> isAntipattern(thenStm, elseStm, invocatorName))
+										.map(elseStm -> isAntipattern(thenStm, elseStm, invocatorName))
 				).orElse( false );
 
 	}
@@ -69,7 +75,7 @@ public class Rule10AntipatternFinder {
 	}
 
 	private boolean isAntipattern(Statement statementForThen, Statement statementForElse, String invocatorName) {
-
+		
 		String typeName = "";
 		try {
 			typeName = ToolBoxForIfStatementAnalysis.getReturnStatement(statementForThen)
@@ -77,7 +83,7 @@ public class Rule10AntipatternFinder {
 					.map(Expression::resolveTypeBinding)
 					.map(ITypeBinding::getQualifiedName)
 					.orElse("");
-
+			
 		}catch(NullPointerException npe) {}
 
 		return 	ToolBoxForIfStatementAnalysis.getCyclomaticComplexity(statementForThen) == 1

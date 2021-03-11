@@ -17,22 +17,21 @@ import optionalanalizer.metamodel.factory.Factory;
 import utilities.OptionalInvocationFinder;
 import utilities.ToolBoxForIfStatementAnalysis;
 import utilities.Unit;
+import utilities.UtilityClass;
 
 public class Rule4AntipatternFinder{
 	public List<MRule4sAntipattern> getMAntipatterns(ASTNode astNode) {
 		List<MRule4sAntipattern> ifStatementMAntipatterns = getAntipatterns(astNode)
 				.stream()
 				.map(Rule4Antipattern::getInstance)
-				.filter(Optional::isPresent)
-				.map(Optional::get)
+				.flatMap(Optional::stream)
 				.map(Factory.getInstance()::createMRule4sAntipattern)
 				.collect(Collectors.toList());
 
 		List<MRule4sAntipattern> returnStatementMAntipatterns = getProblematicReturnStatements(astNode)
 				.stream()
 				.map(Rule4Antipattern::getInstance)
-				.filter(Optional::isPresent)
-				.map(Optional::get)
+				.flatMap(Optional::stream)
 				.map(Factory.getInstance()::createMRule4sAntipattern)
 				.collect(Collectors.toList());
 		
@@ -66,16 +65,23 @@ public class Rule4AntipatternFinder{
 				.toString()
 				.matches(regex);
 	}
+	
+	private Optional<IfStatement> getParentIfStatementIfProblematic(MethodInvocation methodInvocation) {
+
+		if(ToolBoxForIfStatementAnalysis.isSuperParentIfStatement(methodInvocation)) {
+			final IfStatement ifStatement = ToolBoxForIfStatementAnalysis.getIfStatement(methodInvocation);
+			Optional<String> invocatorName = UtilityClass.getInvocatorName(methodInvocation);
+			return invocatorName.filter(invName -> isAntipattern(ifStatement, invName))
+					.map(invName -> ifStatement);
+		}
+		return Optional.empty();
+	}
 
 	private List<IfStatement> collectAntipatterns(List<MethodInvocation> invocations) {
-		final Unit<String> invocatorName = new Unit<>(null);
 
 		return invocations.stream()
-				.peek(inv -> ToolBoxForIfStatementAnalysis.setInvocatorName(inv, invocatorName))
-				.filter(el -> invocatorName.getValue0() != null)
-				.filter(ToolBoxForIfStatementAnalysis::isSuperParentIfStatement)
-				.map(ToolBoxForIfStatementAnalysis::getIfStatement)
-				.filter(ifStatement -> isAntipattern(ifStatement, invocatorName.getValue0()))
+				.map(this::getParentIfStatementIfProblematic)
+				.flatMap(Optional::stream)
 				.collect(Collectors.toList());
 	}
 

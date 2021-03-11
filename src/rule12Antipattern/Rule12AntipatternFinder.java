@@ -25,8 +25,7 @@ public class Rule12AntipatternFinder {
 				.map(MethodInvocation::getParent)
 				.filter(MethodInvocation.class::isInstance)
 				.map(Rule12Antipattern::getInstance)
-				.filter(Optional::isPresent)
-				.map(Optional::get)
+				.flatMap(Optional::stream)
 				.map(Factory.getInstance()::createMRule12sAntipattern)
 				.collect(Collectors.toList());
 		

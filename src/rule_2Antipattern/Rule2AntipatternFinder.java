@@ -24,8 +24,7 @@ public class Rule2AntipatternFinder{
 		return getAntipatterns(astNode)
 				.stream()
 				.map(Rule2Antipattern::getInstance)
-				.filter(Optional::isPresent)
-				.map(Optional::get)
+				.flatMap(Optional::stream)
 				.map(Factory.getInstance()::createMRule2sAntipattern)
 				.collect(Collectors.toList());
 	}

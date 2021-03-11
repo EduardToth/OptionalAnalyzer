@@ -22,8 +22,7 @@ public class Rule25AntipatternFinder {
 		return infixExpressions.stream()
 				.filter(this::isFine)
 				.map(Rule25Antipattern::getInstance)
-				.filter( Optional::isPresent)
-				.map(Optional::get)
+				.flatMap(Optional::stream)
 				.map(Factory.getInstance()::createMRule25sAntipattern)
 				.collect(Collectors.toList());
 	}

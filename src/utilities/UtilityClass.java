@@ -36,7 +36,7 @@ public class UtilityClass {
 		parser.setKind(ASTParser.K_COMPILATION_UNIT);
 		parser.setSource(unit);
 		parser.setResolveBindings(true);
-		return (CompilationUnit) parser.createAST(null); // parse
+		return (CompilationUnit) parser.createAST(null); 
 	}
 
 
@@ -127,11 +127,8 @@ public class UtilityClass {
 				.collect(Collectors.toList());
 
 		boolean contains =  listOfTypes.stream()
-				.filter(optionalTypeName -> rawGenericTypes.contains(optionalTypeName.toString()))
-				.findAny()
-				.isPresent();
-
-
+				.anyMatch(optionalTypeName -> rawGenericTypes.contains(optionalTypeName.toString()));
+				
 		if(!contains) {
 			contains = genericTypes.stream()
 					.anyMatch(type -> hasGenericTypeInside(listOfTypes, type));
@@ -218,6 +215,7 @@ public class UtilityClass {
 		Optional<TypeDeclaration> typeDeclaration = getTypeDeclaration(methodDeclaration);
 
 		String methodName = methodDeclaration.getName().toString();
+			
 		return typeDeclaration
 				.map(TypeDeclaration::getFields)
 				.map(Arrays::asList)
@@ -262,10 +260,5 @@ public class UtilityClass {
 		return Optional.ofNullable(expression.resolveTypeBinding().getQualifiedName());
 	}
 
-	@SuppressWarnings("unchecked")
-	public static <T> Predicate<T> negatePredicate(Predicate<? super T> target) {
-		Objects.requireNonNull(target);
-		return (Predicate<T>)target.negate();
-	}
 
 }

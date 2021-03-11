@@ -18,11 +18,9 @@ public class Rule14AntipatternFinder {
 		return methodDeclarations.stream()
 				.filter(MethodDeclaration::isConstructor)
 				.map(UtilityClass::getFirstOptionalParameter)
-				.filter(Optional::isPresent)
-				.map(Optional::get)
+				.flatMap(Optional::stream)
 				.map(Rule14Antipattern::getInstance)
-				.filter(Optional::isPresent)
-				.map(Optional::get)
+				.flatMap(Optional::stream)
 				.map(Factory.getInstance()::createMRule14sAntipattern)
 				.collect(Collectors.toList());
 	}

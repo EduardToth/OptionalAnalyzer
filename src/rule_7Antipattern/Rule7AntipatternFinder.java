@@ -39,8 +39,7 @@ public class Rule7AntipatternFinder{
 				.filter(this::areStatementsComposedBySingleAction)
 				.filter(this::isSimpleIfElseStatement)
 				.map(Rule7Antipattern::getInstance)
-				.filter(Optional::isPresent)
-				.map(Optional::get)
+				.flatMap(Optional::stream)
 				.map(Factory.getInstance()::createMRule7sAntipattern)
 				.collect(Collectors.toList());
 	}
@@ -55,7 +54,7 @@ public class Rule7AntipatternFinder{
 		Optional<Statement> elseStatement = Optional.ofNullable(ifStatement.getElseStatement());
 
 		return thenStatement.flatMap(
-				themStm -> elseStatement.map(elseStm -> isCyclomaticComplexityForBothOne(themStm, elseStm))
+					themStm -> elseStatement.map(elseStm -> isCyclomaticComplexityForBothOne(themStm, elseStm))
 				).orElse(false);
 
 	}

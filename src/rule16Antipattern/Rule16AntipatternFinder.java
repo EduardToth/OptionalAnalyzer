@@ -2,6 +2,7 @@ package rule16Antipattern;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 import org.eclipse.jdt.core.dom.ASTNode;
@@ -17,14 +18,12 @@ public class Rule16AntipatternFinder {
 		List<MethodDeclaration> methodDeclarations = UtilityClass.getMethodDeclarations(astNode);
         
 		return methodDeclarations.stream()
-				.filter(UtilityClass.negatePredicate(MethodDeclaration::isConstructor))
-				.filter(UtilityClass.negatePredicate(UtilityClass::isSetter))
+				.filter(Predicate.not(MethodDeclaration::isConstructor))
+				.filter(Predicate.not(UtilityClass::isSetter))
 				.map(UtilityClass::getFirstOptionalParameter)
-				.filter(Optional::isPresent)
-				.map(Optional::get)
+				.flatMap(Optional::stream)
 				.map(Rule16Antipattern::getInstance)
-				.filter(Optional::isPresent)
-				.map(Optional::get)
+				.flatMap(Optional::stream)
 				.map(Factory.getInstance()::createMRule16sAntipattern)
 				.collect(Collectors.toList());
 	}

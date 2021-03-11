@@ -15,6 +15,7 @@ import optionalanalizer.metamodel.factory.Factory;
 import utilities.OptionalInvocationFinder;
 import utilities.ToolBoxForIfStatementAnalysis;
 import utilities.Unit;
+import utilities.UtilityClass;
 
 public class Rule3AntipatternFinder{
 
@@ -22,8 +23,7 @@ public class Rule3AntipatternFinder{
 		return getAntipatterns(astNode)
 				.stream()
 				.map(Rule3Antipattern::getInstance)
-				.filter(Optional::isPresent)
-				.map(Optional::get)
+				.flatMap(Optional::stream)
 				.map(Factory.getInstance()::createMRule3sAntipattern)
 				.collect(Collectors.toList());
 	}
@@ -36,15 +36,22 @@ public class Rule3AntipatternFinder{
 	}
 
 	private List<IfStatement> collectAntipatterns(List<MethodInvocation> invocations) {
-		final Unit<String> invocatorName = new Unit<>(null);
 
 		return invocations.stream()
-				.peek(inv -> ToolBoxForIfStatementAnalysis.setInvocatorName(inv, invocatorName))
-				.filter(el -> invocatorName.getValue0() != null)
-				.filter(ToolBoxForIfStatementAnalysis::isSuperParentIfStatement)
-				.map(ToolBoxForIfStatementAnalysis::getIfStatement)
-				.filter(ifStatement -> isAntipattern(ifStatement, invocatorName.getValue0()))
+				.map(this::getParentIfStatementIfProblematic)
+				.flatMap(Optional::stream)
 				.collect(Collectors.toList());
+	}
+
+	private Optional<IfStatement> getParentIfStatementIfProblematic(MethodInvocation methodInvocation) {
+
+		if(ToolBoxForIfStatementAnalysis.isSuperParentIfStatement(methodInvocation)) {
+			final IfStatement ifStatement = ToolBoxForIfStatementAnalysis.getIfStatement(methodInvocation);
+			Optional<String> invocatorName = UtilityClass.getInvocatorName(methodInvocation);
+			return invocatorName.filter(invName -> isAntipattern(ifStatement, invName))
+					.map(invName -> ifStatement);
+		}
+		return Optional.empty();
 	}
 
 	private boolean isCyclomaticComplexityForBothOne(Statement thenStatement, Statement elseStatement) {
@@ -64,8 +71,8 @@ public class Rule3AntipatternFinder{
 
 		return thenStatement.flatMap(
 				thenStm -> elseStatement.filter(elseStm -> isCyclomaticComplexityForBothOne(thenStm, elseStm))
-										.filter(elseStm -> isStatementComposedByASingleActionBorBoth(thenStm, elseStm))
-										.map(elseStm -> isAntipattern(thenStm, elseStm,  invocatorName))
+				.filter(elseStm -> isStatementComposedByASingleActionBorBoth(thenStm, elseStm))
+				.map(elseStm -> isAntipattern(thenStm, elseStm,  invocatorName))
 				).orElse(false);
 
 	}
@@ -75,8 +82,8 @@ public class Rule3AntipatternFinder{
 		Optional<ReturnStatement> returnStatementForElse = ToolBoxForIfStatementAnalysis.getReturnStatement(elseStatement);
 
 		return returnStatementForThen.flatMap(
-						retStmForThen -> returnStatementForElse.map(retStmForElse -> isAntipattern(retStmForThen, retStmForElse, invocatorName)
-								)
+				retStmForThen -> returnStatementForElse.map(retStmForElse -> isAntipattern(retStmForThen, retStmForElse, invocatorName)
+						)
 				).orElse(false);
 	}
 

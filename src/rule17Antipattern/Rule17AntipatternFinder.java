@@ -10,7 +10,7 @@ import org.eclipse.jdt.core.dom.MethodDeclaration;
 
 import optionalanalizer.metamodel.entity.MRule17sAntipattern;
 import optionalanalizer.metamodel.factory.Factory;
-import utilities.Unit;
+
 import utilities.UtilityClass;
 
 public class Rule17AntipatternFinder {
@@ -18,20 +18,25 @@ public class Rule17AntipatternFinder {
 	public List<MRule17sAntipattern> getMAntipatterns(ASTNode astNode) {
 		
 		List<MethodDeclaration> methodDeclarations = UtilityClass.getMethodDeclarations(astNode);
-		final Unit<MethodDeclaration> currentMethodDeclaration = new Unit<>(null);
 		
 		return methodDeclarations.stream()
-				.peek(currentMethodDeclaration::setAt0)
-				.filter(UtilityClass.negatePredicate(MethodDeclaration::isConstructor))
-				.map(this::getTypeName)
-				.filter(this::isExpressionOfTypeOptionalContainingArrayOrCollection)
-				.map(el -> Rule17Antipattern.getInstance(currentMethodDeclaration.getValue0()))
-				.filter(Optional::isPresent)
-				.map(Optional::get)
+				.map(this::convertIntoAntipatternIfPossible)
+				.flatMap(Optional::stream)
 				.map(Factory.getInstance()::createMRule17sAntipattern)
 				.collect(Collectors.toList());
 		
 		 
+	}
+	
+	private Optional<Rule17Antipattern> convertIntoAntipatternIfPossible(MethodDeclaration methodDeclaration) {
+		if(!methodDeclaration.isConstructor()) {
+			String typeName = getTypeName(methodDeclaration);
+			if(isExpressionOfTypeOptionalContainingArrayOrCollection(typeName)) {
+				return Rule17Antipattern.getInstance(methodDeclaration);
+			}
+		}
+		
+		return Optional.empty();
 	}
 	
 	private String getTypeName(MethodDeclaration methodDeclaration) {

@@ -12,7 +12,6 @@ import org.eclipse.jdt.core.dom.ASTVisitor;
 import org.eclipse.jdt.core.dom.SimpleName;
 import optionalanalizer.metamodel.entity.MRule18sAntipattern;
 import optionalanalizer.metamodel.factory.Factory;
-import utilities.Unit;
 import utilities.UtilityClass;
 
 public class Rule18AntipatternFinder {
@@ -21,14 +20,9 @@ public class Rule18AntipatternFinder {
 
 		List<SimpleName> simpleNames = getSimpleNames(astNode);
 
-		final Unit<String> typeName = new Unit<>(null);
-
 		List<Rule18Antipattern> antipatterns = simpleNames.stream()
-		.peek(simpleName -> typeName.setAt0(getTypeName(simpleName)))
-		.filter(el -> isRule18Antipattern(typeName.getValue0()))
-		.map(Rule18Antipattern::getInstance)
-		.filter(Optional::isPresent)
-		.map(Optional::get)
+		.map(this::convertIntoAntipatternIfPossible)
+		.flatMap(Optional::stream)
 		.collect(Collectors.toList());
 		
 		antipatterns = removeDuplicates(antipatterns);
@@ -36,6 +30,15 @@ public class Rule18AntipatternFinder {
 		return antipatterns.stream()
 				.map(Factory.getInstance()::createMRule18sAntipattern)
 				.collect(Collectors.toList());
+	}
+	
+	private Optional<Rule18Antipattern> convertIntoAntipatternIfPossible(SimpleName simpleName) {
+		String typeName = getTypeName(simpleName);
+		if(isRule18Antipattern(typeName)) {
+			return Rule18Antipattern.getInstance(simpleName);
+		}
+		
+		return Optional.empty();
 	}
 
 	private String getTypeName(SimpleName simpleName) {

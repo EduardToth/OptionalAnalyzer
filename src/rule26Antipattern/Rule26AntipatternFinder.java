@@ -20,12 +20,10 @@ public class Rule26AntipatternFinder {
 		
 		return isPresentInvocations.stream()
 				.map(this::getParentPrefixExpression)
-				.filter(Optional::isPresent)
-				.map(Optional::get)
+				.flatMap(Optional::stream)
 				.filter(this::isOperatorNegation)
 				.map(Rule26Antipattern::getInstance)
-				.filter(Optional::isPresent)
-				.map(Optional::get)
+				.flatMap(Optional::stream)
 				.map(Factory.getInstance()::createMRule26sAntipattern)
 				.collect(Collectors.toList());
 	} 

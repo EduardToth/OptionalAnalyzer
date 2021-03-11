@@ -11,7 +11,6 @@ import org.eclipse.jdt.core.dom.VariableDeclarationFragment;
 
 import optionalanalizer.metamodel.entity.MRule20sAntipattern;
 import optionalanalizer.metamodel.factory.Factory;
-import utilities.Unit;
 import utilities.UtilityClass;
 
 public class Rule20AntipatternFinder {
@@ -19,30 +18,35 @@ public class Rule20AntipatternFinder {
 
 		final List<VariableDeclarationFragment> variableDeclarations = getVariableDeclarations(astNode);
 
-		final Unit<String> typeName = new Unit<>(null);
 		return variableDeclarations.stream()
-				.peek(decl -> setTypeName(typeName, decl))
-				.filter(decl -> UtilityClass.isSimpleOptionalType(typeName.getValue0()))
-				.filter(decl -> UtilityClass.hasBadGenericTypeArgumentForOptional(typeName.getValue0()))
-				.map(Rule20Antipattern::getInstance)
-				.filter(Optional::isPresent)
-				.map(Optional::get)
+				.map(this::convertIntoAntipatternIfPossible)
+				.flatMap(Optional::stream)
 				.map(Factory.getInstance()::createMRule20sAntipattern)
 				.collect(Collectors.toList());
 	}
+	
+	private Optional<Rule20Antipattern> convertIntoAntipatternIfPossible(VariableDeclarationFragment variableDeclarationFragment) {
+		String typeName = getTypeName(variableDeclarationFragment);
+		if(UtilityClass.isSimpleOptionalType(typeName) &&
+				UtilityClass.hasBadGenericTypeArgumentForOptional(typeName)) {
+			return Rule20Antipattern.getInstance(variableDeclarationFragment);
+		}
+		
+		return Optional.empty();
+	}
+	
 
-	private void setTypeName(final Unit<String> typeName, VariableDeclarationFragment variableDeclarationFragment) {
 
-		String typeName2 = "";
-
+	
+	private String getTypeName(VariableDeclarationFragment variableDeclarationFragment) {
 		try {
-			typeName2 = variableDeclarationFragment
+			 return variableDeclarationFragment
 					.resolveBinding()
 					.getType()
 					.getQualifiedName();
 		}catch(NullPointerException npe) {}
-
-		typeName.setAt0(typeName2);
+		
+		return "";
 	}
 
 	private List<VariableDeclarationFragment> getVariableDeclarations(ASTNode astNode) {

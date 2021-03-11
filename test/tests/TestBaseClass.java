@@ -138,7 +138,7 @@ public abstract class TestBaseClass {
 	private boolean passes(Map<Integer, Boolean> errorLineMap) throws TestingException {
 		CompilationUnit compilationUnit = UtilityClass.parse(iCompilationUnit);
 		List<Antipattern> antipatterns = getAntipatterns();
-		System.out.println(antipatterns);
+		
 
 		long nrOfAntipatternsFound =  antipatterns.stream()
 				.map(antipattern -> compilationUnit.getLineNumber(antipattern.getWrappedElement().getStartPosition()))

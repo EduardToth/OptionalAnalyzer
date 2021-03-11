@@ -20,8 +20,7 @@ public class Rule13AntipatternFinder {
 				.stream()
 				.filter(this::isFieldDeclarationOfTypeOptional)
 				.map(Rule13Antipattern::getInstance)
-				.filter(Optional::isPresent)
-				.map(Optional::get)
+				.flatMap(Optional::stream)
 				.map(Factory.getInstance()::createMRule13sAntipattern)
 				.collect(Collectors.toList());
 	}
