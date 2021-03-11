@@ -37,12 +37,9 @@ public class ToolBoxForIfStatementAnalysis {
 		return Optional.ofNullable(unit.getValue0());
 	}
 
-
 	public static void setInvocatorName(MethodInvocation invocation, Unit<String> invocatorName) {
 		invocatorName.setAt0( UtilityClass.getInvocatorName(invocation).orElse(""));
 	}
-
-
 
 	public static IfStatement getIfStatement(MethodInvocation methodInvocation) {
 		ASTNode astNode = methodInvocation.getParent();
@@ -103,7 +100,7 @@ public class ToolBoxForIfStatementAnalysis {
 		 * Does not contain return statements, throw statements or assignment to outer variables
 		 */
 		return getReturnStatement(statement).isEmpty() && 
-				!getThrowStatement(statement).isEmpty() &&
+				getThrowStatement(statement).isEmpty() &&
 				!thereAreModifiersToOuterVariables(statement);
 	}
 

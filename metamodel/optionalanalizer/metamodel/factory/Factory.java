@@ -85,13 +85,13 @@ public class Factory {
         }
         return (MRule12sAntipattern)instance;
     }
-   public MPackage createMPackage(java.lang.Object obj) {
+   public MRule3sAntipattern createMRule3sAntipattern(java.lang.Object obj) {
        XEntity instance = lruCache_.get(obj);
         if (null == instance) {
-           instance = new MPackageImpl(obj);
+           instance = new MRule3sAntipatternImpl(obj);
            lruCache_.put(obj, instance);
         }
-        return (MPackage)instance;
+        return (MRule3sAntipattern)instance;
     }
    public MRule4sAntipattern createMRule4sAntipattern(java.lang.Object obj) {
        XEntity instance = lruCache_.get(obj);
@@ -101,13 +101,13 @@ public class Factory {
         }
         return (MRule4sAntipattern)instance;
     }
-   public MRule3sAntipattern createMRule3sAntipattern(java.lang.Object obj) {
+   public MPackage createMPackage(java.lang.Object obj) {
        XEntity instance = lruCache_.get(obj);
         if (null == instance) {
-           instance = new MRule3sAntipatternImpl(obj);
+           instance = new MPackageImpl(obj);
            lruCache_.put(obj, instance);
         }
-        return (MRule3sAntipattern)instance;
+        return (MPackage)instance;
     }
    public MRule21sAntipattern createMRule21sAntipattern(java.lang.Object obj) {
        XEntity instance = lruCache_.get(obj);

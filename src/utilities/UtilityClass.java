@@ -95,7 +95,7 @@ public class UtilityClass {
 		return Arrays.asList(genericArguments).stream()
 				.anyMatch(genericArgument 
 						-> isTypeNamePresent(genericArgument, Libraries.badGenericTypesForOptional));
-				
+
 
 	}
 
@@ -128,7 +128,7 @@ public class UtilityClass {
 
 		boolean contains =  listOfTypes.stream()
 				.anyMatch(optionalTypeName -> rawGenericTypes.contains(optionalTypeName.toString()));
-				
+
 		if(!contains) {
 			contains = genericTypes.stream()
 					.anyMatch(type -> hasGenericTypeInside(listOfTypes, type));
@@ -182,7 +182,7 @@ public class UtilityClass {
 				.filter(UtilityClass::hasType)
 				.map(param -> param.getType().resolveBinding().getQualifiedName())
 				.anyMatch(typeName -> utilities.UtilityClass.isTypeOptional(typeName));
-				
+
 	}
 
 	private static boolean hasType(SingleVariableDeclaration singleVariableDeclaration) {
@@ -203,11 +203,18 @@ public class UtilityClass {
 		return parameters.stream()
 				.filter(UtilityClass::isParameterOfTypeOptional)
 				.findFirst();
-				
+
 	}
 
 	public static boolean isParameterOfTypeOptional(SingleVariableDeclaration singleVariableDeclaration) {
-		String typeName = singleVariableDeclaration.getType().resolveBinding().getQualifiedName();
+		String typeName = "";
+		try {
+			typeName = singleVariableDeclaration.getType()
+					.resolveBinding()
+					.getQualifiedName();
+		} catch(NullPointerException npe) {
+			return false;
+		}
 		return utilities.UtilityClass.isTypeOptional(typeName);
 	}
 
@@ -215,7 +222,7 @@ public class UtilityClass {
 		Optional<TypeDeclaration> typeDeclaration = getTypeDeclaration(methodDeclaration);
 
 		String methodName = methodDeclaration.getName().toString();
-			
+
 		return typeDeclaration
 				.map(TypeDeclaration::getFields)
 				.map(Arrays::asList)
