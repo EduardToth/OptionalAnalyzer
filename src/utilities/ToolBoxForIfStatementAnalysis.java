@@ -102,8 +102,8 @@ public class ToolBoxForIfStatementAnalysis {
 		/*
 		 * Does not contain return statements, throw statements or assignment to outer variables
 		 */
-		return !getReturnStatement(statement).isPresent() && 
-				!getThrowStatement(statement).isPresent() &&
+		return getReturnStatement(statement).isEmpty() && 
+				!getThrowStatement(statement).isEmpty() &&
 				!thereAreModifiersToOuterVariables(statement);
 	}
 
@@ -112,7 +112,7 @@ public class ToolBoxForIfStatementAnalysis {
 		 * Does not contain return statements, throw statements or assignment to outer variables
 		 */
 		return 
-				!getThrowStatement(statement).isPresent() &&
+				getThrowStatement(statement).isEmpty() &&
 				!thereAreModifiersToOuterVariables(statement);
 	}
 
