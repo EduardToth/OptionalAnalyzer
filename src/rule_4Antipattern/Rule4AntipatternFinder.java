@@ -16,7 +16,6 @@ import optionalanalizer.metamodel.entity.MRule4sAntipattern;
 import optionalanalizer.metamodel.factory.Factory;
 import utilities.OptionalInvocationFinder;
 import utilities.ToolBoxForIfStatementAnalysis;
-import utilities.Unit;
 import utilities.UtilityClass;
 
 public class Rule4AntipatternFinder{
