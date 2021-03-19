@@ -7,10 +7,10 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import FullAnalysis.Analysis;
-import optionalanalizer.metamodel.entity.MAnalysis;
-import optionalanalizer.metamodel.entity.MCompilationUnit;
-import optionalanalizer.metamodel.entity.MPackage;
-import optionalanalizer.metamodel.factory.Factory;
+import optionalanalyzer.metamodel.entity.MAnalysis;
+import optionalanalyzer.metamodel.entity.MCompilationUnit;
+import optionalanalyzer.metamodel.entity.MPackage;
+import optionalanalyzer.metamodel.factory.Factory;
 import ro.lrg.xcore.metametamodel.Group;
 import ro.lrg.xcore.metametamodel.IRelationBuilder;
 import ro.lrg.xcore.metametamodel.RelationBuilder;

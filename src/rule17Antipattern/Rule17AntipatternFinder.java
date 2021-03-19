@@ -8,8 +8,8 @@ import java.util.stream.Collectors;
 import org.eclipse.jdt.core.dom.ASTNode;
 import org.eclipse.jdt.core.dom.MethodDeclaration;
 
-import optionalanalizer.metamodel.entity.MRule17sAntipattern;
-import optionalanalizer.metamodel.factory.Factory;
+import optionalanalyzer.metamodel.entity.MRule17sAntipattern;
+import optionalanalyzer.metamodel.factory.Factory;
 
 import utilities.UtilityClass;
 

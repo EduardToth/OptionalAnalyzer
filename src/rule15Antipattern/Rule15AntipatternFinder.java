@@ -7,8 +7,8 @@ import java.util.stream.Collectors;
 import org.eclipse.jdt.core.dom.ASTNode;
 import org.eclipse.jdt.core.dom.MethodDeclaration;
 
-import optionalanalizer.metamodel.entity.MRule15sAntipattern;
-import optionalanalizer.metamodel.factory.Factory;
+import optionalanalyzer.metamodel.entity.MRule15sAntipattern;
+import optionalanalyzer.metamodel.factory.Factory;
 import utilities.UtilityClass;
 
 public class Rule15AntipatternFinder {

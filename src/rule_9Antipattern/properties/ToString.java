@@ -1,6 +1,6 @@
 package rule_9Antipattern.properties;
 
-import optionalanalizer.metamodel.entity.MRule9sAntipattern;
+import optionalanalyzer.metamodel.entity.MRule9sAntipattern;
 import ro.lrg.xcore.metametamodel.IPropertyComputer;
 import ro.lrg.xcore.metametamodel.PropertyComputer;
 

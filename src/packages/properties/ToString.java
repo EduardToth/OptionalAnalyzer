@@ -3,7 +3,7 @@ package packages.properties;
 
 import org.eclipse.jdt.core.IPackageFragment;
 
-import optionalanalizer.metamodel.entity.MPackage;
+import optionalanalyzer.metamodel.entity.MPackage;
 import ro.lrg.xcore.metametamodel.IPropertyComputer;
 import ro.lrg.xcore.metametamodel.PropertyComputer;
 

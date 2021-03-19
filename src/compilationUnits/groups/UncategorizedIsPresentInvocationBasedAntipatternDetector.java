@@ -2,8 +2,8 @@ package compilationUnits.groups;
 
 import java.util.List;
 
-import optionalanalizer.metamodel.entity.MCompilationUnit;
-import optionalanalizer.metamodel.entity.MUncategorizedIsPresentPossibleAntipattern;
+import optionalanalyzer.metamodel.entity.MCompilationUnit;
+import optionalanalyzer.metamodel.entity.MUncategorizedIsPresentPossibleAntipattern;
 import ro.lrg.xcore.metametamodel.Group;
 import ro.lrg.xcore.metametamodel.IRelationBuilder;
 import ro.lrg.xcore.metametamodel.RelationBuilder;

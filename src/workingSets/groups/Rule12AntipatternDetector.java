@@ -4,9 +4,9 @@ package workingSets.groups;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import optionalanalizer.metamodel.entity.MProject;
-import optionalanalizer.metamodel.entity.MRule12sAntipattern;
-import optionalanalizer.metamodel.entity.MWorkingSet;
+import optionalanalyzer.metamodel.entity.MProject;
+import optionalanalyzer.metamodel.entity.MRule12sAntipattern;
+import optionalanalyzer.metamodel.entity.MWorkingSet;
 import ro.lrg.xcore.metametamodel.Group;
 import ro.lrg.xcore.metametamodel.IRelationBuilder;
 import ro.lrg.xcore.metametamodel.RelationBuilder;

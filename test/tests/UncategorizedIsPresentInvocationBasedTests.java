@@ -5,7 +5,7 @@ import java.util.stream.Collectors;
 
 import org.junit.Test;
 
-import optionalanalizer.metamodel.entity.MUncategorizedIsPresentPossibleAntipattern;
+import optionalanalyzer.metamodel.entity.MUncategorizedIsPresentPossibleAntipattern;
 import ro.lrg.xcore.metametamodel.Group;
 import utilities.Antipattern;
 

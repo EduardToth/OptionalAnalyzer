@@ -17,8 +17,8 @@ import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.junit.After;
 
-import optionalanalizer.metamodel.entity.MCompilationUnit;
-import optionalanalizer.metamodel.factory.Factory;
+import optionalanalyzer.metamodel.entity.MCompilationUnit;
+import optionalanalyzer.metamodel.factory.Factory;
 import utilities.Antipattern;
 import utilities.UtilityClass;
 

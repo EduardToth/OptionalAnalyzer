@@ -11,8 +11,8 @@ import org.eclipse.jdt.core.dom.Expression;
 import org.eclipse.jdt.core.dom.InfixExpression;
 import org.eclipse.jdt.core.dom.InfixExpression.Operator;
 
-import optionalanalizer.metamodel.entity.MRule25sAntipattern;
-import optionalanalizer.metamodel.factory.Factory;
+import optionalanalyzer.metamodel.entity.MRule25sAntipattern;
+import optionalanalyzer.metamodel.factory.Factory;
 import utilities.UtilityClass;
 
 public class Rule25AntipatternFinder {

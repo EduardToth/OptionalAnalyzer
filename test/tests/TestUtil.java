@@ -13,6 +13,7 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Platform;
+import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.jdt.core.IJavaModel;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
@@ -28,7 +29,7 @@ public class TestUtil {
 	public static void importProject(String projectName, String fileName) {
 
 		try {
-			URL url = Platform.getBundle("OptionalAnalizer").getEntry("/");
+			URL url = Platform.getBundle("OptionalAnalyzer").getEntry("/");
 			url = FileLocator.resolve(url);
 			String path = url.getPath() + "res/testdata/";
 			ZipFile theFile = new ZipFile(new File(path + fileName));
@@ -50,7 +51,7 @@ public class TestUtil {
 			importOp.setOverwriteResources(true);
 			importOp.run(null);
 			try {
-				Platform.getJobManager().join(ResourcesPlugin.FAMILY_AUTO_BUILD,null);
+				Job.getJobManager().join(ResourcesPlugin.FAMILY_AUTO_BUILD,null);
 			} catch(InterruptedException e) {}
 			theFile.close();		
 

@@ -9,8 +9,8 @@ import org.eclipse.jdt.core.dom.IfStatement;
 import org.eclipse.jdt.core.dom.MethodInvocation;
 import org.eclipse.jdt.core.dom.Statement;
 
-import optionalanalizer.metamodel.entity.MRule9sAntipattern;
-import optionalanalizer.metamodel.factory.Factory;
+import optionalanalyzer.metamodel.entity.MRule9sAntipattern;
+import optionalanalyzer.metamodel.factory.Factory;
 import rule_7Antipattern.Rule7Antipattern;
 import rule_7Antipattern.Rule7AntipatternFinder;
 import utilities.Antipattern;

@@ -13,8 +13,8 @@ import org.eclipse.jdt.core.dom.MethodDeclaration;
 import org.eclipse.jdt.core.dom.MethodInvocation;
 import org.eclipse.jdt.core.dom.WhileStatement;
 
-import optionalanalizer.metamodel.entity.MRule2sAntipattern;
-import optionalanalizer.metamodel.factory.Factory;
+import optionalanalyzer.metamodel.entity.MRule2sAntipattern;
+import optionalanalyzer.metamodel.factory.Factory;
 import utilities.OptionalInvocationFinder;
 import utilities.UtilityClass;
 

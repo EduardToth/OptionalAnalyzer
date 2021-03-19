@@ -18,8 +18,8 @@ import org.eclipse.jdt.core.dom.NumberLiteral;
 import org.eclipse.jdt.core.dom.StringLiteral;
 import org.eclipse.jdt.core.dom.TypeLiteral;
 
-import optionalanalizer.metamodel.entity.MRule19sAntipattern;
-import optionalanalizer.metamodel.factory.Factory;
+import optionalanalyzer.metamodel.entity.MRule19sAntipattern;
+import optionalanalyzer.metamodel.factory.Factory;
 import utilities.OptionalInvocationFinder;
 
 public class Rule19AntipatternFinder {

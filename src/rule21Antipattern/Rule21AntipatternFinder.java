@@ -10,8 +10,8 @@ import java.util.stream.Collectors;
 import org.eclipse.jdt.core.dom.ASTNode;
 import org.eclipse.jdt.core.dom.MethodInvocation;
 
-import optionalanalizer.metamodel.entity.MRule21sAntipattern;
-import optionalanalizer.metamodel.factory.Factory;
+import optionalanalyzer.metamodel.entity.MRule21sAntipattern;
+import optionalanalyzer.metamodel.factory.Factory;
 import utilities.Antipattern;
 import utilities.OptionalInvocationFinder;
 

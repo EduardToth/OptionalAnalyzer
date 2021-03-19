@@ -9,8 +9,8 @@ import org.eclipse.jdt.core.dom.ASTVisitor;
 import org.eclipse.jdt.core.dom.Assignment;
 import org.eclipse.jdt.core.dom.VariableDeclarationFragment;
 
-import optionalanalizer.metamodel.entity.MRule1sAntipattern;
-import optionalanalizer.metamodel.factory.Factory;
+import optionalanalyzer.metamodel.entity.MRule1sAntipattern;
+import optionalanalyzer.metamodel.factory.Factory;
 
 import utilities.UtilityClass;
 

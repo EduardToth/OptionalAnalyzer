@@ -3,11 +3,11 @@ package workingSets.groups;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import optionalanalizer.metamodel.entity.MCompilationUnit;
-import optionalanalizer.metamodel.entity.MProject;
-import optionalanalizer.metamodel.entity.MRule1sAntipattern;
-import optionalanalizer.metamodel.entity.MRule20sAntipattern;
-import optionalanalizer.metamodel.entity.MWorkingSet;
+import optionalanalyzer.metamodel.entity.MCompilationUnit;
+import optionalanalyzer.metamodel.entity.MProject;
+import optionalanalyzer.metamodel.entity.MRule1sAntipattern;
+import optionalanalyzer.metamodel.entity.MRule20sAntipattern;
+import optionalanalyzer.metamodel.entity.MWorkingSet;
 import ro.lrg.xcore.metametamodel.Group;
 import ro.lrg.xcore.metametamodel.IRelationBuilder;
 import ro.lrg.xcore.metametamodel.RelationBuilder;

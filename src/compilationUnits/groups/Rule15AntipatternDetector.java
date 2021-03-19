@@ -4,8 +4,8 @@ import java.util.List;
 
 import org.eclipse.jdt.core.ICompilationUnit;
 
-import optionalanalizer.metamodel.entity.MCompilationUnit;
-import optionalanalizer.metamodel.entity.MRule15sAntipattern;
+import optionalanalyzer.metamodel.entity.MCompilationUnit;
+import optionalanalyzer.metamodel.entity.MRule15sAntipattern;
 import ro.lrg.xcore.metametamodel.Group;
 import ro.lrg.xcore.metametamodel.IRelationBuilder;
 import ro.lrg.xcore.metametamodel.RelationBuilder;

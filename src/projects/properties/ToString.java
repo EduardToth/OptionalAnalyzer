@@ -2,7 +2,7 @@ package projects.properties;
 
 import org.eclipse.jdt.core.IJavaProject;
 
-import optionalanalizer.metamodel.entity.MProject;
+import optionalanalyzer.metamodel.entity.MProject;
 import ro.lrg.xcore.metametamodel.IPropertyComputer;
 import ro.lrg.xcore.metametamodel.PropertyComputer;
 

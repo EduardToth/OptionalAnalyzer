@@ -1,6 +1,6 @@
 package rule16Antipattern.actions;
 
-import optionalanalizer.metamodel.entity.MRule16sAntipattern;
+import optionalanalyzer.metamodel.entity.MRule16sAntipattern;
 import ro.lrg.xcore.metametamodel.ActionPerformer;
 import ro.lrg.xcore.metametamodel.HListEmpty;
 import ro.lrg.xcore.metametamodel.IActionPerformer;

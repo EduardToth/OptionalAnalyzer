@@ -3,9 +3,9 @@ package packages.groups;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import optionalanalizer.metamodel.entity.MCompilationUnit;
-import optionalanalizer.metamodel.entity.MPackage;
-import optionalanalizer.metamodel.entity.MRule8sAntipattern;
+import optionalanalyzer.metamodel.entity.MCompilationUnit;
+import optionalanalyzer.metamodel.entity.MPackage;
+import optionalanalyzer.metamodel.entity.MRule8sAntipattern;
 import ro.lrg.xcore.metametamodel.Group;
 import ro.lrg.xcore.metametamodel.IRelationBuilder;
 import ro.lrg.xcore.metametamodel.RelationBuilder;

@@ -1,7 +1,8 @@
+/optionalanalyzer/
+/.gitignore
 /FullAnalysis/
 /compilationUnits/
 /launcher/
-/optionalanalizer/
 /packages/
 /projects/
 /rule10Antipattern/

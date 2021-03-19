@@ -12,7 +12,7 @@ import org.eclipse.jdt.core.dom.ASTVisitor;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jdt.core.dom.TypeDeclaration;
 
-import optionalanalizer.metamodel.entity.MProject;
+import optionalanalyzer.metamodel.entity.MProject;
 import ro.lrg.xcore.metametamodel.IPropertyComputer;
 import ro.lrg.xcore.metametamodel.PropertyComputer;
 import utilities.UtilityClass;

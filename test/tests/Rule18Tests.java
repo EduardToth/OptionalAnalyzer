@@ -5,7 +5,7 @@ import java.util.stream.Collectors;
 
 import org.junit.Test;
 
-import optionalanalizer.metamodel.entity.MRule18sAntipattern;
+import optionalanalyzer.metamodel.entity.MRule18sAntipattern;
 import ro.lrg.xcore.metametamodel.Group;
 import utilities.Antipattern;
 

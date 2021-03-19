@@ -11,9 +11,9 @@ import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.ui.internal.WorkingSet;
 
-import optionalanalizer.metamodel.entity.MProject;
-import optionalanalizer.metamodel.entity.MWorkingSet;
-import optionalanalizer.metamodel.factory.Factory;
+import optionalanalyzer.metamodel.entity.MProject;
+import optionalanalyzer.metamodel.entity.MWorkingSet;
+import optionalanalyzer.metamodel.factory.Factory;
 import ro.lrg.xcore.metametamodel.Group;
 import ro.lrg.xcore.metametamodel.IRelationBuilder;
 import ro.lrg.xcore.metametamodel.RelationBuilder;

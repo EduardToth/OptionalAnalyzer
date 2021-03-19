@@ -10,8 +10,8 @@ import org.eclipse.jdt.core.dom.MethodInvocation;
 import org.eclipse.jdt.core.dom.ReturnStatement;
 import org.eclipse.jdt.core.dom.Statement;
 
-import optionalanalizer.metamodel.entity.MRule3sAntipattern;
-import optionalanalizer.metamodel.factory.Factory;
+import optionalanalyzer.metamodel.entity.MRule3sAntipattern;
+import optionalanalyzer.metamodel.factory.Factory;
 import utilities.OptionalInvocationFinder;
 import utilities.ToolBoxForIfStatementAnalysis;
 import utilities.Unit;

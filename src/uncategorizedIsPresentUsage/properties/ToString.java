@@ -1,7 +1,7 @@
 package uncategorizedIsPresentUsage.properties;
 
 
-import optionalanalizer.metamodel.entity.MUncategorizedIsPresentPossibleAntipattern;
+import optionalanalyzer.metamodel.entity.MUncategorizedIsPresentPossibleAntipattern;
 import ro.lrg.xcore.metametamodel.IPropertyComputer;
 import ro.lrg.xcore.metametamodel.PropertyComputer;
 

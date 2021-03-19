@@ -8,8 +8,8 @@ import org.eclipse.jdt.core.dom.ASTNode;
 import org.eclipse.jdt.core.dom.MethodInvocation;
 import org.eclipse.jdt.core.dom.PrefixExpression;
 
-import optionalanalizer.metamodel.entity.MRule26sAntipattern;
-import optionalanalizer.metamodel.factory.Factory;
+import optionalanalyzer.metamodel.entity.MRule26sAntipattern;
+import optionalanalyzer.metamodel.factory.Factory;
 import utilities.OptionalInvocationFinder;
 
 public class Rule26AntipatternFinder {

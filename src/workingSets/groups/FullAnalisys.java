@@ -5,10 +5,10 @@ import java.util.Map.Entry;
 import java.util.stream.Collectors;
 
 import FullAnalysis.Analysis;
-import optionalanalizer.metamodel.entity.MAnalysis;
-import optionalanalizer.metamodel.entity.MProject;
-import optionalanalizer.metamodel.entity.MWorkingSet;
-import optionalanalizer.metamodel.factory.Factory;
+import optionalanalyzer.metamodel.entity.MAnalysis;
+import optionalanalyzer.metamodel.entity.MProject;
+import optionalanalyzer.metamodel.entity.MWorkingSet;
+import optionalanalyzer.metamodel.factory.Factory;
 import ro.lrg.xcore.metametamodel.Group;
 import ro.lrg.xcore.metametamodel.IRelationBuilder;
 import ro.lrg.xcore.metametamodel.RelationBuilder;

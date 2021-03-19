@@ -9,8 +9,8 @@ import org.eclipse.jdt.core.dom.ASTNode;
 import org.eclipse.jdt.core.dom.ASTVisitor;
 import org.eclipse.jdt.core.dom.FieldDeclaration;
 
-import optionalanalizer.metamodel.entity.MRule13sAntipattern;
-import optionalanalizer.metamodel.factory.Factory;
+import optionalanalyzer.metamodel.entity.MRule13sAntipattern;
+import optionalanalyzer.metamodel.factory.Factory;
 import utilities.UtilityClass;
 
 public class Rule13AntipatternFinder {

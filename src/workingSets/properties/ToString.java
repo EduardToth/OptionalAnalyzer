@@ -2,7 +2,7 @@ package workingSets.properties;
 
 import org.eclipse.ui.internal.WorkingSet;
 
-import optionalanalizer.metamodel.entity.MWorkingSet;
+import optionalanalyzer.metamodel.entity.MWorkingSet;
 import ro.lrg.xcore.metametamodel.IPropertyComputer;
 import ro.lrg.xcore.metametamodel.PropertyComputer;
 

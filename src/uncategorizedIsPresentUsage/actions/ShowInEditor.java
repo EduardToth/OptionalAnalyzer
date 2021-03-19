@@ -1,7 +1,7 @@
 package uncategorizedIsPresentUsage.actions;
 
 
-import optionalanalizer.metamodel.entity.MUncategorizedIsPresentPossibleAntipattern;
+import optionalanalyzer.metamodel.entity.MUncategorizedIsPresentPossibleAntipattern;
 import ro.lrg.xcore.metametamodel.ActionPerformer;
 import ro.lrg.xcore.metametamodel.HListEmpty;
 import ro.lrg.xcore.metametamodel.IActionPerformer;

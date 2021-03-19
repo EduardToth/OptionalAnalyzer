@@ -8,7 +8,7 @@ import org.eclipse.ui.IStartup;
 import org.eclipse.ui.internal.WorkingSet;
 
 import FullAnalysis.Analysis;
-import optionalanalizer.metamodel.factory.Factory;
+import optionalanalyzer.metamodel.factory.Factory;
 import ro.lrg.insider.view.ToolRegistration;
 import ro.lrg.insider.view.ToolRegistration.XEntityConverter;
 import ro.lrg.xcore.metametamodel.XEntity;
@@ -47,6 +47,7 @@ public class Startup1 implements IStartup {
 				new XEntityConverter() {
 					@Override
 					public XEntity convert(Object element) {
+						System.out.println("------------> " + element);
 						if(element instanceof Rule1Antipattern) {
 							return Factory.getInstance().createMRule1sAntipattern((Rule1Antipattern)element);
 						} else if(element instanceof Rule2Antipattern) {

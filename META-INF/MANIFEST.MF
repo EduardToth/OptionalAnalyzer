@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: OptionalAnalizer
-Bundle-SymbolicName: OptionalAnalizer;singleton:=true
+Bundle-SymbolicName: OptionalAnalyzer;singleton:=true
 Bundle-Version: 1.0.0.qualifier
 Automatic-Module-Name: OptionalAnalizer
 Bundle-RequiredExecutionEnvironment: JavaSE-14

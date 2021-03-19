@@ -1,6 +1,6 @@
 package FullAnalysis.properties;
 
-import optionalanalizer.metamodel.entity.MAnalysis;
+import optionalanalyzer.metamodel.entity.MAnalysis;
 import ro.lrg.xcore.metametamodel.IPropertyComputer;
 import ro.lrg.xcore.metametamodel.PropertyComputer;
 

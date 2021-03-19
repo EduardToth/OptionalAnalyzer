@@ -1,7 +1,7 @@
 package workingSets.properties;
 
-import optionalanalizer.metamodel.entity.MProject;
-import optionalanalizer.metamodel.entity.MWorkingSet;
+import optionalanalyzer.metamodel.entity.MProject;
+import optionalanalyzer.metamodel.entity.MWorkingSet;
 import ro.lrg.xcore.metametamodel.IPropertyComputer;
 import ro.lrg.xcore.metametamodel.PropertyComputer;
 
