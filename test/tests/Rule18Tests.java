@@ -25,7 +25,8 @@ public class Rule18Tests extends TestBaseClass{
 
 		return group.getElements()
 				.stream()
-				.map(mAntipattern -> (Antipattern)mAntipattern.getUnderlyingObject())
+				.map(MRule18sAntipattern::getUnderlyingObject)
+				.map(Antipattern.class::cast)
 				.collect(Collectors.toList());
 	}
 

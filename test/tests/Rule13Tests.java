@@ -23,12 +23,13 @@ public class Rule13Tests extends TestBaseClass{
 	protected List<Antipattern> getAntipatterns() {
 		Group<MRule13sAntipattern> group = getMCompilationUnit()
 				.rule13AntipatternDetector();
-		
+
 		return group.getElements().stream()
-			.map(mAntipattern -> (Antipattern)mAntipattern.getUnderlyingObject())
-			.collect(Collectors.toList());
+				.map(MRule13sAntipattern::getUnderlyingObject)
+				.map(Antipattern.class::cast)
+				.collect(Collectors.toList());
 	}
-	
+
 	@Test
 	@Override
 	public void test() {

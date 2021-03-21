@@ -24,8 +24,7 @@ import org.eclipse.ui.wizards.datatransfer.ZipFileStructureProvider;
 
 
 public class TestUtil {
-
-
+	
 	public static void importProject(String projectName, String fileName) {
 
 		try {

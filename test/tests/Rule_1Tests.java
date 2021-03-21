@@ -30,7 +30,8 @@ public class Rule_1Tests extends TestBaseClass{
 
 		return group.getElements()
 				.stream()
-				.map(mAntipattern -> (Antipattern)mAntipattern.getUnderlyingObject())
+				.map(MRule1sAntipattern::getUnderlyingObject)
+				.map(Antipattern.class::cast)
 				.collect(Collectors.toList());
 	}
 

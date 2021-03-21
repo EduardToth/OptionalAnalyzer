@@ -22,12 +22,13 @@ public class Rule19Tests extends TestBaseClass{
 	@Override
 	protected List<Antipattern> getAntipatterns() {
 		Group<MRule19sAntipattern> group = getMCompilationUnit().rule19AntipatternDetector();
-		
+
 		return group.getElements().stream()
-			.map(mAntipattern -> (Antipattern)mAntipattern.getUnderlyingObject())
-			.collect(Collectors.toList());
+				.map(MRule19sAntipattern::getUnderlyingObject)
+				.map(Antipattern.class::cast)
+				.collect(Collectors.toList());
 	}
-	
+
 	@Test
 	@Override
 	public void test() {

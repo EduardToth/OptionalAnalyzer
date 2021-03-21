@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 import org.junit.Test;
 
 import optionalanalyzer.metamodel.entity.MRule12sAntipattern;
+import optionalanalyzer.metamodel.entity.MRule13sAntipattern;
 import ro.lrg.xcore.metametamodel.Group;
 import utilities.Antipattern;
 
@@ -22,12 +23,13 @@ public class Rule12Tests extends TestBaseClass{
 	@Override
 	protected List<Antipattern> getAntipatterns() {
 		Group<MRule12sAntipattern> group = getMCompilationUnit().rule12AntipatternDetector();
-		
+
 		return group.getElements().stream()
-			.map(mAntipattern -> (Antipattern)mAntipattern.getUnderlyingObject())
-			.collect(Collectors.toList());
+				.map(MRule12sAntipattern::getUnderlyingObject)
+				.map(Antipattern.class::cast)
+				.collect(Collectors.toList());
 	}
-	
+
 	@Test
 	@Override
 	public void test() {

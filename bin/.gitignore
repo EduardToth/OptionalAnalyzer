@@ -1,8 +1,8 @@
-/optionalanalyzer/
-/.gitignore
+/rule19Antipattern/
 /FullAnalysis/
 /compilationUnits/
 /launcher/
+/optionalanalyzer/
 /packages/
 /projects/
 /rule10Antipattern/
@@ -13,7 +13,6 @@
 /rule16Antipattern/
 /rule17Antipattern/
 /rule18Antipattern/
-/rule19Antipattern/
 /rule20Antipattern/
 /rule21Antipattern/
 /rule25Antipattern/

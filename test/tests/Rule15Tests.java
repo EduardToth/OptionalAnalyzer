@@ -24,7 +24,8 @@ public class Rule15Tests extends TestBaseClass{
 		Group<MRule15sAntipattern> group = getMCompilationUnit().rule15AntipatternDetector();
 		
 		return group.getElements().stream()
-			.map(mAntipattern -> (Antipattern)mAntipattern.getUnderlyingObject())
+			.map(MRule15sAntipattern::getUnderlyingObject)
+			.map(Antipattern.class::cast)
 			.collect(Collectors.toList());
 	}
 	

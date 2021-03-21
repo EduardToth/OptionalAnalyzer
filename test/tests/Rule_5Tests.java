@@ -5,6 +5,7 @@ import java.util.stream.Collectors;
 
 import org.junit.Test;
 
+
 import optionalanalyzer.metamodel.entity.MRule5sAntipattern;
 import ro.lrg.xcore.metametamodel.Group;
 import utilities.Antipattern;
@@ -25,7 +26,8 @@ public class Rule_5Tests extends TestBaseClass{
 
 		return group.getElements()
 				.stream()
-				.map(mAntipattern -> (Antipattern)mAntipattern.getUnderlyingObject())
+				.map(MRule5sAntipattern::getUnderlyingObject)
+				.map(Antipattern.class::cast)
 				.collect(Collectors.toList());
 	}
 

@@ -2,8 +2,10 @@ package rule19Antipattern;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -36,7 +38,7 @@ public class Rule19AntipatternFinder {
 				.map(Rule19Antipattern::getInstance)
 				.flatMap(Optional::stream)
 				.map(Factory.getInstance()::createMRule19sAntipattern)
-                .collect(Collectors.toList());
+				.collect(Collectors.toList());
 	}
 
 	private boolean isArgumentLiteral(MethodInvocation methodInvocation) {
@@ -55,22 +57,14 @@ public class Rule19AntipatternFinder {
 
 		List<?> arguments = methodInvocation.arguments();
 
-		if(arguments.size() != 1) {
-			return false;
-		}
-
-		Object argument = arguments.get( 0 );
-
-		boolean isArgumentAnOperantionOfLiterals = false;
-		if(argument instanceof InfixExpression) {
-			InfixExpression infixExpression = (InfixExpression)argument;
-			List<Expression> operands = getOperands(infixExpression);
-			isArgumentAnOperantionOfLiterals = !operands.stream()
-					.anyMatch(expr -> !isLiteral(expr));
-				
-		}
-
-		return isArgumentAnOperantionOfLiterals;
+		return arguments.stream()
+				.findFirst()
+				.filter(InfixExpression.class::isInstance)
+				.map(InfixExpression.class::cast)
+				.map(this::getOperands)
+				.stream()
+				.flatMap(List::stream)
+				.anyMatch(Predicate.not(this::isLiteral));
 	}
 
 	private List<Expression> getOperands(InfixExpression infixExpression) {
@@ -79,16 +73,24 @@ public class Rule19AntipatternFinder {
 		operands.add(infixExpression.getLeftOperand());
 		operands.add(infixExpression.getRightOperand());
 
+		List<Expression> extendedOperands = getExtendedOperands(infixExpression);
+		operands.addAll(extendedOperands);
+
+		return operands;
+	}
+
+	private List<Expression> getExtendedOperands(InfixExpression infixExpression) {
 		if(infixExpression.hasExtendedOperands()) {
 			List<?> extendedOperands = infixExpression.extendedOperands();
 
-			for(Object obj : extendedOperands) {
-				if(obj instanceof Expression) {
-					operands.add((Expression)obj);
-				}
-			}
+			return extendedOperands.stream()
+					.filter(Expression.class::isInstance)
+					.map(Expression.class::cast)
+					.collect(Collectors.toList());
+
 		}
-		return operands;
+
+		return Collections.emptyList();
 	}
 
 	private boolean isLiteral(Expression expression) {
@@ -102,20 +104,21 @@ public class Rule19AntipatternFinder {
 	}
 
 	private List<MethodInvocation> getBadInvocationsForOptionalOfNullable(List<MethodInvocation> ofNullableList) {
+
 		List<MethodInvocation> badInvocationsForOptionalOfNullable = ofNullableList.stream()
-				.filter(methodInvocation -> isArgumentAnOperationOfLiterals(methodInvocation) || isArgumentLiteral(methodInvocation))
+				.filter(Predicate.not(this::isArgumentAnOperationOfLiterals).or(this::isArgumentLiteral))
 				.collect(Collectors.toList());
-		
+
 		return badInvocationsForOptionalOfNullable;
 	}
 
 	private List<MethodInvocation> getBadInvocationsForOptionalOf(List<MethodInvocation> ofList) {
 		List<MethodInvocation> badInvocationsForOptionalOf = ofList.stream()
-				.filter(methodInvocation -> !isArgumentLiteral(methodInvocation))
-				.filter(methodInvocation -> !isArgumentAnOperationOfLiterals(methodInvocation))
+				.filter(Predicate.not(this::isArgumentLiteral))
+				.filter(Predicate.not(this::isArgumentAnOperationOfLiterals))
 				.collect(Collectors.toList());
 
 		return badInvocationsForOptionalOf;
 	}
-	
+
 }

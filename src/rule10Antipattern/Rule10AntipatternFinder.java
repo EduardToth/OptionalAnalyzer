@@ -51,8 +51,7 @@ public class Rule10AntipatternFinder {
 		if(ToolBoxForIfStatementAnalysis.isSuperParentIfStatement(methodInvocation)) {
 			final IfStatement ifStatement = ToolBoxForIfStatementAnalysis.getIfStatement(methodInvocation);
 			Optional<String> invocatorName = UtilityClass.getInvocatorName(methodInvocation);
-			return invocatorName.filter(invName -> isAntipattern(ifStatement, invName))
-					.map(invName -> ifStatement);
+			return invocatorName.filter(invName -> isAntipattern(ifStatement, invName)).map(invName -> ifStatement);
 		}
 		return Optional.empty();
 	}
@@ -61,7 +60,7 @@ public class Rule10AntipatternFinder {
 
 		Optional<Statement> thenStatement = Optional.ofNullable(ifStatement.getThenStatement());
 		Optional<Statement> elseStatement = Optional.ofNullable(ifStatement.getElseStatement());
-
+		
 		return thenStatement.flatMap(
 				thenStm -> elseStatement.filter(elseStm -> bothOfThemContainReturnStatement(thenStm, elseStm))
 										.map(elseStm -> isAntipattern(thenStm, elseStm, invocatorName))
