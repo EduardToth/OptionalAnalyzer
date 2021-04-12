@@ -32,7 +32,7 @@ public class Rule1AntipatternFinder{
 			public boolean visit(Assignment assignment) {
 
 				if(isAssignmentAnOptionalAssignedToNull(assignment)) {			
-					Rule1Antipattern.getInstance(assignment).ifPresent(antipattern -> antipatterns.add(antipattern));
+					Rule1Antipattern.getInstance(assignment).ifPresent(antipatterns::add);
 				}
 				return super.visit( assignment );
 			}
@@ -48,7 +48,7 @@ public class Rule1AntipatternFinder{
 					if(UtilityClass.isTypeOptional(typeName)
 							&& declaration.getInitializer().toString().equals("null")) {
 						Rule1Antipattern.getInstance(declaration)
-						.ifPresent(antipattern -> antipatterns.add(antipattern));
+						.ifPresent(antipatterns::add);
 					}
 				}
 				return super.visit(declaration);
@@ -63,10 +63,12 @@ public class Rule1AntipatternFinder{
 		}
 
 		String typeName = "";
+		
 		try {
 			typeName = assignment.getLeftHandSide().
 					resolveTypeBinding().getQualifiedName();
 		} catch(NullPointerException npe) {}
+		
 		return UtilityClass.isTypeOptional(typeName)
 				&& assignment.toString().matches(".*= *null *;?");
 	}

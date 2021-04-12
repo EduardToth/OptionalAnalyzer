@@ -13,9 +13,10 @@ public class Rule1Antipattern extends Antipattern{
 	private Rule1Antipattern(ASTNode astNode) throws ASTNodeDoesNotBelongHere{
 		super(astNode);
 	}
-
+	
 	@Override
 	protected boolean belongs(ASTNode astNode) {
+		
 		return astNode instanceof VariableDeclarationFragment ||
 				astNode instanceof Assignment;
 	}

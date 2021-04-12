@@ -13,7 +13,6 @@ import optionalanalyzer.metamodel.entity.MRule8sAntipattern;
 import optionalanalyzer.metamodel.factory.Factory;
 import utilities.OptionalInvocationFinder;
 import utilities.ToolBoxForIfStatementAnalysis;
-import utilities.Unit;
 import utilities.UtilityClass;
 
 public class Rule8AntipatternFinder{
@@ -47,7 +46,8 @@ public class Rule8AntipatternFinder{
 		if(ToolBoxForIfStatementAnalysis.isSuperParentIfStatement(methodInvocation)) {
 			final IfStatement ifStatement = ToolBoxForIfStatementAnalysis.getIfStatement(methodInvocation);
 			Optional<String> invocatorName = UtilityClass.getInvocatorName(methodInvocation);
-			return invocatorName.filter(invName -> isAntipattern(ifStatement, invName))
+			return invocatorName
+					.filter(invName -> isAntipattern(ifStatement, invName))
 					.map(invName -> ifStatement);
 		}
 		return Optional.empty();

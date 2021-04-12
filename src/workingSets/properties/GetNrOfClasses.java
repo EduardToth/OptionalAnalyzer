@@ -13,9 +13,7 @@ public class GetNrOfClasses implements IPropertyComputer<Integer, MWorkingSet>{
 		return arg0.getComponentProjects()
 				.getElements()
 				.stream()
-				.map(MProject::getNrOfClasses)
-				.reduce(Integer::sum)
-				.orElse(0);
-		
+				.mapToInt(MProject::getNrOfClasses)
+				.sum();
 	}
 }

@@ -9,6 +9,7 @@ import org.eclipse.jdt.core.dom.IfStatement;
 import org.eclipse.jdt.core.dom.MethodInvocation;
 import org.eclipse.jdt.core.dom.Statement;
 
+import optionalanalyzer.metamodel.entity.MRule7sAntipattern;
 import optionalanalyzer.metamodel.entity.MRule9sAntipattern;
 import optionalanalyzer.metamodel.factory.Factory;
 import rule_7Antipattern.Rule7Antipattern;
@@ -46,7 +47,8 @@ public class Rule9AntipatternFinder{
 		Rule7AntipatternFinder rule7AntipatternFinder = new Rule7AntipatternFinder();
 
 		return rule7AntipatternFinder.getMAntipatterns(astNode).stream()
-				.map(mAntipattern -> (Rule7Antipattern)mAntipattern.getUnderlyingObject())
+				.map(MRule7sAntipattern::getUnderlyingObject)
+				.map(Rule7Antipattern.class::cast)
 				.collect(Collectors.toList());
 	}
 

@@ -15,6 +15,7 @@ public class Rule_3AntipatternDetector implements IRelationBuilder<MRule3sAntipa
 
 	@Override
 	public Group<MRule3sAntipattern> buildGroup(MWorkingSet arg0) {
+		
 		Group<MRule3sAntipattern> group = new Group<>();
 
 		 List<MRule3sAntipattern> antipatterns = arg0.getComponentProjects()

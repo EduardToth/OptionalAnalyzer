@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 import org.eclipse.jdt.core.ICompilationUnit;
@@ -122,8 +123,8 @@ public abstract class TestBaseClass {
 
 	private List<Integer> getUnrevealedTests(Map<Integer, Boolean> errorLineMap) {
 		return errorLineMap.entrySet().stream()
-				.filter(entry -> entry.getValue() == false)
-				.map(entry -> entry.getKey())
+				.filter(Predicate.not(Map.Entry::getValue))
+				.map(Map.Entry::getKey)
 				.collect(Collectors.toList());
 
 	}
@@ -142,7 +143,7 @@ public abstract class TestBaseClass {
 
 		long nrOfAntipatternsFound =  antipatterns.stream()
 				.map(antipattern -> compilationUnit.getLineNumber(antipattern.getWrappedElement().getStartPosition()))
-				.filter(lineNr -> errorLineMap.containsKey(lineNr))
+				.filter(errorLineMap::containsKey)
 				.peek(lineNr -> errorLineMap.replace(lineNr, true))
 				.count();
 
@@ -154,7 +155,7 @@ public abstract class TestBaseClass {
 
 		return nrOfAntipatternsFound == this.nrOfProblemsTheTestShouldFind;
 	}
-
+ 
 	private List<Integer> getAllProblemLines(List<Antipattern> antipatterns) {
 		CompilationUnit compilationUnit = UtilityClass.parse(iCompilationUnit);
 

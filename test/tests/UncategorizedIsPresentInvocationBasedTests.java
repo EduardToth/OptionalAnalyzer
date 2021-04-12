@@ -18,17 +18,18 @@ public class UncategorizedIsPresentInvocationBasedTests extends TestBaseClass{
 			throws BadNamingException {
 		super(packageName, testFileName, linesWithProblems);
 	}
-	
+
 	@Override
 	protected List<Antipattern> getAntipatterns() {
 		Group<MUncategorizedIsPresentPossibleAntipattern> group = getMCompilationUnit()
 				.uncategorizedIsPresentInvocationBasedAntipatternDetector();
-		
+
 		return group.getElements().stream()
-			.map(mAntipattern -> (Antipattern)mAntipattern.getUnderlyingObject())
-			.collect(Collectors.toList());
+				.map(MUncategorizedIsPresentPossibleAntipattern::getUnderlyingObject)
+				.map(Antipattern.class::cast)
+				.collect(Collectors.toList());
 	}
-	
+
 	@Test
 	@Override
 	public void test() {

@@ -11,13 +11,11 @@ import org.eclipse.jdt.core.dom.IfStatement;
 import org.eclipse.jdt.core.dom.MethodInvocation;
 import org.eclipse.jdt.core.dom.ReturnStatement;
 import org.eclipse.jdt.core.dom.Statement;
-import org.javatuples.Pair;
 
 import optionalanalyzer.metamodel.entity.MRule10sAntipattern;
 import optionalanalyzer.metamodel.factory.Factory;
 import utilities.OptionalInvocationFinder;
 import utilities.ToolBoxForIfStatementAnalysis;
-import utilities.Unit;
 import utilities.UtilityClass;
 
 public class Rule10AntipatternFinder {
@@ -65,7 +63,6 @@ public class Rule10AntipatternFinder {
 				thenStm -> elseStatement.filter(elseStm -> bothOfThemContainReturnStatement(thenStm, elseStm))
 										.map(elseStm -> isAntipattern(thenStm, elseStm, invocatorName))
 				).orElse( false );
-
 	}
 
 	private boolean bothOfThemContainReturnStatement(Statement ifStatement, Statement elseStatement) {

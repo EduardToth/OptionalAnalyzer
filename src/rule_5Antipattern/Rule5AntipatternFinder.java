@@ -17,10 +17,10 @@ import optionalanalyzer.metamodel.entity.MRule5sAntipattern;
 import optionalanalyzer.metamodel.factory.Factory;
 import utilities.OptionalInvocationFinder;
 import utilities.ToolBoxForIfStatementAnalysis;
-import utilities.Unit;
 import utilities.UtilityClass;
 
 public class Rule5AntipatternFinder {
+
 	public List<MRule5sAntipattern> getMAntipatterns(ASTNode astNode) {
 		
 		return getAntipatterns(astNode)

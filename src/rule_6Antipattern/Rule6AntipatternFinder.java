@@ -101,7 +101,9 @@ public class Rule6AntipatternFinder {
 				
 				String typeName = "";
 				try {
-					typeName = throwStatement.getExpression().resolveTypeBinding().getQualifiedName();
+					typeName = throwStatement.getExpression()
+							.resolveTypeBinding()
+							.getQualifiedName();
 				}catch(NullPointerException npe) {}
 
 				contains.set(!typeName.equals("java.util.NoSuchElementException"));

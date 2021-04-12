@@ -24,7 +24,8 @@ public class Rule_8Tests extends TestBaseClass{
 		Group<MRule8sAntipattern> group = getMCompilationUnit().rule_8AntipatternDetector();
 		
 		return group.getElements().stream()
-			.map(mAntipattern -> (Antipattern)mAntipattern.getUnderlyingObject())
+			.map(MRule8sAntipattern::getUnderlyingObject)
+			.map(Antipattern.class::cast)
 			.collect(Collectors.toList());
 	}
 	

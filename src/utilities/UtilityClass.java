@@ -3,9 +3,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
-import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 import org.eclipse.jdt.core.ICompilationUnit;
@@ -32,13 +30,12 @@ public class UtilityClass {
 
 	public static CompilationUnit parse(ICompilationUnit unit) {
 
-		ASTParser parser = ASTParser.newParser(AST.JLS14);
+		ASTParser parser = ASTParser.newParser(AST.JLS15);
 		parser.setKind(ASTParser.K_COMPILATION_UNIT);
 		parser.setSource(unit);
 		parser.setResolveBindings(true);
 		return (CompilationUnit) parser.createAST(null); 
 	}
-
 
 	public static Optional<String> getInvocatorName(MethodInvocation methodInvocation) {
 		String invocatorName = null;
@@ -93,8 +90,7 @@ public class UtilityClass {
 		String[] genericArguments = getGenericTypes(typeName);
 
 		return Arrays.asList(genericArguments).stream()
-				.anyMatch(genericArgument 
-						-> isTypeNamePresent(genericArgument, Libraries.badGenericTypesForOptional));
+				.anyMatch(genericArgument -> isTypeNamePresent(genericArgument, Libraries.badGenericTypesForOptional));
 
 
 	}
@@ -140,7 +136,6 @@ public class UtilityClass {
 		return types.contains(typeName);
 	}
 
-
 	public static CompilationUnit getCompilationUnit(ASTNode astNode) {
 		ASTNode node = astNode;
 		while( !(node instanceof CompilationUnit) ) {
@@ -172,6 +167,7 @@ public class UtilityClass {
 			}
 
 		});
+
 		return methodDeclarations;
 	}
 
@@ -180,9 +176,18 @@ public class UtilityClass {
 
 		return parameters.stream()
 				.filter(UtilityClass::hasType)
-				.map(param -> param.getType().resolveBinding().getQualifiedName())
-				.anyMatch(typeName -> utilities.UtilityClass.isTypeOptional(typeName));
+				.map(UtilityClass::getTypeName)
+				.flatMap(Optional::stream)
+				.anyMatch(UtilityClass::isTypeOptional);
+	}
 
+	private static Optional<String> getTypeName(SingleVariableDeclaration singleVariableDeclaration) {
+		String typeName = null;
+		try {
+			typeName = singleVariableDeclaration.getType().resolveBinding().getQualifiedName();
+		}catch(Exception ex) {}
+
+		return Optional.ofNullable(typeName);
 	}
 
 	private static boolean hasType(SingleVariableDeclaration singleVariableDeclaration) {
@@ -229,21 +234,29 @@ public class UtilityClass {
 				.orElse(Collections.emptyList())
 				.stream()
 				.map(UtilityClass::createSetterName)
-				.anyMatch(setterName -> setterName.equals(methodName));
-
+				.anyMatch(methodName::equals);
 	}
 
 	private static String createSetterName(FieldDeclaration fieldDeclaration) {
+
+		List<?> fragments = fieldDeclaration.fragments();
+		
+		return fragments.stream()
+				.findAny()
+				.filter(VariableDeclarationFragment.class::isInstance)
+				.map(VariableDeclarationFragment.class::cast)
+				.map(UtilityClass::getPossibleSetterName)
+				.orElseThrow();
+	}
+
+	private static String getPossibleSetterName(VariableDeclarationFragment variableDeclarationFragment) {
 		String methodName = "set";
-		Object fragment = fieldDeclaration.fragments().get( 0 );
 
-		if(fragment instanceof VariableDeclarationFragment) {
-			String fieldName = ((VariableDeclarationFragment) fragment).getName().toString();
-			char firstLetterOfTheFieldName = fieldName.charAt(0);
-			char upperCaseLetter = Character.toUpperCase( firstLetterOfTheFieldName);
+		String fieldName = variableDeclarationFragment.getName().toString();
+		char firstLetterOfTheFieldName = fieldName.charAt(0);
+		char upperCaseLetter = Character.toUpperCase( firstLetterOfTheFieldName);
 
-			methodName += upperCaseLetter + fieldName.substring(1);
-		}
+		methodName += upperCaseLetter + fieldName.substring(1);
 
 		return methodName;
 	}
@@ -266,6 +279,4 @@ public class UtilityClass {
 	public static Optional<String> getTypeName(Expression expression) {
 		return Optional.ofNullable(expression.resolveTypeBinding().getQualifiedName());
 	}
-
-
 }

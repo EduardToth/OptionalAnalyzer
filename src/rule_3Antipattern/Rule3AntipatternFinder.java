@@ -82,7 +82,10 @@ public class Rule3AntipatternFinder{
 		Optional<ReturnStatement> returnStatementForElse = ToolBoxForIfStatementAnalysis.getReturnStatement(elseStatement);
 
 		return returnStatementForThen.flatMap(
-				retStmForThen -> returnStatementForElse.map(retStmForElse -> isAntipattern(retStmForThen, retStmForElse, invocatorName)
+				retStmForThen -> returnStatementForElse
+				.map(retStmForElse -> isAntipattern(retStmForThen,
+						retStmForElse,
+						invocatorName)
 						)
 				).orElse(false);
 	}

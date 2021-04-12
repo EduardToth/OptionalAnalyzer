@@ -1,5 +1,5 @@
 package tests;
-//valid
+
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -22,12 +22,13 @@ public class Rule_4Tests extends TestBaseClass{
 	@Override
 	protected List<Antipattern> getAntipatterns() {
 		Group<MRule4sAntipattern> group = getMCompilationUnit().rule_4AntipatternDetector();
-		
+
 		return group.getElements().stream()
-			.map(mAntipattern -> (Antipattern)mAntipattern.getUnderlyingObject())
-			.collect(Collectors.toList());
+				.map(MRule4sAntipattern::getUnderlyingObject)
+				.map(Antipattern.class::cast)
+				.collect(Collectors.toList());
 	}
-	
+
 	@Test
 	@Override
 	public void test() {

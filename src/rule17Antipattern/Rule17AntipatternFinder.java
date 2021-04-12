@@ -42,7 +42,9 @@ public class Rule17AntipatternFinder {
 	private String getTypeName(MethodDeclaration methodDeclaration) {
 		String typeName = "";
 		try {
-			typeName = methodDeclaration.resolveBinding().getReturnType().getQualifiedName();
+			typeName = methodDeclaration.resolveBinding()
+					.getReturnType()
+					.getQualifiedName();
 		}catch(NullPointerException npe) {}
 		
 		return typeName;
@@ -64,5 +66,4 @@ public class Rule17AntipatternFinder {
 	private boolean isArrayTypeInside(String typeName) {
 		return typeName.indexOf("[]") != -1;
 	}
-
 }

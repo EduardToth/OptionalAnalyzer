@@ -1,10 +1,11 @@
 package tests;
 
 import java.util.List;
-
+import java.util.function.Function;
 
 import org.junit.Test;
 
+import optionalanalyzer.metamodel.entity.MCompilationUnit;
 import optionalanalyzer.metamodel.entity.MRule1sAntipattern;
 
 import java.util.stream.Collectors;

@@ -1,6 +1,7 @@
 package launcher;
 
 import org.eclipse.jdt.core.ICompilationUnit;
+
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.JavaCore;
@@ -42,80 +43,80 @@ public class Startup1 implements IStartup {
 
 	@Override
 	public void earlyStartup() {
-		ToolRegistration.getInstance().registerXEntityConverter(
+		try {
+			ToolRegistration.getInstance().registerXEntityConverter(this::convert);
+		}catch(RuntimeException runtimeException) {
+			throw new RuntimeException("You may have too many compilation errors in the source selected");
+		}
 
-				new XEntityConverter() {
-					@Override
-					public XEntity convert(Object element) {
-						System.out.println("------------> " + element);
-						if(element instanceof Rule1Antipattern) {
-							return Factory.getInstance().createMRule1sAntipattern((Rule1Antipattern)element);
-						} else if(element instanceof Rule2Antipattern) {
-							return Factory.getInstance().createMRule2sAntipattern((Rule2Antipattern)element);
-						} else if(element instanceof Rule3Antipattern) {
-							return Factory.getInstance().createMRule3sAntipattern((Rule3Antipattern)element);
-						} else if(element instanceof Rule4Antipattern) {
-							return Factory.getInstance().createMRule4sAntipattern((Rule4Antipattern)element);
-						} else if(element instanceof Rule5Antipattern) {
-							return Factory.getInstance().createMRule5sAntipattern((Rule5Antipattern)element);
-						} else if(element instanceof Rule6Antipattern) {
-							return Factory.getInstance().createMRule6sAntipattern((Rule6Antipattern)element);
-						} else if(element instanceof Rule7Antipattern) {
-							return Factory.getInstance().createMRule7sAntipattern((Rule7Antipattern)element);
-						} else if(element instanceof Rule8Antipattern) {
-							return Factory.getInstance().createMRule8sAntipattern((Rule8Antipattern)element);
-						} else if(element instanceof Rule9Antipattern) {
-							return Factory.getInstance().createMRule9sAntipattern((Rule9Antipattern)element);
-						} else if(element instanceof Rule10Antipattern) {
-							return Factory.getInstance().createMRule10sAntipattern((Rule10Antipattern)element);
-						} else if(element instanceof Rule12Antipattern) {
-							return Factory.getInstance().createMRule12sAntipattern((Rule12Antipattern)element);
-						} else if(element instanceof Rule13Antipattern) {
-							return Factory.getInstance().createMRule13sAntipattern((Rule13Antipattern)element);
-						} else if(element instanceof Rule14Antipattern) {
-							return Factory.getInstance().createMRule14sAntipattern((Rule14Antipattern)element);
-						} else if(element instanceof Rule15Antipattern) {
-							return Factory.getInstance().createMRule15sAntipattern((Rule15Antipattern)element);
-						} else if(element instanceof Rule16Antipattern) {
-							return Factory.getInstance().createMRule16sAntipattern((Rule16Antipattern)element);
-						} else if(element instanceof Rule17Antipattern) {
-							return Factory.getInstance().createMRule17sAntipattern((Rule17Antipattern)element);
-						} else if(element instanceof Rule18Antipattern) {
-							return Factory.getInstance().createMRule18sAntipattern((Rule18Antipattern)element);
-						} else if(element instanceof Rule19Antipattern) {
-							return Factory.getInstance().createMRule19sAntipattern((Rule19Antipattern)element);
-						} else if(element instanceof Rule20Antipattern) {
-							return Factory.getInstance().createMRule20sAntipattern((Rule20Antipattern)element);
-						} else if(element instanceof Rule21Antipattern) {
-							return Factory.getInstance().createMRule21sAntipattern((Rule21Antipattern)element);
-						} else if(element instanceof Rule25Antipattern) {
-							return Factory.getInstance().createMRule25sAntipattern((Rule25Antipattern)element);
-						} else if(element instanceof Rule26Antipattern) {
-							return Factory.getInstance().createMRule26sAntipattern((Rule26Antipattern)element);
-						} else if(element instanceof ICompilationUnit) {
-							return Factory.getInstance().createMCompilationUnit((ICompilationUnit)element);
-						} else if(element instanceof IJavaProject) {
-							return Factory.getInstance().createMProject((IJavaProject)element);
-						} else if(element instanceof Analysis) {
-							return Factory.getInstance().createMAnalysis((Analysis)element);
-						}  else if(element instanceof UncategorizedIsPresentAntipattern) {
-							return Factory.getInstance().createMUncategorizedIsPresentPossibleAntipattern((UncategorizedIsPresentAntipattern)element);
-						}  else if(element instanceof WorkingSet) {
-							return Factory.getInstance().createMWorkingSet((WorkingSet)element);
-						}  else if(element instanceof IPackageFragment) {
-							return Factory.getInstance().createMPackage((IPackageFragment)element);
-						}  else if(element instanceof Project) {
-							try {
-								IJavaProject javaPoject = JavaCore.create((Project)element);
-								return Factory.getInstance().createMProject(javaPoject);
-							} catch(Exception exception) {
-								exception.printStackTrace();
-							}
-						} 
-						System.out.println("-----------> " + element.getClass());
-						return null;
-					}
-				}
-				);
+	}
+
+	public XEntity convert(Object element) {
+
+		if(element instanceof Rule1Antipattern) {
+			return Factory.getInstance().createMRule1sAntipattern((Rule1Antipattern)element);
+		} else if(element instanceof Rule2Antipattern) {
+			return Factory.getInstance().createMRule2sAntipattern((Rule2Antipattern)element);
+		} else if(element instanceof Rule3Antipattern) {
+			return Factory.getInstance().createMRule3sAntipattern((Rule3Antipattern)element);
+		} else if(element instanceof Rule4Antipattern) {
+			return Factory.getInstance().createMRule4sAntipattern((Rule4Antipattern)element);
+		} else if(element instanceof Rule5Antipattern) {
+			return Factory.getInstance().createMRule5sAntipattern((Rule5Antipattern)element);
+		} else if(element instanceof Rule6Antipattern) {
+			return Factory.getInstance().createMRule6sAntipattern((Rule6Antipattern)element);
+		} else if(element instanceof Rule7Antipattern) {
+			return Factory.getInstance().createMRule7sAntipattern((Rule7Antipattern)element);
+		} else if(element instanceof Rule8Antipattern) {
+			return Factory.getInstance().createMRule8sAntipattern((Rule8Antipattern)element);
+		} else if(element instanceof Rule9Antipattern) {
+			return Factory.getInstance().createMRule9sAntipattern((Rule9Antipattern)element);
+		} else if(element instanceof Rule10Antipattern) {
+			return Factory.getInstance().createMRule10sAntipattern((Rule10Antipattern)element);
+		} else if(element instanceof Rule12Antipattern) {
+			return Factory.getInstance().createMRule12sAntipattern((Rule12Antipattern)element);
+		} else if(element instanceof Rule13Antipattern) {
+			return Factory.getInstance().createMRule13sAntipattern((Rule13Antipattern)element);
+		} else if(element instanceof Rule14Antipattern) {
+			return Factory.getInstance().createMRule14sAntipattern((Rule14Antipattern)element);
+		} else if(element instanceof Rule15Antipattern) {
+			return Factory.getInstance().createMRule15sAntipattern((Rule15Antipattern)element);
+		} else if(element instanceof Rule16Antipattern) {
+			return Factory.getInstance().createMRule16sAntipattern((Rule16Antipattern)element);
+		} else if(element instanceof Rule17Antipattern) {
+			return Factory.getInstance().createMRule17sAntipattern((Rule17Antipattern)element);
+		} else if(element instanceof Rule18Antipattern) {
+			return Factory.getInstance().createMRule18sAntipattern((Rule18Antipattern)element);
+		} else if(element instanceof Rule19Antipattern) {
+			return Factory.getInstance().createMRule19sAntipattern((Rule19Antipattern)element);
+		} else if(element instanceof Rule20Antipattern) {
+			return Factory.getInstance().createMRule20sAntipattern((Rule20Antipattern)element);
+		} else if(element instanceof Rule21Antipattern) {
+			return Factory.getInstance().createMRule21sAntipattern((Rule21Antipattern)element);
+		} else if(element instanceof Rule25Antipattern) {
+			return Factory.getInstance().createMRule25sAntipattern((Rule25Antipattern)element);
+		} else if(element instanceof Rule26Antipattern) {
+			return Factory.getInstance().createMRule26sAntipattern((Rule26Antipattern)element);
+		} else if(element instanceof ICompilationUnit) {
+			return Factory.getInstance().createMCompilationUnit((ICompilationUnit)element);
+		} else if(element instanceof IJavaProject) {
+			return Factory.getInstance().createMProject((IJavaProject)element);
+		} else if(element instanceof Analysis) {
+			return Factory.getInstance().createMAnalysis((Analysis)element);
+		}  else if(element instanceof UncategorizedIsPresentAntipattern) {
+			return Factory.getInstance().createMUncategorizedIsPresentPossibleAntipattern((UncategorizedIsPresentAntipattern)element);
+		}  else if(element instanceof WorkingSet) {
+			return Factory.getInstance().createMWorkingSet((WorkingSet)element);
+		}  else if(element instanceof IPackageFragment) {
+			return Factory.getInstance().createMPackage((IPackageFragment)element);
+		}  else if(element instanceof Project) {
+			try {
+				IJavaProject javaPoject = JavaCore.create((Project)element);
+				return Factory.getInstance().createMProject(javaPoject);
+			} catch(Exception exception) {
+				exception.printStackTrace();
+			}
+		}
+		return null;
 	}
 }

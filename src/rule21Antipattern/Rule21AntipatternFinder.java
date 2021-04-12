@@ -16,7 +16,7 @@ import utilities.Antipattern;
 import utilities.OptionalInvocationFinder;
 
 public class Rule21AntipatternFinder {
-
+	
 	public List<MRule21sAntipattern> getMAntipatterns(ASTNode astNode) {
 		OptionalInvocationFinder optionalInvocationFinder = new OptionalInvocationFinder();
 		List<MethodInvocation> equalsInvocationsFromOptional = optionalInvocationFinder.getInvocations(astNode, "get");

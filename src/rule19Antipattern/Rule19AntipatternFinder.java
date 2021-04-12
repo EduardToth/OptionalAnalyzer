@@ -43,18 +43,21 @@ public class Rule19AntipatternFinder {
 
 	private boolean isArgumentLiteral(MethodInvocation methodInvocation) {
 		List<?> arguments = methodInvocation.arguments();
+		boolean isArgumentLiteral = false;
 		//Optional.of and ofNullable has only one argument
-		if(arguments.size() != 1) {
-			return false;
-		}
-
-		Object argument = arguments.get(0);
-
-		return isLiteral((Expression)argument);
+		if(arguments.size() == 1) {
+			isArgumentLiteral =  arguments.stream()
+					.findFirst()
+					.filter(Expression.class::isInstance)
+					.map(Expression.class::cast)
+					.map(this::isLiteral)
+					.orElse( false );
+		} 
+		
+		return isArgumentLiteral;
 	}
 
 	private boolean isArgumentAnOperationOfLiterals(MethodInvocation methodInvocation) {
-
 		List<?> arguments = methodInvocation.arguments();
 
 		return arguments.stream()
@@ -94,7 +97,6 @@ public class Rule19AntipatternFinder {
 	}
 
 	private boolean isLiteral(Expression expression) {
-
 		return expression instanceof BooleanLiteral ||
 				expression instanceof CharacterLiteral ||
 				expression instanceof NullLiteral ||
@@ -104,11 +106,12 @@ public class Rule19AntipatternFinder {
 	}
 
 	private List<MethodInvocation> getBadInvocationsForOptionalOfNullable(List<MethodInvocation> ofNullableList) {
-
+		Predicate<MethodInvocation> predicate = this::isArgumentAnOperationOfLiterals;
+		predicate.or(this::isArgumentLiteral);
 		List<MethodInvocation> badInvocationsForOptionalOfNullable = ofNullableList.stream()
-				.filter(Predicate.not(this::isArgumentAnOperationOfLiterals).or(this::isArgumentLiteral))
+				.filter(predicate)
 				.collect(Collectors.toList());
-
+	
 		return badInvocationsForOptionalOfNullable;
 	}
 
@@ -120,5 +123,4 @@ public class Rule19AntipatternFinder {
 
 		return badInvocationsForOptionalOf;
 	}
-
 }
