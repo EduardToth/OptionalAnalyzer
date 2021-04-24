@@ -3,6 +3,7 @@ package projects.groups;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import optionalanalyzer.metamodel.entity.MCompilationUnit;
 import optionalanalyzer.metamodel.entity.MPackage;
 import optionalanalyzer.metamodel.entity.MProject;
 import optionalanalyzer.metamodel.entity.MUncategorizedIsPresentPossibleAntipattern;
@@ -18,9 +19,9 @@ implements IRelationBuilder<MUncategorizedIsPresentPossibleAntipattern, MProject
 	public Group<MUncategorizedIsPresentPossibleAntipattern> buildGroup(MProject arg0) {
 		Group<MUncategorizedIsPresentPossibleAntipattern> group = new Group<>();
 
-		List<MUncategorizedIsPresentPossibleAntipattern> antipatterns = arg0.packageDetector()
+		List<MUncategorizedIsPresentPossibleAntipattern> antipatterns = arg0.compilationUnitDetector()
 				.getElements().stream()
-				.map(MPackage::uncategorizedIsPresentInvocationBasedAntipatternDetector)
+				.map(MCompilationUnit::uncategorizedIsPresentInvocationBasedAntipatternDetector)
 				.map(Group::getElements)
 				.flatMap(List::stream)
 				.collect(Collectors.toList());

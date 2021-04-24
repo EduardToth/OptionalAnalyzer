@@ -272,11 +272,18 @@ public class UtilityClass {
 			}
 			astNode = astNode.getParent();
 		}
+		
 
 		return Optional.ofNullable(typeDeclaration);
 	}
 
 	public static Optional<String> getTypeName(Expression expression) {
-		return Optional.ofNullable(expression.resolveTypeBinding().getQualifiedName());
+		try {
+			return Optional.ofNullable(expression.resolveTypeBinding().getQualifiedName());
+		} catch(NullPointerException npe) {
+			
+		}
+		
+		return Optional.of("");
 	}
 }

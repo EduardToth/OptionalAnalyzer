@@ -19,7 +19,7 @@ public class Rule8AntipatternFinder{
 
 	public List<MRule8sAntipattern> getMAntipatterns(ASTNode astNode) {
 
-		return getAntipatterns(astNode).stream()
+		return  getAntipatterns(astNode).stream()
 				.map(Rule8Antipattern::getInstance)
 				.flatMap(Optional::stream)
 				.map(Factory.getInstance()::createMRule8sAntipattern)
@@ -40,12 +40,13 @@ public class Rule8AntipatternFinder{
 				.flatMap(Optional::stream)
 				.collect(Collectors.toList());
 	}
-	
+
 	private Optional<IfStatement> getParentIfStatementIfProblematic(MethodInvocation methodInvocation) {
 
 		if(ToolBoxForIfStatementAnalysis.isSuperParentIfStatement(methodInvocation)) {
 			final IfStatement ifStatement = ToolBoxForIfStatementAnalysis.getIfStatement(methodInvocation);
 			Optional<String> invocatorName = UtilityClass.getInvocatorName(methodInvocation);
+			
 			return invocatorName
 					.filter(invName -> isAntipattern(ifStatement, invName))
 					.map(invName -> ifStatement);

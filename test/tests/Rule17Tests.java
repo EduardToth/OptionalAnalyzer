@@ -21,9 +21,9 @@ public class Rule17Tests extends TestBaseClass{
 
 	@Override
 	protected List<Antipattern> getAntipatterns() {
-		Group<MRule17sAntipattern> group = getMCompilationUnit().rule17AntipatternDetector();
-
-		return group.getElements().stream()
+		return getMCompilationUnit().rule17AntipatternDetector()
+				.getElements()
+				.stream()
 				.map(MRule17sAntipattern::getUnderlyingObject)
 				.map(Antipattern.class::cast)
 				.collect(Collectors.toList());

@@ -38,6 +38,8 @@ import rule_9Antipattern.Rule9Antipattern;
 import uncategorizedIsPresentUsage.UncategorizedIsPresentAntipattern;
 
 import org.eclipse.core.internal.resources.Project;
+import org.eclipse.core.resources.IResource;
+import org.eclipse.core.resources.IResourceVisitor;
 import org.eclipse.core.runtime.CoreException;
 public class Startup1 implements IStartup {
 

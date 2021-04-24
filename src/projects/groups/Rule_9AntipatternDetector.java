@@ -18,15 +18,15 @@ public class Rule_9AntipatternDetector implements IRelationBuilder<MRule9sAntipa
 	public Group<MRule9sAntipattern> buildGroup(MProject arg0) {
 		Group<MRule9sAntipattern> group = new Group<>();
 
-		 List<MRule9sAntipattern> antipatterns = arg0.packageDetector()
+		List<MRule9sAntipattern> antipatterns = arg0.compilationUnitDetector()
 				.getElements().stream()
-				.map(MPackage::rule_9AntipatternDetector)
+				.map(MCompilationUnit::rule_9AntipatternDetector)
 				.map(Group::getElements)
 				.flatMap(List::stream)
 				.collect(Collectors.toList());
-		 
-		 group.addAll(antipatterns);
-		 
-		 return group;
+
+		group.addAll(antipatterns);
+
+		return group;
 	}
 }

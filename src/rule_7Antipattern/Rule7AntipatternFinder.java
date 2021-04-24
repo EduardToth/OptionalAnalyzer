@@ -53,9 +53,9 @@ public class Rule7AntipatternFinder{
 		Optional<Statement> thenStatement = Optional.ofNullable(ifStatement.getThenStatement());
 		Optional<Statement> elseStatement = Optional.ofNullable(ifStatement.getElseStatement());
 
-		return thenStatement.flatMap(
-					themStm -> elseStatement.map(elseStm -> isCyclomaticComplexityForBothOne(themStm, elseStm))
-				).orElse(false);
+		return thenStatement.flatMap(themStm -> {
+			return elseStatement.map(elseStm -> isCyclomaticComplexityForBothOne(themStm, elseStm));
+		}).orElse(false);
 
 	}
 
@@ -75,11 +75,11 @@ public class Rule7AntipatternFinder{
 		Optional<MethodInvocation> methodInvocationForThenStatement = getMethodInvocationFromStatement(thenStatement);
 		Optional<MethodInvocation> methodInvocationForElseStatement = getMethodInvocationFromStatement(elseStatement);
 
-		return methodInvocationForThenStatement.flatMap(
-				methodInvocationInThenStatement -> methodInvocationForElseStatement.map(
-						methodInvocationInElseStatement -> areInvokedMethodsTheSame(methodInvocationInThenStatement, methodInvocationInElseStatement)
-						)
-				).orElse( false );
+		return methodInvocationForThenStatement.flatMap(methodInvocationInThenStatement -> {
+			return methodInvocationForElseStatement.map(methodInvocationInElseStatement -> {
+				return areInvokedMethodsTheSame(methodInvocationInThenStatement, methodInvocationInElseStatement);
+			});
+		}).orElse( false );
 	}
 
 	private Optional<MethodInvocation> getMethodInvocationFromStatement(Statement statement) {
@@ -105,7 +105,7 @@ public class Rule7AntipatternFinder{
 		Optional<String> invocatorName1 = UtilityClass.getInvocatorName(methodInvocation1);
 		Optional<String> invocatorName2 = UtilityClass.getInvocatorName(methodInvocation2);
 
-		
+
 		return invocatorName1.equals(invocatorName2);
 	}
 

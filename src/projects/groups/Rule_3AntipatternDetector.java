@@ -3,6 +3,7 @@ package projects.groups;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import optionalanalyzer.metamodel.entity.MCompilationUnit;
 import optionalanalyzer.metamodel.entity.MPackage;
 import optionalanalyzer.metamodel.entity.MProject;
 import optionalanalyzer.metamodel.entity.MRule3sAntipattern;
@@ -17,15 +18,15 @@ public class Rule_3AntipatternDetector implements IRelationBuilder<MRule3sAntipa
 	public Group<MRule3sAntipattern> buildGroup(MProject arg0) {
 		Group<MRule3sAntipattern> group = new Group<>();
 
-		 List<MRule3sAntipattern> antipatterns = arg0.packageDetector()
+		List<MRule3sAntipattern> antipatterns = arg0.compilationUnitDetector()
 				.getElements().stream()
-				.map(MPackage::rule_3AntipatternDetector)
+				.map(MCompilationUnit::rule_3AntipatternDetector)
 				.map(Group::getElements)
 				.flatMap(List::stream)
 				.collect(Collectors.toList());
-		 
-		 group.addAll(antipatterns);
-		 
-		 return group;
+
+		group.addAll(antipatterns);
+
+		return group;
 	}
 }

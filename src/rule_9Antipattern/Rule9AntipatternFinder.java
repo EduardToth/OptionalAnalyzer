@@ -59,7 +59,7 @@ public class Rule9AntipatternFinder{
 				.flatMap(Optional::stream)
 				.collect(Collectors.toList());
 	}
-	
+
 	private Optional<IfStatement> getParentIfStatementIfProblematic(MethodInvocation methodInvocation) {
 
 		if(ToolBoxForIfStatementAnalysis.isSuperParentIfStatement(methodInvocation)) {
@@ -76,10 +76,11 @@ public class Rule9AntipatternFinder{
 		Optional<Statement> thenStatement = Optional.ofNullable(ifStatement.getThenStatement());
 		Optional<Statement> elseStatement = Optional.ofNullable(ifStatement.getElseStatement());
 
-		return thenStatement.flatMap(
-						thenStm -> elseStatement.map(elseStm -> isAntipattern(thenStm, elseStm, invocatorName))
-				).orElse(false);
-		
+		return thenStatement.flatMap(thenStm -> {
+			return elseStatement.map(elseStm -> isAntipattern(thenStm, elseStm, invocatorName));
+		})
+		.orElse(false);
+
 	}
 
 	private boolean isAntipattern(Statement thenStatement, Statement elseStatement, String invocatorName) {

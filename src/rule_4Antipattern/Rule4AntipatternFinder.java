@@ -33,11 +33,11 @@ public class Rule4AntipatternFinder{
 				.flatMap(Optional::stream)
 				.map(Factory.getInstance()::createMRule4sAntipattern)
 				.collect(Collectors.toList());
-		
+
 		return Stream.of(ifStatementMAntipatterns, returnStatementMAntipatterns)
 				.flatMap(List::stream)
 				.collect(Collectors.toList());
-		
+
 	}
 
 	private List<IfStatement> getAntipatterns(ASTNode astNode) {
@@ -64,7 +64,7 @@ public class Rule4AntipatternFinder{
 				.toString()
 				.matches(regex);
 	}
-	
+
 	private Optional<IfStatement> getParentIfStatementIfProblematic(MethodInvocation methodInvocation) {
 
 		if(ToolBoxForIfStatementAnalysis.isSuperParentIfStatement(methodInvocation)) {
@@ -91,9 +91,9 @@ public class Rule4AntipatternFinder{
 		Optional<ReturnStatement> returnStatementForThen = ToolBoxForIfStatementAnalysis.getReturnStatement(thenStatement);
 		Optional<ReturnStatement> returnStatementForElse = ToolBoxForIfStatementAnalysis.getReturnStatement(elseStatement);
 
-		return returnStatementForThen.flatMap(
-					returnStmForThen -> returnStatementForElse.map(returnStmForElse -> Pair.with(returnStmForThen, returnStmForElse))
-				);
+		return returnStatementForThen.flatMap(returnStmForThen -> {
+			return returnStatementForElse.map(returnStmForElse -> Pair.with(returnStmForThen, returnStmForElse));
+		});
 
 	}
 
@@ -103,7 +103,7 @@ public class Rule4AntipatternFinder{
 		Optional<Statement> elseStatement = Optional.ofNullable(ifStatement.getElseStatement());
 
 		return thenStatement.flatMap(
-					thenStm -> elseStatement.map(elseStm -> Pair.with(thenStm, elseStm))
+				thenStm -> elseStatement.map(elseStm -> Pair.with(thenStm, elseStm))
 				)
 				.filter(this::isCyclomaticComplexityForBothOne)
 				.filter(this::areStatementsComposedByASingleAction)

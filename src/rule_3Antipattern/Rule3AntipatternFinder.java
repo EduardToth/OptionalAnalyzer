@@ -66,28 +66,28 @@ public class Rule3AntipatternFinder{
 
 
 	private  boolean isAntipattern(IfStatement ifStatement, String invocatorName) {
-		Optional<Statement> thenStatement = Optional.ofNullable(ifStatement.getThenStatement());
-		Optional<Statement> elseStatement = Optional.ofNullable(ifStatement.getElseStatement());
 
-		return thenStatement.flatMap(
-				thenStm -> elseStatement.filter(elseStm -> isCyclomaticComplexityForBothOne(thenStm, elseStm))
-				.filter(elseStm -> isStatementComposedByASingleActionBorBoth(thenStm, elseStm))
-				.map(elseStm -> isAntipattern(thenStm, elseStm,  invocatorName))
-				).orElse(false);
+		Statement thenStatement = ifStatement.getThenStatement();
+		Statement elseStatement = ifStatement.getElseStatement();
 
+		if(thenStatement != null && elseStatement != null) {
+			return isCyclomaticComplexityForBothOne(thenStatement, elseStatement)
+					&& isStatementComposedByASingleActionBorBoth(thenStatement, elseStatement)
+					&& isAntipattern(thenStatement, elseStatement, invocatorName);
+		} else {
+			return false;
+		}
 	}
 
 	private boolean isAntipattern(Statement thenStatement, Statement elseStatement, String invocatorName) {
 		Optional<ReturnStatement> returnStatementForThen = ToolBoxForIfStatementAnalysis.getReturnStatement(thenStatement);
 		Optional<ReturnStatement> returnStatementForElse = ToolBoxForIfStatementAnalysis.getReturnStatement(elseStatement);
 
-		return returnStatementForThen.flatMap(
-				retStmForThen -> returnStatementForElse
-				.map(retStmForElse -> isAntipattern(retStmForThen,
-						retStmForElse,
-						invocatorName)
-						)
-				).orElse(false);
+		return returnStatementForThen.flatMap(retStmForThen -> {
+			return returnStatementForElse.map(retStmForElse -> {
+				return isAntipattern(retStmForThen, retStmForElse,invocatorName);
+			});
+		}).orElse(false);
 	}
 
 

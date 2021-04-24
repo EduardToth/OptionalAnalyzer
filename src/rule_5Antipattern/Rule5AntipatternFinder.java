@@ -22,7 +22,7 @@ import utilities.UtilityClass;
 public class Rule5AntipatternFinder {
 
 	public List<MRule5sAntipattern> getMAntipatterns(ASTNode astNode) {
-		
+
 		return getAntipatterns(astNode)
 				.stream()
 				.map(Rule5Antipattern::getInstance)
@@ -45,7 +45,7 @@ public class Rule5AntipatternFinder {
 				.flatMap(Optional::stream)
 				.collect(Collectors.toList());
 	}
-	
+
 	private Optional<IfStatement> getParentIfStatementIfProblematic(MethodInvocation methodInvocation) {
 
 		if(ToolBoxForIfStatementAnalysis.isSuperParentIfStatement(methodInvocation)) {
@@ -63,14 +63,14 @@ public class Rule5AntipatternFinder {
 		Optional<Statement> thenStatement = Optional.ofNullable(ifStatement.getThenStatement());
 		Optional<Statement> elseStatement = Optional.ofNullable(ifStatement.getElseStatement());
 
-		return thenStatement.flatMap(
-						thenStm -> elseStatement.map(elseStm -> isAntipattern(thenStm, elseStm, invocatorName))
-				).orElse(false);
+		return thenStatement.flatMap(thenStm -> { 
+			return elseStatement.map(elseStm -> isAntipattern(thenStm, elseStm, invocatorName));
+		}).orElse(false);
 	}
 
 
 	private boolean isAntipattern(Statement statementForThen, Statement statementForElse, String invocatorName) {
-		
+
 		return 	ToolBoxForIfStatementAnalysis.getCyclomaticComplexity(statementForThen) == 1
 				&& ToolBoxForIfStatementAnalysis.getCyclomaticComplexity(statementForElse) == 1
 				&& ToolBoxForIfStatementAnalysis.isStatementComposedByASimgleAction(statementForThen)
@@ -92,7 +92,7 @@ public class Rule5AntipatternFinder {
 
 	private boolean containsNoSuchElementExceptionThrow(Statement statement) {
 		final AtomicBoolean contains = new AtomicBoolean(false);
-		
+
 		statement.accept(new ASTVisitor() {
 
 			@Override
@@ -105,7 +105,7 @@ public class Rule5AntipatternFinder {
 				return super.visit(throwStatement);
 			}
 		});
-		
+
 		return contains.get();
 	}
 }

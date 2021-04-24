@@ -53,7 +53,7 @@ public class Rule19AntipatternFinder {
 					.map(this::isLiteral)
 					.orElse( false );
 		} 
-		
+
 		return isArgumentLiteral;
 	}
 
@@ -106,21 +106,21 @@ public class Rule19AntipatternFinder {
 	}
 
 	private List<MethodInvocation> getBadInvocationsForOptionalOfNullable(List<MethodInvocation> ofNullableList) {
-		Predicate<MethodInvocation> predicate = this::isArgumentAnOperationOfLiterals;
-		predicate.or(this::isArgumentLiteral);
+
+		Predicate<MethodInvocation> predicate1 = this::isArgumentLiteral;
+		Predicate<MethodInvocation> predicate2 = this::isArgumentAnOperationOfLiterals;
 		List<MethodInvocation> badInvocationsForOptionalOfNullable = ofNullableList.stream()
-				.filter(predicate)
+				.filter(predicate1.or(predicate2))
 				.collect(Collectors.toList());
-	
+
 		return badInvocationsForOptionalOfNullable;
 	}
 
 	private List<MethodInvocation> getBadInvocationsForOptionalOf(List<MethodInvocation> ofList) {
-		List<MethodInvocation> badInvocationsForOptionalOf = ofList.stream()
+
+		return ofList.stream()
 				.filter(Predicate.not(this::isArgumentLiteral))
 				.filter(Predicate.not(this::isArgumentAnOperationOfLiterals))
 				.collect(Collectors.toList());
-
-		return badInvocationsForOptionalOf;
 	}
 }
