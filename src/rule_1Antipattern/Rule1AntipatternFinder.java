@@ -42,7 +42,7 @@ public class Rule1AntipatternFinder{
 				String typeName = "";
 				try {
 					typeName = declaration.resolveBinding().getType().getQualifiedName();
-				} catch(NullPointerException npe) {}
+				} catch(NullPointerException ignored) {}
 				if(declaration.getInitializer() != null) {
 
 					if(UtilityClass.isTypeOptional(typeName)
@@ -67,7 +67,7 @@ public class Rule1AntipatternFinder{
 		try {
 			typeName = assignment.getLeftHandSide().
 					resolveTypeBinding().getQualifiedName();
-		} catch(NullPointerException npe) {}
+		} catch(NullPointerException ignored) {}
 		
 		return UtilityClass.isTypeOptional(typeName)
 				&& assignment.toString().matches(".*= *null *;?");

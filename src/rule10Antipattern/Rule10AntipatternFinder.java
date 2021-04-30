@@ -80,7 +80,7 @@ public class Rule10AntipatternFinder {
 					.map(ITypeBinding::getQualifiedName)
 					.orElse("");
 			
-		}catch(NullPointerException npe) {}
+		}catch(NullPointerException ignored) {}
 
 		return 	ToolBoxForIfStatementAnalysis.getCyclomaticComplexity(statementForThen) == 1
 				&& ToolBoxForIfStatementAnalysis.getCyclomaticComplexity(statementForElse) == 1

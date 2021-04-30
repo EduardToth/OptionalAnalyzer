@@ -75,11 +75,8 @@ public class Rule18AntipatternFinder {
 
 		String[] genericTypes = UtilityClass.getGenericTypes(typeName);
 
-		boolean containsOptional = Arrays.asList(genericTypes)
-				.stream()
+		return Arrays.stream(genericTypes)
 				.anyMatch(this::isRule18Antipattern);
-
-		return containsOptional;
 	}
 
 	private List<Rule18Antipattern> removeDuplicates(List<Rule18Antipattern> antipatterns) {

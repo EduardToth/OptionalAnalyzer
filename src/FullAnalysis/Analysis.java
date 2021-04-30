@@ -1,8 +1,8 @@
 package FullAnalysis;
 
 public class Analysis {
-	private String ruleName;
-	private String essentialInfo;
+	private final String ruleName;
+	private final String essentialInfo;
 	
 	public Analysis(String ruleName, String essentialInfo) {
 		super();

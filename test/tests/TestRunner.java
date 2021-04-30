@@ -27,7 +27,8 @@ import org.junit.runners.Suite;
 	Rule20Tests.class,
 	Rule21Tests.class,
 	Rule25Tests.class,
-	Rule26Tests.class
+	Rule26Tests.class,
+	UncategorizedIsPresentInvocationBasedTests.class
 })
 public class TestRunner {}
 

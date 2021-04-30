@@ -97,7 +97,6 @@ public class Rule4AntipatternFinder{
 
 	}
 
-
 	private  boolean isAntipattern(IfStatement ifStatement, String invocatorName) {
 		Optional<Statement> thenStatement = Optional.ofNullable(ifStatement.getThenStatement());
 		Optional<Statement> elseStatement = Optional.ofNullable(ifStatement.getElseStatement());

@@ -1,9 +1,9 @@
 package uncategorizedIsPresentUsage;
 
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -26,11 +26,13 @@ import optionalanalyzer.metamodel.entity.MRule8sAntipattern;
 import optionalanalyzer.metamodel.entity.MRule9sAntipattern;
 import optionalanalyzer.metamodel.entity.MUncategorizedIsPresentPossibleAntipattern;
 import optionalanalyzer.metamodel.factory.Factory;
+import ro.lrg.xcore.metametamodel.Group;
+import ro.lrg.xcore.metametamodel.XEntity;
 import rule26Antipattern.Rule26Antipattern;
 import utilities.Antipattern;
 import utilities.OptionalInvocationFinder;
 import utilities.UtilityClass;
-
+import java.util.function.Supplier;
 
 public class UncategorizedIsPresentAntipatternFinder {
 
@@ -40,11 +42,12 @@ public class UncategorizedIsPresentAntipatternFinder {
 
 		List<Stream<Object>> isPresentInvocationBasedMAntipatternStreamList = getIsPresentInvocationBasedCategorizedAntipatterns(mCompilationUnit);
 		Set<MethodInvocation> categorizedIsPresentInvocations = getCenzoredIsPresentAntipatterns(isPresentInvocationBasedMAntipatternStreamList);
-		categorizedIsPresentInvocations.addAll(getRule26BaseIsPresentInvocation(mCompilationUnit));
 		ICompilationUnit iCompilationUnit = (ICompilationUnit) mCompilationUnit.getUnderlyingObject();
 		CompilationUnit compilationUnit = UtilityClass.parse(iCompilationUnit);
 		List<MethodInvocation> isPresentMethodInvocations = optionalInvocationFinder.getInvocations(compilationUnit);
-		
+
+		categorizedIsPresentInvocations.addAll(getRule26BaseIsPresentInvocation(mCompilationUnit));
+
 		return isPresentMethodInvocations.stream()
 				.filter(methodInvocation -> !contains(categorizedIsPresentInvocations, methodInvocation))
 				.map(UncategorizedIsPresentAntipattern::getInstance)
@@ -52,7 +55,7 @@ public class UncategorizedIsPresentAntipatternFinder {
 				.map(Factory.getInstance()::createMUncategorizedIsPresentPossibleAntipattern)
 				.collect(Collectors.toList());
 	}
-	
+
 	private Set<MethodInvocation> getRule26BaseIsPresentInvocation(MCompilationUnit mCompilationUnit) {
 		return mCompilationUnit.rule26AntipatternDetector()
 				.getElements()
@@ -69,36 +72,40 @@ public class UncategorizedIsPresentAntipatternFinder {
 				.collect(Collectors.toSet());
 	}
 
-	private List<Stream<Object>> getIsPresentInvocationBasedCategorizedAntipatterns(MCompilationUnit mCompilationUnit) {
-		List<Stream<Object>> isPresentInvocationBasedMAntipatternStreamList = new LinkedList<>();
+	private Stream<Object> getAntipatterns(Supplier<Group<? extends XEntity>> groupSupplier, Function<XEntity, Object> wrappedObjectGetterFunction) {
 
-		isPresentInvocationBasedMAntipatternStreamList
-		.add(mCompilationUnit.rule_3AntipatternDetector().getElements().stream().map(MRule3sAntipattern::getUnderlyingObject));
-		isPresentInvocationBasedMAntipatternStreamList
-		.add(mCompilationUnit.rule_4AntipatternDetector().getElements().stream().map(MRule4sAntipattern::getUnderlyingObject));
-		isPresentInvocationBasedMAntipatternStreamList
-		.add(mCompilationUnit.rule_5AntipatternDetector().getElements().stream().map(MRule5sAntipattern::getUnderlyingObject));
-		isPresentInvocationBasedMAntipatternStreamList
-		.add(mCompilationUnit.rule_6AntipatternDetector().getElements().stream().map(MRule6sAntipattern::getUnderlyingObject));
-		isPresentInvocationBasedMAntipatternStreamList
-		.add(mCompilationUnit.rule_7AntipatternDetector().getElements().stream().map(MRule7sAntipattern::getUnderlyingObject));
-		isPresentInvocationBasedMAntipatternStreamList
-		.add(mCompilationUnit.rule_8AntipatternDetector().getElements().stream().map(MRule8sAntipattern::getUnderlyingObject));
-		isPresentInvocationBasedMAntipatternStreamList
-		.add(mCompilationUnit.rule_9AntipatternDetector().getElements().stream().map(MRule9sAntipattern::getUnderlyingObject));
-		isPresentInvocationBasedMAntipatternStreamList
-		.add(mCompilationUnit.rule10AntipatternDetector().getElements().stream().map(MRule10sAntipattern::getUnderlyingObject));
-	
-
-		return isPresentInvocationBasedMAntipatternStreamList;
+		return groupSupplier.get()
+				.getElements()
+				.stream()
+				.map(wrappedObjectGetterFunction);
 	}
 
+	private List<Stream<Object>> getIsPresentInvocationBasedCategorizedAntipatterns(MCompilationUnit mCompilationUnit) {
 
-	Set<MethodInvocation> getCenzoredIsPresentAntipatterns(List<Stream<Object>> isPresentInvocationBasedMAntipatternSets) {
+		var rule3AntipatternStream = getAntipatterns(mCompilationUnit::rule_3AntipatternDetector, xEntity -> ((MRule3sAntipattern)xEntity).getUnderlyingObject());
+		var rule4AntipatternStream = getAntipatterns(mCompilationUnit::rule_4AntipatternDetector, xEntity -> ((MRule4sAntipattern)xEntity).getUnderlyingObject());
+		var rule5AntipatternStream = getAntipatterns(mCompilationUnit::rule_5AntipatternDetector, xEntity -> ((MRule5sAntipattern)xEntity).getUnderlyingObject());
+		var rule6AntipatternStream = getAntipatterns(mCompilationUnit::rule_6AntipatternDetector, xEntity -> ((MRule6sAntipattern)xEntity).getUnderlyingObject());
+		var rule7AntipatternStream = getAntipatterns(mCompilationUnit::rule_7AntipatternDetector, xEntity -> ((MRule7sAntipattern)xEntity).getUnderlyingObject());
+		var rule8AntipatternStream = getAntipatterns(mCompilationUnit::rule_8AntipatternDetector, xEntity -> ((MRule8sAntipattern)xEntity).getUnderlyingObject());
+		var rule9AntipatternStream = getAntipatterns(mCompilationUnit::rule_9AntipatternDetector, xEntity -> ((MRule9sAntipattern)xEntity).getUnderlyingObject());
+		var rule10AntipatternStream = getAntipatterns(mCompilationUnit::rule10AntipatternDetector, xEntity -> ((MRule10sAntipattern)xEntity).getUnderlyingObject());
+
+		return List.of(rule3AntipatternStream,
+				rule4AntipatternStream,
+				rule5AntipatternStream,
+				rule6AntipatternStream,
+				rule7AntipatternStream,
+				rule8AntipatternStream,
+				rule9AntipatternStream,
+				rule10AntipatternStream);
+	}
+
+	private Set<MethodInvocation> getCenzoredIsPresentAntipatterns(List<Stream<Object>> isPresentInvocationBasedMAntipatternSets) {
 
 		return isPresentInvocationBasedMAntipatternSets
 				.stream()
-				.flatMap(stream -> stream)
+				.flatMap(Function.identity())
 				.filter(Antipattern.class::isInstance)
 				.map(Antipattern.class::cast)
 				.map(Antipattern::getWrappedElement)
@@ -113,8 +120,7 @@ public class UncategorizedIsPresentAntipatternFinder {
 	private boolean contains(Set<MethodInvocation> categorizedIfPresentInvocations, MethodInvocation ifPresentMethodInvocation) {
 		Pair<Integer, Integer> positions = getPositions(ifPresentMethodInvocation);
 
-		return categorizedIfPresentInvocations
-				.stream()
+		return categorizedIfPresentInvocations.stream()
 				.map(this::getPositions)
 				.anyMatch(positions::equals);
 	}

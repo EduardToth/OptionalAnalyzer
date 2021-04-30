@@ -59,7 +59,8 @@ public class Rule8AntipatternFinder{
 		Statement thenStatement = ifStatement.getThenStatement();
 		Statement elseStatement = ifStatement.getElseStatement();
 
-		return containsOnlyThenBlock(thenStatement, elseStatement) && isAntipattern(thenStatement, invocatorName);
+		return containsOnlyThenBlock(thenStatement, elseStatement) 
+				&& isAntipattern(thenStatement, invocatorName);
 	}
 
 	private boolean containsOnlyThenBlock(Statement thenStatement, Statement elseStatement) {

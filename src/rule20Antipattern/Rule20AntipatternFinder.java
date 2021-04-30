@@ -24,29 +24,26 @@ public class Rule20AntipatternFinder {
 				.map(Factory.getInstance()::createMRule20sAntipattern)
 				.collect(Collectors.toList());
 	}
-	
+
 	private Optional<Rule20Antipattern> convertIntoAntipatternIfPossible(VariableDeclarationFragment variableDeclarationFragment) {
-		String typeName = getTypeName(variableDeclarationFragment);
-		if(UtilityClass.isSimpleOptionalType(typeName) &&
-				UtilityClass.hasBadGenericTypeArgumentForOptional(typeName)) {
-			return Rule20Antipattern.getInstance(variableDeclarationFragment);
-		}
-		
-		return Optional.empty();
+		return getTypeName(variableDeclarationFragment)
+				.filter(UtilityClass::isSimpleOptionalType)
+				.filter(UtilityClass::hasBadGenericTypeArgumentForOptional)
+				.flatMap(name -> Rule20Antipattern.getInstance(variableDeclarationFragment))
+				.or(Optional::empty);
 	}
-	
 
-
-	
-	private String getTypeName(VariableDeclarationFragment variableDeclarationFragment) {
+	private Optional<String> getTypeName(VariableDeclarationFragment variableDeclarationFragment) {
 		try {
-			 return variableDeclarationFragment
+			String typeName = variableDeclarationFragment
 					.resolveBinding()
 					.getType()
 					.getQualifiedName();
-		}catch(NullPointerException npe) {}
-		
-		return "";
+
+			return Optional.of(typeName);
+		}catch(NullPointerException ignored) {}
+
+		return Optional.empty();
 	}
 
 	private List<VariableDeclarationFragment> getVariableDeclarations(ASTNode astNode) {
