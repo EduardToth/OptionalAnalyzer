@@ -49,7 +49,7 @@ public class Rule8AntipatternFinder{
 			
 			return invocatorName
 					.filter(invName -> isAntipattern(ifStatement, invName))
-					.map(invName -> ifStatement);
+					.map(ignored -> ifStatement);
 		}
 		return Optional.empty();
 	}

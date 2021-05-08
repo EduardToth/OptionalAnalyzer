@@ -48,12 +48,10 @@ public class Rule_9AntipatternDetector implements IRelationBuilder<MRule9sAntipa
 				.map(antipattern -> (Rule7Antipattern)antipattern.getUnderlyingObject())
 				.collect(Collectors.toList());
 		
-		System.out.println(rule7List);
 		
 		List<? extends Antipattern> rule9List = rawAntipattern.stream()
 				.map(antipattern -> (Rule9Antipattern)antipattern.getUnderlyingObject())
 				.collect(Collectors.toList());
-		System.out.println(rule9List);
 		
 		rule9List.removeAll(rule9List);
 	

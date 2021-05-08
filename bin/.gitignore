@@ -1,7 +1,6 @@
 /FullAnalysis/
 /compilationUnits/
 /launcher/
-/optionalanalyzer/
 /packages/
 /projects/
 /rule10Antipattern/
@@ -30,4 +29,4 @@
 /uncategorizedIsPresentUsage/
 /utilities/
 /workingSets/
-/optionalanalizer/
+/optionalanalyzer/

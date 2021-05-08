@@ -24,8 +24,6 @@ public class Rule17AntipatternFinder {
 				.flatMap(Optional::stream)
 				.map(Factory.getInstance()::createMRule17sAntipattern)
 				.collect(Collectors.toList());
-		
-		 
 	}
 	
 	private Optional<Rule17Antipattern> convertIntoAntipatternIfPossible(MethodDeclaration methodDeclaration) {

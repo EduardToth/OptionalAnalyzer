@@ -6,7 +6,7 @@ import java.util.stream.Collectors;
 import org.junit.Test;
 
 import optionalanalyzer.metamodel.entity.MRule17sAntipattern;
-import ro.lrg.xcore.metametamodel.Group;
+
 import utilities.Antipattern;
 
 public class Rule17Tests extends TestBaseClass{

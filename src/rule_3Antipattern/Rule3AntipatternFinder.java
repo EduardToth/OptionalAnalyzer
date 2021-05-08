@@ -14,7 +14,6 @@ import optionalanalyzer.metamodel.entity.MRule3sAntipattern;
 import optionalanalyzer.metamodel.factory.Factory;
 import utilities.OptionalInvocationFinder;
 import utilities.ToolBoxForIfStatementAnalysis;
-import utilities.Unit;
 import utilities.UtilityClass;
 
 public class Rule3AntipatternFinder{
@@ -48,8 +47,9 @@ public class Rule3AntipatternFinder{
 		if(ToolBoxForIfStatementAnalysis.isSuperParentIfStatement(methodInvocation)) {
 			final IfStatement ifStatement = ToolBoxForIfStatementAnalysis.getIfStatement(methodInvocation);
 			Optional<String> invocatorName = UtilityClass.getInvocatorName(methodInvocation);
-			return invocatorName.filter(invName -> isAntipattern(ifStatement, invName))
-					.map(invName -> ifStatement);
+			return invocatorName
+					.filter(invName -> isAntipattern(ifStatement, invName))
+					.map(ignored -> ifStatement);
 		}
 		return Optional.empty();
 	}
@@ -83,11 +83,15 @@ public class Rule3AntipatternFinder{
 		Optional<ReturnStatement> returnStatementForThen = ToolBoxForIfStatementAnalysis.getReturnStatement(thenStatement);
 		Optional<ReturnStatement> returnStatementForElse = ToolBoxForIfStatementAnalysis.getReturnStatement(elseStatement);
 
-		return returnStatementForThen.flatMap(retStmForThen -> {
-			return returnStatementForElse.map(retStmForElse -> {
-				return isAntipattern(retStmForThen, retStmForElse,invocatorName);
-			});
-		}).orElse(false);
+		
+		if(returnStatementForThen.isPresent() && returnStatementForElse.isPresent()) {
+			ReturnStatement returnStmForThen = returnStatementForThen.get();
+			ReturnStatement returnStmForElse = returnStatementForElse.get();
+			
+			return isAntipattern(returnStmForThen, returnStmForElse, invocatorName);
+		}
+		
+		return false;
 	}
 
 

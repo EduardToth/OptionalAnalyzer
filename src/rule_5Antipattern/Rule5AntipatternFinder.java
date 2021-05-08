@@ -68,7 +68,6 @@ public class Rule5AntipatternFinder {
 		}).orElse(false);
 	}
 
-
 	private boolean isAntipattern(Statement statementForThen, Statement statementForElse, String invocatorName) {
 
 		return 	ToolBoxForIfStatementAnalysis.getCyclomaticComplexity(statementForThen) == 1

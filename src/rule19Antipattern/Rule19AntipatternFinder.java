@@ -25,13 +25,13 @@ import optionalanalyzer.metamodel.factory.Factory;
 import utilities.OptionalInvocationFinder;
 
 public class Rule19AntipatternFinder {
-
+	
 	public List<MRule19sAntipattern> getMAntipatterns(ASTNode astNode) {
-		OptionalInvocationFinder optionalInvocationFinder = new OptionalInvocationFinder();
-		List<MethodInvocation> ofGroup = optionalInvocationFinder.getInvocations(astNode, "of");
-		List<MethodInvocation> ofNullableGroup = optionalInvocationFinder.getInvocations(astNode, "ofNullable");
-		List<MethodInvocation> badInvocationsForOptionalOf = getBadInvocationsForOptionalOf(ofGroup);
-		List<MethodInvocation> badInvocationsForOptionalOfNullable = getBadInvocationsForOptionalOfNullable(ofNullableGroup);
+		var optionalInvocationFinder = new OptionalInvocationFinder();
+		var ofGroup = optionalInvocationFinder.getInvocations(astNode, "of");
+		var ofNullableGroup = optionalInvocationFinder.getInvocations(astNode, "ofNullable");
+		var badInvocationsForOptionalOf = getBadInvocationsForOptionalOf(ofGroup);
+		var badInvocationsForOptionalOfNullable = getBadInvocationsForOptionalOfNullable(ofNullableGroup);
 
 		return Stream.of(badInvocationsForOptionalOf, badInvocationsForOptionalOfNullable)
 				.flatMap(Collection::stream)
@@ -71,7 +71,6 @@ public class Rule19AntipatternFinder {
 	}
 
 	private List<Expression> getOperands(InfixExpression infixExpression) {
-
 		List<Expression> operands = new ArrayList<>();
 		operands.add(infixExpression.getLeftOperand());
 		operands.add(infixExpression.getRightOperand());
@@ -90,7 +89,6 @@ public class Rule19AntipatternFinder {
 					.filter(Expression.class::isInstance)
 					.map(Expression.class::cast)
 					.collect(Collectors.toList());
-
 		}
 
 		return Collections.emptyList();
@@ -106,9 +104,9 @@ public class Rule19AntipatternFinder {
 	}
 
 	private List<MethodInvocation> getBadInvocationsForOptionalOfNullable(List<MethodInvocation> ofNullableList) {
-
 		Predicate<MethodInvocation> predicate1 = this::isArgumentLiteral;
 		Predicate<MethodInvocation> predicate2 = this::isArgumentAnOperationOfLiterals;
+		
 		List<MethodInvocation> badInvocationsForOptionalOfNullable = ofNullableList.stream()
 				.filter(predicate1.or(predicate2))
 				.collect(Collectors.toList());

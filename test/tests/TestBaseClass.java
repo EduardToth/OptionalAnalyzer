@@ -8,8 +8,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.IJavaProject;
@@ -76,30 +78,27 @@ public abstract class TestBaseClass {
 				" does not exist in package " + this.packageName));
 
 	}
+	
+	private ICompilationUnit[] getComponentICompilationUnits(IPackageFragment iPackageFragment) {
+		try {
+			return iPackageFragment.getCompilationUnits();
+		} catch (JavaModelException e) {
+			return new ICompilationUnit[ 0 ];
+		}
+	}
 
 	private Optional<ICompilationUnit> getCompilationUnit() {
-		ICompilationUnit iCompilationUnit = null;
-		try {
-			for(ICompilationUnit unit : iPackageFragment.getCompilationUnits()) {
-				if(unit.getElementName().equals(this.testFileName)) {
-					iCompilationUnit = unit;
-				}
-			}
-		} catch (JavaModelException e) {
-			e.printStackTrace();
-		}
-
-		return Optional.ofNullable(iCompilationUnit);
+		ICompilationUnit[] iCompilationUnits = getComponentICompilationUnits(iPackageFragment);
+		
+		return Arrays.stream(iCompilationUnits)
+				.filter(unit -> unit.getElementName().equals(this.testFileName))
+				.findFirst();
 	}
 
 	private Map<Integer, Boolean> getErrorLineMap() {
-		Map<Integer, Boolean> errorLineMap = new HashMap<>();
-
-		for(int errorLineNr : linesWithProblems) {
-			errorLineMap.put(errorLineNr, false);
-		}
-
-		return errorLineMap;
+		return Arrays.stream(linesWithProblems)
+			.boxed()
+			.collect(Collectors.toMap(Function.identity(), nr -> false));
 	}
 
 	public void test() {
@@ -149,7 +148,9 @@ public abstract class TestBaseClass {
 
 		if(nrOfAntipatternsFound > this.nrOfProblemsTheTestShouldFind) {
 			List<Integer> problemLinesFound = getAllProblemLines(antipatterns);
+			
 			problemLinesFound.removeAll(Arrays.asList(linesWithProblems));
+			
 			throw new TestingException("more problems found at the following lines: " );
 		}
 
@@ -160,7 +161,9 @@ public abstract class TestBaseClass {
 		CompilationUnit compilationUnit = UtilityClass.parse(iCompilationUnit);
 
 		return antipatterns.stream()
-				.map(antipattern -> compilationUnit.getLineNumber(antipattern.getWrappedElement().getStartPosition()))
+				.map(Antipattern::getWrappedElement)
+				.map(antipattern -> antipattern.getStartPosition())
+				.map(compilationUnit::getLineNumber)
 				.collect(Collectors.toList());
 	}
 

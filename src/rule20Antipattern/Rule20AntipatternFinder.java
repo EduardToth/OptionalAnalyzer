@@ -14,6 +14,7 @@ import optionalanalyzer.metamodel.factory.Factory;
 import utilities.UtilityClass;
 
 public class Rule20AntipatternFinder {
+	
 	public List<MRule20sAntipattern> getMAntipatterns(ASTNode astNode) {
 
 		final List<VariableDeclarationFragment> variableDeclarations = getVariableDeclarations(astNode);
@@ -28,8 +29,8 @@ public class Rule20AntipatternFinder {
 	private Optional<Rule20Antipattern> convertIntoAntipatternIfPossible(VariableDeclarationFragment variableDeclarationFragment) {
 		return getTypeName(variableDeclarationFragment)
 				.filter(UtilityClass::isSimpleOptionalType)
-				.filter(UtilityClass::hasBadGenericTypeArgumentForOptional)
-				.flatMap(name -> Rule20Antipattern.getInstance(variableDeclarationFragment))
+				.filter(UtilityClass::hasBadGenericTypeArgumentForOptional) //like Integer, Double...
+				.flatMap(ignored -> Rule20Antipattern.getInstance(variableDeclarationFragment))
 				.or(Optional::empty);
 	}
 
@@ -49,6 +50,7 @@ public class Rule20AntipatternFinder {
 	private List<VariableDeclarationFragment> getVariableDeclarations(ASTNode astNode) {
 
 		final List<VariableDeclarationFragment> variableDeclarations = new ArrayList<>();
+
 		astNode.accept(new ASTVisitor() {
 
 			@Override

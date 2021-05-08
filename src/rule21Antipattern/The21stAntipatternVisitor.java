@@ -11,40 +11,50 @@ import utilities.MethodInvokedFromOptionalVisitor;
 
 public class The21stAntipatternVisitor extends ASTVisitor {
 
-	private boolean itRespects = false;	
+	private boolean antipatternFound = false;	
 
 	private List<MethodInvocation> methodInvocations = new LinkedList<>();
 	@Override
 	public boolean visit(MethodInvocation methInvocation) {
-
-		if(methInvocation.getName().toString().equals("equals")
-				&& methInvocation.arguments().size() == 1) {
-			for(Object obj : methInvocation.arguments()) {
-				if(obj instanceof Expression) {
-					Expression expr = (Expression) obj;
-					if(containsAGetMethodFromAnOptionalInside(expr)) {
-						methodInvocations.add(methInvocation);
-						this.itRespects = true;
-					}
-				}
-			}
+		
+		if(isTheEqualsMethodInvoked(methInvocation)) {
+			List<?> arguments = methInvocation.arguments();
+			
+			arguments.stream()
+				.filter(Expression.class::isInstance)
+				.map(Expression.class::cast)
+				.filter(The21stAntipatternVisitor.this::containsAGetMethodFromAnOptionalInside)
+				.findFirst()
+				.ifPresent(ignored -> setObjectStateToAntipatternFound(methInvocation));
 		}
 		return super.visit(methInvocation);
 	}
+
+	private boolean isTheEqualsMethodInvoked(MethodInvocation methInvocation) {
+		return methInvocation.getName()
+				.toString()
+				.equals("equals") &&
+				methInvocation.arguments().size() == 1;
+	}
 	
+	private void setObjectStateToAntipatternFound(MethodInvocation methodInvocation) {
+		antipatternFound = true;
+		methodInvocations.add(methodInvocation);
+	}
+	
+
 	private boolean containsAGetMethodFromAnOptionalInside(Expression expression) {
-		
-		MethodInvokedFromOptionalVisitor methodInvokedFromOptionalVisitor = 
-				new MethodInvokedFromOptionalVisitor("get");
+
+		var methodInvokedFromOptionalVisitor = new MethodInvokedFromOptionalVisitor("get");
 		expression.accept(methodInvokedFromOptionalVisitor);
-		
+
 		return methodInvokedFromOptionalVisitor.getInvocations().size() != 0;
 	}
-	
+
 	public boolean itRespectedTheAntipatter() {
-		return this.itRespects;
+		return this.antipatternFound;
 	}
-	
+
 	public List<MethodInvocation> getMethodInvocations() {
 		return this.methodInvocations;
 	}

@@ -1,6 +1,7 @@
 package FullAnalysis.groups;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -45,7 +46,8 @@ public class FullAnalysis implements IRelationBuilder<MAnalysis, MCompilationUni
 	public Group<MAnalysis> buildGroup(MCompilationUnit arg0) {
 
 		 List<MAnalysis> result = getMAntipatterns(arg0)
-				.map(this::getUnderLyingObject)
+				.map(this::getUnderlyingObject)
+				.flatMap(Optional::stream)
 				.map(this::convertInEssentialInfo)
 				.map(pair -> new Analysis(pair.getValue0(), pair.getValue1()))
 				.distinct()
@@ -67,56 +69,57 @@ public class FullAnalysis implements IRelationBuilder<MAnalysis, MCompilationUni
 		return new Pair<String, String>(className, antipatternInfo);
 	}
 
-	private Object getUnderLyingObject(XEntity xEntity) {
-
+	private Optional<Object> getUnderlyingObject(XEntity xEntity) {
+		Object underlyingObject = null;
+		
 		if(xEntity instanceof MRule1sAntipattern) {
-			return ((MRule1sAntipattern)xEntity).getUnderlyingObject();
+			underlyingObject =  ((MRule1sAntipattern)xEntity).getUnderlyingObject();
 		}else if(xEntity instanceof MRule2sAntipattern) {
-			return ((MRule2sAntipattern)xEntity).getUnderlyingObject();
+			underlyingObject = ((MRule2sAntipattern)xEntity).getUnderlyingObject();
 		} else if(xEntity instanceof MRule3sAntipattern) {
-			return ((MRule3sAntipattern)xEntity).getUnderlyingObject();
+			underlyingObject = ((MRule3sAntipattern)xEntity).getUnderlyingObject();
 		}else if(xEntity instanceof MRule4sAntipattern) {
-			return ((MRule4sAntipattern)xEntity).getUnderlyingObject();
+			underlyingObject = ((MRule4sAntipattern)xEntity).getUnderlyingObject();
 		} else if(xEntity instanceof MRule5sAntipattern) {
-			return ((MRule5sAntipattern)xEntity).getUnderlyingObject();
+			underlyingObject = ((MRule5sAntipattern)xEntity).getUnderlyingObject();
 		}else if(xEntity instanceof MRule6sAntipattern) {
-			return ((MRule6sAntipattern)xEntity).getUnderlyingObject();
+			underlyingObject = ((MRule6sAntipattern)xEntity).getUnderlyingObject();
 		}else if(xEntity instanceof MRule7sAntipattern) {
-			return ((MRule7sAntipattern)xEntity).getUnderlyingObject();
+			underlyingObject = ((MRule7sAntipattern)xEntity).getUnderlyingObject();
 		}else if(xEntity instanceof MRule8sAntipattern) {
-			return ((MRule8sAntipattern)xEntity).getUnderlyingObject();
+			underlyingObject = ((MRule8sAntipattern)xEntity).getUnderlyingObject();
 		}else if(xEntity instanceof MRule9sAntipattern) {
-			return ((MRule9sAntipattern)xEntity).getUnderlyingObject();
+			underlyingObject = ((MRule9sAntipattern)xEntity).getUnderlyingObject();
 		}else if(xEntity instanceof MRule10sAntipattern) {
-			return ((MRule10sAntipattern)xEntity).getUnderlyingObject();
+			underlyingObject = ((MRule10sAntipattern)xEntity).getUnderlyingObject();
 		}else if(xEntity instanceof MRule12sAntipattern) {
-			return ((MRule12sAntipattern)xEntity).getUnderlyingObject();
+			underlyingObject = ((MRule12sAntipattern)xEntity).getUnderlyingObject();
 		}else if(xEntity instanceof MRule13sAntipattern) {
-			return ((MRule13sAntipattern)xEntity).getUnderlyingObject();
+			underlyingObject = ((MRule13sAntipattern)xEntity).getUnderlyingObject();
 		}else if(xEntity instanceof MRule14sAntipattern) {
-			return ((MRule14sAntipattern)xEntity).getUnderlyingObject();
+			underlyingObject = ((MRule14sAntipattern)xEntity).getUnderlyingObject();
 		}else if(xEntity instanceof MRule15sAntipattern) {
-			return ((MRule15sAntipattern)xEntity).getUnderlyingObject();
+			underlyingObject = ((MRule15sAntipattern)xEntity).getUnderlyingObject();
 		}else if(xEntity instanceof MRule16sAntipattern) {
-			return ((MRule16sAntipattern)xEntity).getUnderlyingObject();
+			underlyingObject = ((MRule16sAntipattern)xEntity).getUnderlyingObject();
 		}else if(xEntity instanceof MRule17sAntipattern) {
-			return ((MRule17sAntipattern)xEntity).getUnderlyingObject();
+			underlyingObject = ((MRule17sAntipattern)xEntity).getUnderlyingObject();
 		}else if(xEntity instanceof MRule18sAntipattern) {
-			return ((MRule18sAntipattern)xEntity).getUnderlyingObject();
+			underlyingObject = ((MRule18sAntipattern)xEntity).getUnderlyingObject();
 		}else if(xEntity instanceof MRule19sAntipattern) {
-			return ((MRule19sAntipattern)xEntity).getUnderlyingObject();
+			underlyingObject = ((MRule19sAntipattern)xEntity).getUnderlyingObject();
 		}else if(xEntity instanceof MRule20sAntipattern) {
-			return ((MRule20sAntipattern)xEntity).getUnderlyingObject();
+			underlyingObject = ((MRule20sAntipattern)xEntity).getUnderlyingObject();
 		}else if(xEntity instanceof MRule21sAntipattern) {
-			return ((MRule21sAntipattern)xEntity).getUnderlyingObject();
+			underlyingObject = ((MRule21sAntipattern)xEntity).getUnderlyingObject();
 		}else if(xEntity instanceof MRule25sAntipattern) {
-			return ((MRule25sAntipattern)xEntity).getUnderlyingObject();
+			underlyingObject = ((MRule25sAntipattern)xEntity).getUnderlyingObject();
 		}else if(xEntity instanceof MRule26sAntipattern) {
-			return ((MRule26sAntipattern)xEntity).getUnderlyingObject();
+			underlyingObject = ((MRule26sAntipattern)xEntity).getUnderlyingObject();
 		}else if(xEntity instanceof MUncategorizedIsPresentPossibleAntipattern) {
-			return ((MUncategorizedIsPresentPossibleAntipattern)xEntity).getUnderlyingObject();
+			underlyingObject = ((MUncategorizedIsPresentPossibleAntipattern)xEntity).getUnderlyingObject();
 		}
-		return null;
+		return Optional.ofNullable(underlyingObject);
 	}
 	
 	private Stream<? extends XEntity> getMAntipatterns(MCompilationUnit arg0) {

@@ -23,7 +23,8 @@ public class Rule14Tests extends TestBaseClass{
 	protected List<Antipattern> getAntipatterns() {
 		Group<MRule14sAntipattern> group = getMCompilationUnit().rule14AntipatternDetector();
 
-		return group.getElements().stream()
+		return group.getElements()
+				.stream()
 				.map(MRule14sAntipattern::getUnderlyingObject)
 				.map(Antipattern.class::cast)
 				.collect(Collectors.toList());

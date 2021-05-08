@@ -33,9 +33,9 @@ public class TestUtil {
 			String path = url.getPath() + "res/testdata/";
 			ZipFile theFile = new ZipFile(new File(path + fileName));
 			ZipFileStructureProvider zp = new ZipFileStructureProvider(theFile);
-
 			IWorkspaceRoot workSpaceRoot =  ResourcesPlugin.getWorkspace().getRoot();
 			IProject project = workSpaceRoot.getProject(projectName);
+			
 			project.create(null);
 			project.open(null);
 
@@ -79,7 +79,6 @@ public class TestUtil {
 		try {
 			Arrays.toString(theProject.getAllPackageFragmentRoots());
 		} catch (JavaModelException e) {
-			System.out.println("Of... :(");
 			e.printStackTrace();
 		}
 		return Optional.ofNullable(theProject);

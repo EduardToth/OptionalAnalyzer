@@ -17,6 +17,7 @@ import optionalanalyzer.metamodel.factory.Factory;
 import utilities.UtilityClass;
 
 public class Rule25AntipatternFinder {
+	
 	public List<MRule25sAntipattern> getMAntipatterns(ASTNode astNode) {
 		final List<InfixExpression> infixExpressions = getAllInfixExpressions(astNode);
 
