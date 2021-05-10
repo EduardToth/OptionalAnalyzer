@@ -30,8 +30,7 @@ public class Rule20AntipatternFinder {
 		return getTypeName(variableDeclarationFragment)
 				.filter(UtilityClass::isSimpleOptionalType)
 				.filter(UtilityClass::hasBadGenericTypeArgumentForOptional) //like Integer, Double...
-				.flatMap(ignored -> Rule20Antipattern.getInstance(variableDeclarationFragment))
-				.or(Optional::empty);
+				.flatMap(ignored -> Rule20Antipattern.getInstance(variableDeclarationFragment));
 	}
 
 	private Optional<String> getTypeName(VariableDeclarationFragment variableDeclarationFragment) {
@@ -42,7 +41,7 @@ public class Rule20AntipatternFinder {
 					.getQualifiedName();
 
 			return Optional.of(typeName);
-		}catch(NullPointerException ignored) {}
+		} catch(NullPointerException ignored) {}
 
 		return Optional.empty();
 	}

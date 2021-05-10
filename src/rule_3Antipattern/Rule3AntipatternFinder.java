@@ -59,7 +59,7 @@ public class Rule3AntipatternFinder{
 				&& ToolBoxForIfStatementAnalysis.getCyclomaticComplexity(elseStatement) == 1;
 	}
 
-	private boolean isStatementComposedByASingleActionBorBoth(Statement thenStatement, Statement elseStatement) {
+	private boolean isStatementComposedByASingleActionForBoth(Statement thenStatement, Statement elseStatement) {
 		return ToolBoxForIfStatementAnalysis.isStatementComposedByASimgleAction(thenStatement)
 				&& ToolBoxForIfStatementAnalysis.isStatementComposedByASimgleAction(elseStatement);
 	}
@@ -72,7 +72,7 @@ public class Rule3AntipatternFinder{
 
 		if(thenStatement != null && elseStatement != null) {
 			return isCyclomaticComplexityForBothOne(thenStatement, elseStatement)
-					&& isStatementComposedByASingleActionBorBoth(thenStatement, elseStatement)
+					&& isStatementComposedByASingleActionForBoth(thenStatement, elseStatement)
 					&& isAntipattern(thenStatement, elseStatement, invocatorName);
 		} else {
 			return false;
