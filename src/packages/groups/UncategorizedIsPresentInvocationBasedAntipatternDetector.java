@@ -19,7 +19,8 @@ implements IRelationBuilder<MUncategorizedIsPresentPossibleAntipattern, MPackage
 		Group<MUncategorizedIsPresentPossibleAntipattern> group = new Group<>();
 
 		List<MUncategorizedIsPresentPossibleAntipattern> antipatterns = arg0.compilationUnitDetector()
-				.getElements().stream()
+				.getElements().parallelStream()
+				.unordered()
 				.map(MCompilationUnit::uncategorizedIsPresentInvocationBasedAntipatternDetector)
 				.map(Group::getElements)
 				.flatMap(List::stream)

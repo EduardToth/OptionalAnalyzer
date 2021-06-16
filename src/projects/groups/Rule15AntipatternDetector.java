@@ -19,7 +19,8 @@ public class Rule15AntipatternDetector implements IRelationBuilder<MRule15sAntip
 		Group<MRule15sAntipattern> group = new Group<>();
 
 		List<MRule15sAntipattern> antipatterns = arg0.compilationUnitDetector()
-				.getElements().stream()
+				.getElements().parallelStream()
+				.unordered()
 				.map(MCompilationUnit::rule15AntipatternDetector)
 				.map(Group::getElements)
 				.flatMap(List::stream)

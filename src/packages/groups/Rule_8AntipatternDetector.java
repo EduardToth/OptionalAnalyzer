@@ -19,7 +19,8 @@ public class Rule_8AntipatternDetector implements IRelationBuilder<MRule8sAntipa
 
 		 List<MRule8sAntipattern> antipatterns = arg0.compilationUnitDetector()
 				.getElements()
-				.stream()
+				.parallelStream()
+				.unordered()
 				.map(MCompilationUnit::rule_8AntipatternDetector)
 				.map(Group::getElements)
 				.flatMap(List::stream)

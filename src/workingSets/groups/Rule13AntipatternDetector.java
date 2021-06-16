@@ -18,7 +18,8 @@ public class Rule13AntipatternDetector implements IRelationBuilder<MRule13sAntip
 		Group<MRule13sAntipattern> group = new Group<>();
 
 		 List<MRule13sAntipattern> antipatterns = arg0.getComponentProjects()
-				.getElements().stream()
+				.getElements()
+				.stream()
 				.map(MProject::rule13AntipatternDetector)
 				.map(Group::getElements)
 				.flatMap(List::stream)

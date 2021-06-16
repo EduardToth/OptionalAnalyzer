@@ -11,6 +11,7 @@ public class MethodInvokedFromOptionalVisitor extends ASTVisitor{
 	private String invokedMethodName;
 
 	private List<MethodInvocation> invocations = new LinkedList<>();
+	
 	public MethodInvokedFromOptionalVisitor(String invokedMethod) {
 		super();
 		this.invokedMethodName = invokedMethod;

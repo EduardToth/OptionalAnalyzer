@@ -1,5 +1,6 @@
 package FullAnalysis.groups;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -53,7 +54,6 @@ public class FullAnalysis implements IRelationBuilder<MAnalysis, MCompilationUni
 				.distinct()
 				.map(Factory.getInstance()::createMAnalysis)
 				.collect(Collectors.toList());
-		
 
 		Group<MAnalysis> resGroup = new Group<MAnalysis>();
 		resGroup.addAll(result);
@@ -62,11 +62,21 @@ public class FullAnalysis implements IRelationBuilder<MAnalysis, MCompilationUni
 	}
 
 	private Pair<String, String> convertInEssentialInfo(Object antipattern) {
-
-		String className = antipattern.getClass().getName();
+		String className = getDetectionName(antipattern);
 		String antipatternInfo = antipattern.toString();
 
 		return new Pair<String, String>(className, antipatternInfo);
+	}
+
+	private String getDetectionName(Object antipattern) {
+		String relativePath = antipattern.getClass().getName();
+		String[] pathComponents = relativePath.split("\\.");
+		int arrayLength = pathComponents.length;
+		
+		return Arrays.stream( pathComponents )
+			.skip(arrayLength - 1)
+			.findFirst()
+			.orElse(relativePath);
 	}
 
 	private Optional<Object> getUnderlyingObject(XEntity xEntity) {
@@ -119,10 +129,12 @@ public class FullAnalysis implements IRelationBuilder<MAnalysis, MCompilationUni
 		}else if(xEntity instanceof MUncategorizedIsPresentPossibleAntipattern) {
 			underlyingObject = ((MUncategorizedIsPresentPossibleAntipattern)xEntity).getUnderlyingObject();
 		}
+		
 		return Optional.ofNullable(underlyingObject);
 	}
 	
 	private Stream<? extends XEntity> getMAntipatterns(MCompilationUnit arg0) {
+																					
 		return Stream.of(arg0.rule_1AntipatternDetector(),
 				arg0.rule_2AntipatternDetector(),
 				arg0.rule_3AntipatternDetector(),

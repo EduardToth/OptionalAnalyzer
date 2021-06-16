@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import optionalanalyzer.metamodel.entity.MCompilationUnit;
-import optionalanalyzer.metamodel.entity.MPackage;
 import optionalanalyzer.metamodel.entity.MProject;
 import optionalanalyzer.metamodel.entity.MUncategorizedIsPresentPossibleAntipattern;
 import ro.lrg.xcore.metametamodel.Group;
@@ -20,7 +19,8 @@ implements IRelationBuilder<MUncategorizedIsPresentPossibleAntipattern, MProject
 		Group<MUncategorizedIsPresentPossibleAntipattern> group = new Group<>();
 
 		List<MUncategorizedIsPresentPossibleAntipattern> antipatterns = arg0.compilationUnitDetector()
-				.getElements().stream()
+				.getElements().parallelStream()
+				.unordered()
 				.map(MCompilationUnit::uncategorizedIsPresentInvocationBasedAntipatternDetector)
 				.map(Group::getElements)
 				.flatMap(List::stream)

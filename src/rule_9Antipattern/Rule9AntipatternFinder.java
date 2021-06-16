@@ -76,9 +76,9 @@ public class Rule9AntipatternFinder{
 		Optional<Statement> thenStatement = Optional.ofNullable(ifStatement.getThenStatement());
 		Optional<Statement> elseStatement = Optional.ofNullable(ifStatement.getElseStatement());
 
-		return thenStatement.flatMap(thenStm -> {
-			return elseStatement.map(elseStm -> isAntipattern(thenStm, elseStm, invocatorName));
-		})
+		return thenStatement.flatMap(thenStm 
+				-> elseStatement.map(elseStm -> isAntipattern(thenStm, elseStm, invocatorName))
+		)
 		.orElse(false);
 
 	}

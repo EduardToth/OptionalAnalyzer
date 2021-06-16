@@ -18,7 +18,8 @@ public class Rule21AntipatternDetector implements IRelationBuilder<MRule21sAntip
 		Group<MRule21sAntipattern> group = new Group<>();
 
 		 List<MRule21sAntipattern> antipatterns = arg0.getComponentProjects()
-				.getElements().stream()
+				.getElements()
+				.stream()
 				.map(MProject::rule21AntipatternDetector)
 				.map(Group::getElements)
 				.flatMap(List::stream)

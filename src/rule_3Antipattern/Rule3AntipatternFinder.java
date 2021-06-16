@@ -51,6 +51,7 @@ public class Rule3AntipatternFinder{
 					.filter(invName -> isAntipattern(ifStatement, invName))
 					.map(ignored -> ifStatement);
 		}
+		
 		return Optional.empty();
 	}
 
@@ -70,6 +71,7 @@ public class Rule3AntipatternFinder{
 		Statement thenStatement = ifStatement.getThenStatement();
 		Statement elseStatement = ifStatement.getElseStatement();
 
+		
 		if(thenStatement != null && elseStatement != null) {
 			return isCyclomaticComplexityForBothOne(thenStatement, elseStatement)
 					&& isStatementComposedByASingleActionForBoth(thenStatement, elseStatement)

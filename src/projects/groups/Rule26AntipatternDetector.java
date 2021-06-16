@@ -19,7 +19,8 @@ public class Rule26AntipatternDetector implements IRelationBuilder<MRule26sAntip
 		Group<MRule26sAntipattern> group = new Group<>();
 
 		List<MRule26sAntipattern> antipatterns = arg0.compilationUnitDetector()
-				.getElements().stream()
+				.getElements().parallelStream()
+				.unordered()
 				.map(MCompilationUnit::rule26AntipatternDetector)
 				.map(Group::getElements)
 				.flatMap(List::stream)

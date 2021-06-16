@@ -41,16 +41,19 @@ import org.eclipse.core.internal.resources.Project;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IResourceVisitor;
 import org.eclipse.core.runtime.CoreException;
+
 public class Startup1 implements IStartup {
 
 	@Override
 	public void earlyStartup() {
 		try {
-			ToolRegistration.getInstance().registerXEntityConverter(this::convert);
+			ToolRegistration
+			.getInstance()
+			.registerXEntityConverter(this::convert);
 		}catch(RuntimeException runtimeException) {
+			runtimeException.printStackTrace();
 			throw new RuntimeException("You may have too many compilation errors in the source selected");
 		}
-
 	}
 
 	public XEntity convert(Object element) {

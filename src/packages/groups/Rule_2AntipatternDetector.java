@@ -19,6 +19,7 @@ public class Rule_2AntipatternDetector implements IRelationBuilder<MRule2sAntipa
 
 		 List<MRule2sAntipattern> antipatterns = arg0.compilationUnitDetector()
 				.getElements().parallelStream()
+				.unordered()
 				.map(MCompilationUnit::rule_2AntipatternDetector)
 				.map(Group::getElements)
 				.flatMap(List::stream)

@@ -9,7 +9,9 @@ public class ToString implements IPropertyComputer<String, MRule2sAntipattern>{
 
 	@Override
 	public String compute(MRule2sAntipattern arg0) {
-		return arg0.getUnderlyingObject().toString();
+		String relativePath = "TestProject\\rule2Examples\\";
+		
+		return relativePath + arg0.getUnderlyingObject().toString();
 	}
 
 }

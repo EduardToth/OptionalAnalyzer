@@ -18,7 +18,8 @@ public class Rule_4AntipatternDetector implements IRelationBuilder<MRule4sAntipa
 		Group<MRule4sAntipattern> group = new Group<>();
 
 		 List<MRule4sAntipattern> antipatterns = arg0.compilationUnitDetector()
-				.getElements().stream()
+				.getElements().parallelStream()
+				.unordered()
 				.map(MCompilationUnit::rule_4AntipatternDetector)
 				.map(Group::getElements)
 				.flatMap(List::stream)

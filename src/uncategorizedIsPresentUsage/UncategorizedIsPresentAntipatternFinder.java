@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.function.Function;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -49,7 +50,7 @@ public class UncategorizedIsPresentAntipatternFinder {
 		categorizedIsPresentInvocations.addAll(getRule26BaseIsPresentInvocation(mCompilationUnit));
 
 		return isPresentMethodInvocations.stream()
-				.filter(methodInvocation -> !contains(categorizedIsPresentInvocations, methodInvocation))
+				.filter(Predicate.not(methodInvocation -> contains(categorizedIsPresentInvocations, methodInvocation)))
 				.map(UncategorizedIsPresentAntipattern::getInstance)
 				.flatMap(Optional::stream)
 				.map(Factory.getInstance()::createMUncategorizedIsPresentPossibleAntipattern)
