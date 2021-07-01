@@ -138,6 +138,7 @@ public class UtilityClass {
 
 	public static CompilationUnit getCompilationUnit(ASTNode astNode) {
 		ASTNode node = astNode;
+		
 		while( !(node instanceof CompilationUnit) ) {
 			node = node.getParent();
 		}
