@@ -1,6 +1,6 @@
 package rule_2Antipattern;
 
-import java.util.Optional;
+import  java.util.Optional;
 
 import org.eclipse.jdt.core.dom.ASTNode;
 import org.eclipse.jdt.core.dom.MethodInvocation;
