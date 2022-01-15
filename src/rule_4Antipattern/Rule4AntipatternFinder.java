@@ -20,14 +20,14 @@ import utilities.UtilityClass;
 
 public class Rule4AntipatternFinder{
 	public List<MRule4sAntipattern> getMAntipatterns(ASTNode astNode) {
-		List<MRule4sAntipattern> ifStatementMAntipatterns = getAntipatterns(astNode)
+		var ifStatementMAntipatterns = getAntipatterns(astNode)
 				.stream()
 				.map(Rule4Antipattern::getInstance)
 				.flatMap(Optional::stream)
 				.map(Factory.getInstance()::createMRule4sAntipattern)
 				.collect(Collectors.toList());
 
-		List<MRule4sAntipattern> returnStatementMAntipatterns = getProblematicReturnStatements(astNode)
+		var returnStatementMAntipatterns = getProblematicReturnStatements(astNode)
 				.stream()
 				.map(Rule4Antipattern::getInstance)
 				.flatMap(Optional::stream)
@@ -41,15 +41,15 @@ public class Rule4AntipatternFinder{
 	}
 
 	private List<IfStatement> getAntipatterns(ASTNode astNode) {
-		OptionalInvocationFinder optionalInvocationFinder = new OptionalInvocationFinder();
-		getProblematicReturnStatements(astNode);
-		List<MethodInvocation> invocations = optionalInvocationFinder.getInvocations(astNode);
+		var optionalInvocationFinder = new OptionalInvocationFinder();
+		var invocations = optionalInvocationFinder.getInvocations(astNode);
+		
 		return collectAntipatterns(invocations);
 	}
 
 	private List<ReturnStatement> getProblematicReturnStatements(ASTNode astNode) {
-		OptionalInvocationFinder optionalInvocationFinder = new OptionalInvocationFinder();
-		List<MethodInvocation> orElseInvocations = optionalInvocationFinder.getInvocations(astNode, "orElse");
+		var optionalInvocationFinder = new OptionalInvocationFinder();
+		var orElseInvocations = optionalInvocationFinder.getInvocations(astNode, "orElse");
 
 		return orElseInvocations.stream()
 				.filter(methodInvocation -> methodInvocation.getParent() instanceof ReturnStatement)
@@ -60,6 +60,7 @@ public class Rule4AntipatternFinder{
 
 	private boolean isArgumentInvocation(List<?> arguments) {
 		final String regex = ".*\\(.*\\).*";
+
 		return arguments.size() == 1 && arguments.get( 0 )
 				.toString()
 				.matches(regex);
@@ -68,9 +69,10 @@ public class Rule4AntipatternFinder{
 	private Optional<IfStatement> getParentIfStatementIfProblematic(MethodInvocation methodInvocation) {
 
 		if(ToolBoxForIfStatementAnalysis.isSuperParentIfStatement(methodInvocation)) {
-			final IfStatement ifStatement = ToolBoxForIfStatementAnalysis.getIfStatement(methodInvocation);
-			Optional<String> invocatorName = UtilityClass.getInvocatorName(methodInvocation);
-			return invocatorName.filter(invName -> isAntipattern(ifStatement, invName))
+			var ifStatement = ToolBoxForIfStatementAnalysis.getIfStatement(methodInvocation);
+			var invocatorName = UtilityClass.getInvocatorName(methodInvocation);
+			return invocatorName
+					.filter(invName -> isAntipattern(ifStatement, invName))
 					.map(invName -> ifStatement);
 		}
 		return Optional.empty();
@@ -86,14 +88,14 @@ public class Rule4AntipatternFinder{
 
 	private Optional<Pair<ReturnStatement, ReturnStatement>> getReturnStatements(Pair<Statement, Statement> statements) {
 
-		Statement thenStatement = statements.getValue0();
-		Statement elseStatement = statements.getValue1();
-		Optional<ReturnStatement> returnStatementForThen = ToolBoxForIfStatementAnalysis.getReturnStatement(thenStatement);
-		Optional<ReturnStatement> returnStatementForElse = ToolBoxForIfStatementAnalysis.getReturnStatement(elseStatement);
+		var thenStatement = statements.getValue0();
+		var elseStatement = statements.getValue1();
+		var returnStatementForThen = ToolBoxForIfStatementAnalysis.getReturnStatement(thenStatement);
+		var returnStatementForElse = ToolBoxForIfStatementAnalysis.getReturnStatement(elseStatement);
 
-		return returnStatementForThen.flatMap(returnStmForThen -> {
-			return returnStatementForElse.map(returnStmForElse -> Pair.with(returnStmForThen, returnStmForElse));
-		});
+		return returnStatementForThen.flatMap(returnStmForThen 
+				-> returnStatementForElse.map(returnStmForElse 
+						-> Pair.with(returnStmForThen, returnStmForElse)));
 
 	}
 
@@ -102,7 +104,8 @@ public class Rule4AntipatternFinder{
 		Optional<Statement> elseStatement = Optional.ofNullable(ifStatement.getElseStatement());
 
 		return thenStatement.flatMap(
-				thenStm -> elseStatement.map(elseStm -> Pair.with(thenStm, elseStm))
+				thenStm -> elseStatement.map(elseStm 
+						-> Pair.with(thenStm, elseStm))
 				)
 				.filter(this::isCyclomaticComplexityForBothOne)
 				.filter(this::areStatementsComposedByASingleAction)
@@ -112,23 +115,24 @@ public class Rule4AntipatternFinder{
 	}
 
 	private boolean areStatementsComposedByASingleAction(Pair<Statement, Statement> statementPair) {
-		Statement thenStatement = statementPair.getValue0();
-		Statement elseStatement = statementPair.getValue1();
+		var thenStatement = statementPair.getValue0();
+		var elseStatement = statementPair.getValue1();
 
 		return ToolBoxForIfStatementAnalysis.isStatementComposedByASimgleAction(thenStatement)
 				&& ToolBoxForIfStatementAnalysis.isStatementComposedByASimgleAction(elseStatement);
 	}
 
 	private boolean isCyclomaticComplexityForBothOne(Pair<Statement, Statement> statementPair) {
-		Statement thenStatement = statementPair.getValue0();
-		Statement elseStatement = statementPair.getValue1();
+		var thenStatement = statementPair.getValue0();
+		var elseStatement = statementPair.getValue1();
 		return ToolBoxForIfStatementAnalysis.getCyclomaticComplexity(thenStatement) == 1 
 				&& ToolBoxForIfStatementAnalysis.getCyclomaticComplexity(elseStatement) == 1;
 	}
 
 	private boolean isAntipattern(Pair<ReturnStatement, ReturnStatement> returnStatementPair, String invocatorName) {
-		ReturnStatement returnStatementForThen = returnStatementPair.getValue0();
-		ReturnStatement returnStatementForElse = returnStatementPair.getValue1();
+		var returnStatementForThen = returnStatementPair.getValue0();
+		var returnStatementForElse = returnStatementPair.getValue1();
+		
 		return ToolBoxForIfStatementAnalysis.containsGetFromOptional(returnStatementForThen, invocatorName)
 				&& ToolBoxForIfStatementAnalysis.containsMethodInvocation(returnStatementForElse)
 				|| ToolBoxForIfStatementAnalysis.containsGetFromOptional(returnStatementForElse, invocatorName)

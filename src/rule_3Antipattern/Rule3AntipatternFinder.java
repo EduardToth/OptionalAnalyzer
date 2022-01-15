@@ -28,8 +28,8 @@ public class Rule3AntipatternFinder{
 	}
 
 	private List<IfStatement> getAntipatterns(ASTNode astNode) {
-		OptionalInvocationFinder optionalInvocationFinder = new OptionalInvocationFinder();
-		List<MethodInvocation> invocations = optionalInvocationFinder.getInvocations(astNode);
+		var optionalInvocationFinder = new OptionalInvocationFinder();
+		var invocations = optionalInvocationFinder.getInvocations(astNode);
 
 		return collectAntipatterns(invocations);
 	}
@@ -45,8 +45,9 @@ public class Rule3AntipatternFinder{
 	private Optional<IfStatement> getParentIfStatementIfProblematic(MethodInvocation methodInvocation) {
 
 		if(ToolBoxForIfStatementAnalysis.isSuperParentIfStatement(methodInvocation)) {
-			final IfStatement ifStatement = ToolBoxForIfStatementAnalysis.getIfStatement(methodInvocation);
-			Optional<String> invocatorName = UtilityClass.getInvocatorName(methodInvocation);
+			var ifStatement = ToolBoxForIfStatementAnalysis.getIfStatement(methodInvocation);
+			var invocatorName = UtilityClass.getInvocatorName(methodInvocation);
+			
 			return invocatorName
 					.filter(invName -> isAntipattern(ifStatement, invName))
 					.map(ignored -> ifStatement);
@@ -68,8 +69,8 @@ public class Rule3AntipatternFinder{
 
 	private  boolean isAntipattern(IfStatement ifStatement, String invocatorName) {
 
-		Statement thenStatement = ifStatement.getThenStatement();
-		Statement elseStatement = ifStatement.getElseStatement();
+		var thenStatement = ifStatement.getThenStatement();
+		var elseStatement = ifStatement.getElseStatement();
 
 		
 		if(thenStatement != null && elseStatement != null) {
@@ -82,13 +83,13 @@ public class Rule3AntipatternFinder{
 	}
 
 	private boolean isAntipattern(Statement thenStatement, Statement elseStatement, String invocatorName) {
-		Optional<ReturnStatement> returnStatementForThen = ToolBoxForIfStatementAnalysis.getReturnStatement(thenStatement);
-		Optional<ReturnStatement> returnStatementForElse = ToolBoxForIfStatementAnalysis.getReturnStatement(elseStatement);
+		var returnStatementForThen = ToolBoxForIfStatementAnalysis.getReturnStatement(thenStatement);
+		var returnStatementForElse = ToolBoxForIfStatementAnalysis.getReturnStatement(elseStatement);
 
 		
 		if(returnStatementForThen.isPresent() && returnStatementForElse.isPresent()) {
-			ReturnStatement returnStmForThen = returnStatementForThen.get();
-			ReturnStatement returnStmForElse = returnStatementForElse.get();
+			var returnStmForThen = returnStatementForThen.get();
+			var returnStmForElse = returnStatementForElse.get();
 			
 			return isAntipattern(returnStmForThen, returnStmForElse, invocatorName);
 		}

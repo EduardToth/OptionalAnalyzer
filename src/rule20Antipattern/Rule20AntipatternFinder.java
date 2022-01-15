@@ -17,8 +17,8 @@ public class Rule20AntipatternFinder {
 	
 	public List<MRule20sAntipattern> getMAntipatterns(ASTNode astNode) {
 
-		final List<VariableDeclarationFragment> variableDeclarations = getVariableDeclarations(astNode);
-
+		var variableDeclarations = getVariableDeclarations(astNode);
+		
 		return variableDeclarations.stream()
 				.map(this::convertIntoAntipatternIfPossible)
 				.flatMap(Optional::stream)
@@ -36,14 +36,16 @@ public class Rule20AntipatternFinder {
 
 	private Optional<String> getTypeName(VariableDeclarationFragment variableDeclarationFragment) {
 		try {
-			String typeName = variableDeclarationFragment
+			var typeName = variableDeclarationFragment
 					.resolveBinding()
 					.getType()
 					.getQualifiedName();
 
 			return Optional.ofNullable(typeName);
-		} catch(NullPointerException ignored) {}
-
+		} catch(NullPointerException ignored) {
+			
+		}
+		
 		return Optional.empty();
 	}
 
@@ -52,7 +54,7 @@ public class Rule20AntipatternFinder {
 		final List<VariableDeclarationFragment> variableDeclarations = new ArrayList<>();
 
 		astNode.accept(new ASTVisitor() {
-
+			
 			@Override
 			public boolean visit(VariableDeclarationFragment variableDeclarationFragment) {
 				variableDeclarations.add(variableDeclarationFragment);

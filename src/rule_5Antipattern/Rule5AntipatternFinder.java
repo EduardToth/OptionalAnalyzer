@@ -9,7 +9,6 @@ import org.eclipse.jdt.core.dom.ASTNode;
 import org.eclipse.jdt.core.dom.ASTVisitor;
 import org.eclipse.jdt.core.dom.IfStatement;
 import org.eclipse.jdt.core.dom.MethodInvocation;
-import org.eclipse.jdt.core.dom.ReturnStatement;
 import org.eclipse.jdt.core.dom.Statement;
 import org.eclipse.jdt.core.dom.ThrowStatement;
 
@@ -32,8 +31,8 @@ public class Rule5AntipatternFinder {
 	}
 
 	private List<IfStatement> getAntipatterns(ASTNode astNode) {
-		OptionalInvocationFinder optionalInvocationFinder = new OptionalInvocationFinder();
-		List<MethodInvocation> invocations = optionalInvocationFinder.getInvocations(astNode);
+		var optionalInvocationFinder = new OptionalInvocationFinder();
+		var invocations = optionalInvocationFinder.getInvocations(astNode);
 
 		return collectAntipatterns(invocations);
 	}
@@ -49,9 +48,11 @@ public class Rule5AntipatternFinder {
 	private Optional<IfStatement> getParentIfStatementIfProblematic(MethodInvocation methodInvocation) {
 
 		if(ToolBoxForIfStatementAnalysis.isSuperParentIfStatement(methodInvocation)) {
-			final IfStatement ifStatement = ToolBoxForIfStatementAnalysis.getIfStatement(methodInvocation);
-			Optional<String> invocatorName = UtilityClass.getInvocatorName(methodInvocation);
-			return invocatorName.filter(invName -> isAntipattern(ifStatement, invName))
+			var ifStatement = ToolBoxForIfStatementAnalysis.getIfStatement(methodInvocation);
+			var invocatorName = UtilityClass.getInvocatorName(methodInvocation);
+
+			return invocatorName
+					.filter(invName -> isAntipattern(ifStatement, invName))
 					.map(invName -> ifStatement);
 		}
 		return Optional.empty();
@@ -60,12 +61,14 @@ public class Rule5AntipatternFinder {
 
 	private  boolean isAntipattern(IfStatement ifStatement, String invocatorName) {
 
-		Optional<Statement> thenStatement = Optional.ofNullable(ifStatement.getThenStatement());
-		Optional<Statement> elseStatement = Optional.ofNullable(ifStatement.getElseStatement());
+		var thenStatement = Optional.ofNullable(ifStatement.getThenStatement());
+		var elseStatement = Optional.ofNullable(ifStatement.getElseStatement());
 
-		return thenStatement.flatMap(thenStm -> { 
-			return elseStatement.map(elseStm -> isAntipattern(thenStm, elseStm, invocatorName));
-		}).orElse(false);
+		return thenStatement
+				.flatMap(thenStm 
+						-> elseStatement.map(elseStm 
+								-> isAntipattern(thenStm, elseStm, invocatorName)))
+				.orElse(false);
 	}
 
 	private boolean isAntipattern(Statement statementForThen, Statement statementForElse, String invocatorName) {
@@ -81,16 +84,16 @@ public class Rule5AntipatternFinder {
 	}
 
 	private boolean containsGetFromOptional(Statement statement, String invocatorName) {
-		Optional<ReturnStatement> returnStatement = ToolBoxForIfStatementAnalysis.getReturnStatement(statement);
+		var returnStatement = ToolBoxForIfStatementAnalysis.getReturnStatement(statement);
 
 		return returnStatement
-				.map(retStm -> ToolBoxForIfStatementAnalysis.containsGetFromOptional(retStm, invocatorName))
+				.map(retStm 
+						-> ToolBoxForIfStatementAnalysis.containsGetFromOptional(retStm, invocatorName))
 				.orElse(false);
 	}
 
-
 	private boolean containsNoSuchElementExceptionThrow(Statement statement) {
-		final AtomicBoolean contains = new AtomicBoolean(false);
+		var contains = new AtomicBoolean(false);
 
 		statement.accept(new ASTVisitor() {
 
@@ -98,8 +101,12 @@ public class Rule5AntipatternFinder {
 			public boolean visit(ThrowStatement throwStatement) {
 				String typeName = "";
 				try {
-					typeName = throwStatement.getExpression().resolveTypeBinding().getQualifiedName();
+					typeName = throwStatement
+							.getExpression()
+							.resolveTypeBinding()
+							.getQualifiedName();
 				} catch(NullPointerException npe) {}
+
 				contains.set(typeName.equals("java.util.NoSuchElementException"));
 				return super.visit(throwStatement);
 			}

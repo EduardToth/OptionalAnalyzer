@@ -27,8 +27,8 @@ public class Rule8AntipatternFinder{
 	}
 
 	private List<IfStatement> getAntipatterns(ASTNode astNode) {
-		OptionalInvocationFinder optionalInvocationFinder = new OptionalInvocationFinder();
-		List<MethodInvocation> invocations = optionalInvocationFinder.getInvocations(astNode);
+		var optionalInvocationFinder = new OptionalInvocationFinder();
+		var invocations = optionalInvocationFinder.getInvocations(astNode);
 
 		return collectAntipatterns(invocations);
 	}
@@ -44,8 +44,8 @@ public class Rule8AntipatternFinder{
 	private Optional<IfStatement> getParentIfStatementIfProblematic(MethodInvocation methodInvocation) {
 
 		if(ToolBoxForIfStatementAnalysis.isSuperParentIfStatement(methodInvocation)) {
-			final IfStatement ifStatement = ToolBoxForIfStatementAnalysis.getIfStatement(methodInvocation);
-			Optional<String> invocatorName = UtilityClass.getInvocatorName(methodInvocation);
+			var ifStatement = ToolBoxForIfStatementAnalysis.getIfStatement(methodInvocation);
+			var invocatorName = UtilityClass.getInvocatorName(methodInvocation);
 			
 			return invocatorName
 					.filter(invName -> isAntipattern(ifStatement, invName))
@@ -56,8 +56,8 @@ public class Rule8AntipatternFinder{
 
 	private  boolean isAntipattern(IfStatement ifStatement, String invocatorName) {
 
-		Statement thenStatement = ifStatement.getThenStatement();
-		Statement elseStatement = ifStatement.getElseStatement();
+		var thenStatement = ifStatement.getThenStatement();
+		var elseStatement = ifStatement.getElseStatement();
 
 		return containsOnlyThenBlock(thenStatement, elseStatement) 
 				&& isAntipattern(thenStatement, invocatorName);

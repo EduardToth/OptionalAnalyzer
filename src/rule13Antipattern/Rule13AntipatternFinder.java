@@ -41,7 +41,7 @@ public class Rule13AntipatternFinder {
 
 	private boolean isFieldDeclarationOfTypeOptional(FieldDeclaration fieldDeclaration) {
 
-		String typeName = "";
+		var typeName = "";
 
 		try {
 			typeName = fieldDeclaration.getType()

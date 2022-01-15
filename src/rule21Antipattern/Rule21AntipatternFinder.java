@@ -1,5 +1,6 @@
 package rule21Antipattern;
 
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
@@ -19,24 +20,27 @@ import utilities.OptionalInvocationFinder;
 public class Rule21AntipatternFinder {
 
 	public List<MRule21sAntipattern> getMAntipatterns(ASTNode astNode) {
-		OptionalInvocationFinder optionalInvocationFinder = new OptionalInvocationFinder();
-		List<MethodInvocation> equalsInvocationsFromOptional = optionalInvocationFinder.getInvocations(astNode, "get");
-		Collection<Rule21Antipattern> uniqueAntipatternCollection = getUniqueAntipatternCollection(equalsInvocationsFromOptional);
-		
+		var optionalInvocationFinder = new OptionalInvocationFinder();
+		var equalsInvocationsFromOptional = optionalInvocationFinder.getInvocations(astNode, "get");
+		var uniqueAntipatternCollection = getUniqueAntipatternCollection(equalsInvocationsFromOptional);
+
 		return uniqueAntipatternCollection.stream()
 				.map(Factory.getInstance()::createMRule21sAntipattern)
 				.collect(Collectors.toList());
-
 	}
 
 	private Collection<Rule21Antipattern> getUniqueAntipatternCollection(
 			List<MethodInvocation> equalsInvocationsFromOptional) {
+		var toCustomisedMap = Collectors.toMap(Antipattern::getStartingPosition,
+				Function.identity(),
+				(Rule21Antipattern existing, Rule21Antipattern newOne) -> existing);
+
 		return equalsInvocationsFromOptional.stream()
 				.map(this::getAntipatternOccurencies)
 				.flatMap(Collection::stream)
 				.map(Rule21Antipattern::getInstance)
 				.flatMap(Optional::stream)
-				.collect(Collectors.toMap(Antipattern::getStartingPosition, Function.identity(), (existing, newOne) -> existing))
+				.collect(toCustomisedMap)
 				.values();
 	}
 
@@ -56,23 +60,13 @@ public class Rule21AntipatternFinder {
 	}
 
 	private String normalyzeRegEx(String invocationPattern) {
-		String tmp = "";
-		for(int i=0; i < invocationPattern.length(); i++) {
-			if(invocationPattern.charAt( i ) == '(' 
-					|| invocationPattern.charAt( i ) == ')') {
-				tmp += "\\" + invocationPattern.charAt( i );
-			}
-			else {
-				tmp += invocationPattern.charAt( i );
-			}
-		}
-
-		return tmp;
+		return Arrays.stream(invocationPattern.split(""))
+				.map(ch -> ch.equals("(") || ch.equals(")")? "\\" + ch : ch)
+				.collect(Collectors.joining());
 	}
 
 	private List<MethodInvocation> getAntipatternOccurencies2(MethodInvocation methodInvocation) {
-		The21stAntipatternVisitor the21stAntipatternVisitor =
-				new The21stAntipatternVisitor();
+		var the21stAntipatternVisitor =new The21stAntipatternVisitor();
 		methodInvocation.getParent().accept(the21stAntipatternVisitor);
 
 		return the21stAntipatternVisitor.getMethodInvocations();

@@ -30,11 +30,11 @@ public class Rule2AntipatternFinder{
 	}
 
 	private List<MethodInvocation> getAntipatterns(ASTNode astNode) {
-		OptionalInvocationFinder optionalInvocationFinder = new OptionalInvocationFinder();
-		List<MethodInvocation> simpleGetInvocations = optionalInvocationFinder.getInvocations(astNode, "get");
-		List<MethodInvocation> getAsIntInvocations = optionalInvocationFinder.getInvocations(astNode, "getAsInt");
-		List<MethodInvocation> getAsLongInvocations = optionalInvocationFinder.getInvocations(astNode, "getAsLong");
-		List<MethodInvocation> getAsDoubleInvocations = optionalInvocationFinder.getInvocations(astNode, "getAsDouble");
+		var optionalInvocationFinder = new OptionalInvocationFinder();
+		var simpleGetInvocations = optionalInvocationFinder.getInvocations(astNode, "get");
+		var getAsIntInvocations = optionalInvocationFinder.getInvocations(astNode, "getAsInt");
+		var getAsLongInvocations = optionalInvocationFinder.getInvocations(astNode, "getAsLong");
+		var getAsDoubleInvocations = optionalInvocationFinder.getInvocations(astNode, "getAsDouble");
 
 		return  Stream.of(simpleGetInvocations, getAsIntInvocations, getAsLongInvocations, getAsDoubleInvocations)
 				.flatMap(List::stream)
@@ -52,7 +52,7 @@ public class Rule2AntipatternFinder{
 	}
 
 	private boolean verifyInParents(MethodInvocation methodInvocation, String invocatorName) {
-		ASTNode astNode = methodInvocation.getParent();
+		var astNode = methodInvocation.getParent();
 		for(; !(astNode instanceof MethodDeclaration);) {
 
 			if(astNode instanceof IfStatement 

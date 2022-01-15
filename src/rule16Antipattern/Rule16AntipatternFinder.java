@@ -2,6 +2,7 @@ package rule16Antipattern;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
@@ -16,7 +17,7 @@ public class Rule16AntipatternFinder {
 
 	public List<MRule16sAntipattern> getMAntipatterns(ASTNode astNode) {
 		List<MethodDeclaration> methodDeclarations = UtilityClass.getMethodDeclarations(astNode);
-        
+
 		return methodDeclarations.stream()
 				.filter(Predicate.not(MethodDeclaration::isConstructor))
 				.filter(Predicate.not(UtilityClass::isSetter))

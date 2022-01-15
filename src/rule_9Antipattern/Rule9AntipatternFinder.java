@@ -37,14 +37,14 @@ public class Rule9AntipatternFinder{
 	}
 
 	private List<IfStatement> getAntipatterns(ASTNode astNode) {
-		OptionalInvocationFinder optionalInvocationFinder = new OptionalInvocationFinder();
-		List<MethodInvocation> invocations = optionalInvocationFinder.getInvocations(astNode);
+		var optionalInvocationFinder = new OptionalInvocationFinder();
+		var invocations = optionalInvocationFinder.getInvocations(astNode);
 
 		return collectAntipatterns(invocations);
 	}
 
 	private List<Rule7Antipattern> getRule7Antipatterns(ASTNode astNode) {
-		Rule7AntipatternFinder rule7AntipatternFinder = new Rule7AntipatternFinder();
+		var rule7AntipatternFinder = new Rule7AntipatternFinder();
 
 		return rule7AntipatternFinder.getMAntipatterns(astNode).stream()
 				.map(MRule7sAntipattern::getUnderlyingObject)
@@ -63,9 +63,11 @@ public class Rule9AntipatternFinder{
 	private Optional<IfStatement> getParentIfStatementIfProblematic(MethodInvocation methodInvocation) {
 
 		if(ToolBoxForIfStatementAnalysis.isSuperParentIfStatement(methodInvocation)) {
-			final IfStatement ifStatement = ToolBoxForIfStatementAnalysis.getIfStatement(methodInvocation);
-			Optional<String> invocatorName = UtilityClass.getInvocatorName(methodInvocation);
-			return invocatorName.filter(invName -> isAntipattern(ifStatement, invName))
+			var ifStatement = ToolBoxForIfStatementAnalysis.getIfStatement(methodInvocation);
+			var invocatorName = UtilityClass.getInvocatorName(methodInvocation);
+
+			return invocatorName.filter(invName 
+					-> isAntipattern(ifStatement, invName))
 					.map(invName -> ifStatement);
 		}
 		return Optional.empty();
@@ -73,13 +75,14 @@ public class Rule9AntipatternFinder{
 
 	private  boolean isAntipattern(IfStatement ifStatement, String invocatorName) {
 
-		Optional<Statement> thenStatement = Optional.ofNullable(ifStatement.getThenStatement());
-		Optional<Statement> elseStatement = Optional.ofNullable(ifStatement.getElseStatement());
+		var thenStatement = Optional.ofNullable(ifStatement.getThenStatement());
+		var elseStatement = Optional.ofNullable(ifStatement.getElseStatement());
 
 		return thenStatement.flatMap(thenStm 
-				-> elseStatement.map(elseStm -> isAntipattern(thenStm, elseStm, invocatorName))
-		)
-		.orElse(false);
+				-> elseStatement.map(elseStm 
+						-> isAntipattern(thenStm, elseStm, invocatorName))
+				)
+				.orElse(false);
 
 	}
 

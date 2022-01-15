@@ -31,8 +31,8 @@ public class Rule6AntipatternFinder {
 	}
 
 	private List<IfStatement> getAntipatterns(ASTNode astNode) {
-		OptionalInvocationFinder optionalInvocationFinder = new OptionalInvocationFinder();
-		List<MethodInvocation> invocations = optionalInvocationFinder.getInvocations(astNode);
+		var optionalInvocationFinder = new OptionalInvocationFinder();
+		var invocations = optionalInvocationFinder.getInvocations(astNode);
 
 		return collectAntipatterns(invocations);
 	}
@@ -47,7 +47,7 @@ public class Rule6AntipatternFinder {
 	}
 	
 	private Optional<IfStatement> getWrapperIfStatementIfThereIsAntipatternThere(MethodInvocation methodInvocation) {
-		String invocatorName = UtilityClass.getInvocatorName(methodInvocation).orElse("");
+		var invocatorName = UtilityClass.getInvocatorName(methodInvocation).orElse("");
 		IfStatement ifStatement = null;
 		if(ToolBoxForIfStatementAnalysis.isSuperParentIfStatement(methodInvocation)) {
 			ifStatement = ToolBoxForIfStatementAnalysis.getIfStatement(methodInvocation);
@@ -61,11 +61,12 @@ public class Rule6AntipatternFinder {
 
 	private  boolean isAntipattern(IfStatement ifStatement, String invocatorName) {
 
-		Optional<Statement> thenStatement = Optional.ofNullable(ifStatement.getThenStatement());
-		Optional<Statement> elseStatement = Optional.ofNullable(ifStatement.getElseStatement());
+		var thenStatement = Optional.ofNullable(ifStatement.getThenStatement());
+		var elseStatement = Optional.ofNullable(ifStatement.getElseStatement());
 
 		return thenStatement.flatMap(
-						thenStm -> elseStatement.map(elseStm -> isAntipattern(thenStm, elseStm, invocatorName))
+						thenStm -> elseStatement.map(elseStm 
+								-> isAntipattern(thenStm, elseStm, invocatorName))
 				).orElse(false);
 		
 	}
@@ -83,7 +84,7 @@ public class Rule6AntipatternFinder {
 	}
 
 	private boolean containsGetFromOptional(Statement statement, String invocatorName) {
-		Optional<ReturnStatement> returnStatement = ToolBoxForIfStatementAnalysis.getReturnStatement(statement);
+		var returnStatement = ToolBoxForIfStatementAnalysis.getReturnStatement(statement);
 
 		
 		return returnStatement
@@ -92,14 +93,14 @@ public class Rule6AntipatternFinder {
 	}
 
 	private boolean containsExceptionDifferentFromNoSuchElementException(Statement statement) {
-		final AtomicBoolean contains = new AtomicBoolean(false);
+		var contains = new AtomicBoolean(false);
 
 		statement.accept(new ASTVisitor() {
 
 			@Override
 			public boolean visit(ThrowStatement throwStatement) {
 				
-				String typeName = "";
+				var typeName = "";
 				try {
 					typeName = throwStatement.getExpression()
 							.resolveTypeBinding()

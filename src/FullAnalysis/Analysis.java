@@ -52,7 +52,5 @@ public class Analysis {
 			return false;
 		return true;
 	}
-	
-	
 }
 

@@ -46,7 +46,7 @@ public class FullAnalysis implements IRelationBuilder<MAnalysis, MCompilationUni
 	@Override
 	public Group<MAnalysis> buildGroup(MCompilationUnit arg0) {
 
-		 List<MAnalysis> result = getMAntipatterns(arg0)
+		 var result = getMAntipatterns(arg0)
 				.map(this::getUnderlyingObject)
 				.flatMap(Optional::stream)
 				.map(this::convertInEssentialInfo)
@@ -55,7 +55,7 @@ public class FullAnalysis implements IRelationBuilder<MAnalysis, MCompilationUni
 				.map(Factory.getInstance()::createMAnalysis)
 				.collect(Collectors.toList());
 
-		Group<MAnalysis> resGroup = new Group<MAnalysis>();
+		var resGroup = new Group<MAnalysis>();
 		resGroup.addAll(result);
 
 		return resGroup;
@@ -69,8 +69,8 @@ public class FullAnalysis implements IRelationBuilder<MAnalysis, MCompilationUni
 	}
 
 	private String getDetectionName(Object antipattern) {
-		String relativePath = antipattern.getClass().getName();
-		String[] pathComponents = relativePath.split("\\.");
+		var relativePath = antipattern.getClass().getName();
+		var pathComponents = relativePath.split("\\.");
 		int arrayLength = pathComponents.length;
 		
 		return Arrays.stream( pathComponents )

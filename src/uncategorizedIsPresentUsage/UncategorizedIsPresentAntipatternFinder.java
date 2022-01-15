@@ -41,11 +41,11 @@ public class UncategorizedIsPresentAntipatternFinder {
 
 	public List<MUncategorizedIsPresentPossibleAntipattern> getMAntipatterns(MCompilationUnit mCompilationUnit) {
 
-		List<Stream<Object>> isPresentInvocationBasedMAntipatternStreamList = getIsPresentInvocationBasedCategorizedAntipatterns(mCompilationUnit);
-		Set<MethodInvocation> categorizedIsPresentInvocations = getCenzoredIsPresentAntipatterns(isPresentInvocationBasedMAntipatternStreamList);
-		ICompilationUnit iCompilationUnit = (ICompilationUnit) mCompilationUnit.getUnderlyingObject();
-		CompilationUnit compilationUnit = UtilityClass.parse(iCompilationUnit);
-		List<MethodInvocation> isPresentMethodInvocations = optionalInvocationFinder.getInvocations(compilationUnit);
+		var isPresentInvocationBasedMAntipatternStreamList = getIsPresentInvocationBasedCategorizedAntipatterns(mCompilationUnit);
+		var categorizedIsPresentInvocations = getCenzoredIsPresentAntipatterns(isPresentInvocationBasedMAntipatternStreamList);
+		var iCompilationUnit = (ICompilationUnit) mCompilationUnit.getUnderlyingObject();
+		var compilationUnit = UtilityClass.parse(iCompilationUnit);
+		var isPresentMethodInvocations = optionalInvocationFinder.getInvocations(compilationUnit);
 
 		categorizedIsPresentInvocations.addAll(getRule26BaseIsPresentInvocation(mCompilationUnit));
 
@@ -119,7 +119,7 @@ public class UncategorizedIsPresentAntipatternFinder {
 	}
 
 	private boolean contains(Set<MethodInvocation> categorizedIfPresentInvocations, MethodInvocation ifPresentMethodInvocation) {
-		Pair<Integer, Integer> positions = getPositions(ifPresentMethodInvocation);
+		var positions = getPositions(ifPresentMethodInvocation);
 
 		return categorizedIfPresentInvocations.stream()
 				.map(this::getPositions)

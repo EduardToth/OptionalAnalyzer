@@ -18,10 +18,9 @@ public class Rule18AntipatternFinder {
 
 	public List<MRule18sAntipattern> getMAntipatterns(ASTNode astNode) {
 
-		List<SimpleName> simpleNames = getSimpleNames(astNode);
-
+		var simpleNames = getSimpleNames(astNode);
 		
-		List<Rule18Antipattern> antipatterns = simpleNames.stream()
+		var antipatterns = simpleNames.stream()
 				.map(this::convertIntoAntipatternIfPossible)
 				.flatMap(Optional::stream)
 				.collect(Collectors.toList());
@@ -34,7 +33,7 @@ public class Rule18AntipatternFinder {
 	}
 
 	private Optional<Rule18Antipattern> convertIntoAntipatternIfPossible(SimpleName simpleName) {
-		String typeName = getTypeName(simpleName);
+	    var typeName = getTypeName(simpleName);
 		if(isRule18Antipattern(typeName)) {
 			return Rule18Antipattern.getInstance(simpleName);
 		}
@@ -43,7 +42,7 @@ public class Rule18AntipatternFinder {
 	}
 
 	private String getTypeName(SimpleName simpleName) {
-		String typeName = "";
+		var typeName = "";
 		try {
 			typeName = simpleName.resolveTypeBinding().getQualifiedName();
 		}catch(NullPointerException ignored) {}
@@ -74,7 +73,7 @@ public class Rule18AntipatternFinder {
 			return true;
 		}
 
-		String[] genericTypes = UtilityClass.getGenericTypes(typeName);
+		var genericTypes = UtilityClass.getGenericTypes(typeName);
 
 		return Arrays.stream(genericTypes).anyMatch(this::isRule18Antipattern);
 	}

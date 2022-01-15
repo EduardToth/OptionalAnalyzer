@@ -30,8 +30,8 @@ public class Rule10AntipatternFinder {
 	}
 
 	private List<IfStatement> getProblematicIfStatements(ASTNode astNode) {
-		OptionalInvocationFinder optionalInvocationFinder = new OptionalInvocationFinder();
-		List<MethodInvocation> invocations = optionalInvocationFinder.getInvocations(astNode);
+		var optionalInvocationFinder = new OptionalInvocationFinder();
+		var invocations = optionalInvocationFinder.getInvocations(astNode);
 
 		return getProblematicIfStatements(invocations);
 	}
@@ -47,7 +47,7 @@ public class Rule10AntipatternFinder {
 	private Optional<IfStatement> getParentIfStatementIfProblematic(MethodInvocation methodInvocation) {
 
 		if(ToolBoxForIfStatementAnalysis.isSuperParentIfStatement(methodInvocation)) {
-			final IfStatement ifStatement = ToolBoxForIfStatementAnalysis.getIfStatement(methodInvocation);
+			var ifStatement = ToolBoxForIfStatementAnalysis.getIfStatement(methodInvocation);
 			return UtilityClass.getInvocatorName(methodInvocation)
 					.filter(invName -> isAntipattern(ifStatement, invName))
 					.map(invName -> ifStatement);
@@ -58,8 +58,8 @@ public class Rule10AntipatternFinder {
 
 	private  boolean isAntipattern(IfStatement ifStatement, String invocatorName) {
 
-		Statement thenStatement = ifStatement.getThenStatement();
-		Statement elseStatement = ifStatement.getElseStatement();
+		var thenStatement = ifStatement.getThenStatement();
+		var elseStatement = ifStatement.getElseStatement();
 		
 		if(thenStatement != null && elseStatement != null) {
 			return bothOfThemContainReturnStatement(ifStatement, elseStatement)
@@ -76,7 +76,7 @@ public class Rule10AntipatternFinder {
 
 	private boolean isAntipattern(Statement statementForThen, Statement statementForElse, String invocatorName) {
 		
-		String typeName = "";
+		var typeName = "";
 		try {
 			typeName = ToolBoxForIfStatementAnalysis.getReturnStatement(statementForThen)
 					.map(ReturnStatement::getExpression)

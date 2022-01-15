@@ -4,8 +4,6 @@ import java.util.Optional;
 
 import org.eclipse.jdt.core.dom.ASTNode;
 import org.eclipse.jdt.core.dom.MethodInvocation;
-
-import rule_9Antipattern.Rule9Antipattern;
 import utilities.ASTNodeDoesNotBelongHere;
 import utilities.Antipattern;
 

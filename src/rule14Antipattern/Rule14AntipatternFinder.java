@@ -13,7 +13,7 @@ import utilities.UtilityClass;
 public class Rule14AntipatternFinder {
 
 	public List<MRule14sAntipattern> getMAntipatterns(ASTNode astNode) {
-		List<MethodDeclaration> methodDeclarations = UtilityClass.getMethodDeclarations(astNode);
+		var methodDeclarations = UtilityClass.getMethodDeclarations(astNode);
 
 		return methodDeclarations.stream()
 				.filter(MethodDeclaration::isConstructor)

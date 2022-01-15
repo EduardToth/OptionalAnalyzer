@@ -27,6 +27,7 @@ public class The21stAntipatternVisitor extends ASTVisitor {
 				.findFirst()
 				.ifPresent(ignored -> setObjectStateToAntipatternFound(methInvocation));
 		}
+		
 		return super.visit(methInvocation);
 	}
 

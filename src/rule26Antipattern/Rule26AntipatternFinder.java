@@ -15,8 +15,8 @@ import utilities.OptionalInvocationFinder;
 public class Rule26AntipatternFinder {
 	
 	public List<MRule26sAntipattern> getMAntipatterns(ASTNode astNode) {
-		OptionalInvocationFinder optionalInvocationFinder = new OptionalInvocationFinder();
-		List<MethodInvocation> isPresentInvocations = optionalInvocationFinder.getInvocations(astNode);
+		var optionalInvocationFinder = new OptionalInvocationFinder();
+		var isPresentInvocations = optionalInvocationFinder.getInvocations(astNode);
 		
 		return isPresentInvocations.stream()
 				.map(this::getParentPrefixExpression)
@@ -39,8 +39,11 @@ public class Rule26AntipatternFinder {
 	}
 
 	private boolean isOperatorNegation(PrefixExpression prefixExpression) {
-		String stringForm = prefixExpression.getOperator().toString();
-		PrefixExpression.Operator operator = PrefixExpression.Operator.toOperator(stringForm);
+		var stringForm = prefixExpression
+				.getOperator()
+				.toString();
+		
+		var operator = PrefixExpression.Operator.toOperator(stringForm);
 
 		return operator == PrefixExpression.Operator.NOT;
 	}
